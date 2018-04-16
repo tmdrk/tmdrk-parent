@@ -5,10 +5,11 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
         <wb-resource deploy-path="/" source-path="/work/workspace/workspace1/tmdrk-parent/tmdrk-websrc/main/webapp"/>
+        <wb-resource deploy-path="/" source-path="/work/workStore/tmdrk-parent/tmdrk-websrc/main/webapp"/>
         <dependent-module archiveName="tmdrk-common-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/tmdrk-common/tmdrk-common">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="java-output-path" value="/tmdrk-web/target/classes"/>
-        <property name="context-root" value="tmdrk-web-0.0.1-SNAPSHOT-2018-04-13T10:51:15Z"/>
+        <property name="context-root" value="tmdrk-web-0.0.1-SNAPSHOT-2018-04-13T11:16:23Z"/>
     </wb-module>
 </project-modules>
