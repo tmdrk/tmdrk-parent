@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.CollectionUtils;
@@ -18,6 +19,8 @@ import org.springframework.util.CollectionUtils;
  * @date 2018年4月11日
  */
 public class LogUtil{
+	public static ConcurrentHashMap<String,Object> fieldCache = new ConcurrentHashMap<String,Object>();
+	
 	public static void main(String[] args) throws IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException {
 		SettlementVo oldSV = new SettlementVo();
 		oldSV.setId(1);
@@ -51,7 +54,7 @@ public class LogUtil{
 		newSV2.setStartTime(new Date(10000000));
 		newSV2.setMoney(new BigDecimal(554.000));
 		SettlementLog slog2 = new SettlementLog();
-		slog2.setId(12);
+		slog2.setId(14);
 		slog2.setSettlementId("TICAMERO4983759834");
 		slog2.setOrderId(2019031234);
 		
@@ -72,7 +75,7 @@ public class LogUtil{
 		tList.add(slog);
 		tList.add(slog2);
 		
-		List<SettlementLog> list2 = compareAndAssembleLog(oList,nList,slog);
+		List<SettlementLog> list2 = compareAndAssembleLog(oList,nList,tList);
 		for(SettlementLog sl:list2){
 			System.out.println(sl.toString());
 		}
@@ -145,26 +148,37 @@ public class LogUtil{
 		}
 		List<T> list = new ArrayList<T>();
 		// 获取实体类的所有属性，返回Field数组  
-        Field[] oldFields = o.getClass().getDeclaredFields();
-        Field[] newFields = n.getClass().getDeclaredFields();
-        for(int i=0;i<oldFields.length;i++){
+        Field[] fields = (Field[]) LogUtil.fieldCache.get(o.getClass().toString());
+    	if(fields==null){
+    		fields = o.getClass().getDeclaredFields();
+    		LogUtil.fieldCache.put(o.getClass().toString(), fields);
+    	}
+        String fieldName,oldValue,newValue;//old字段名,new字段名,old字段值,new字段值
+        for(int i=0;i<fields.length;i++){
         	//设置私有字段可访问
-        	oldFields[i].setAccessible(true);
-        	newFields[i].setAccessible(true);
-        	String oldName = oldFields[i].getName();//old字段名
-        	String newName = newFields[i].getName();//old字段名
-        	String oldValue = oldFields[i].get(o)==null?null:oldFields[i].get(o).toString();//old字段值
-        	String newValue = newFields[i].get(n)==null?null:newFields[i].get(n).toString();//new字段值
-        	if(oldName.equals(newName)&&!compareValue(oldValue,newValue)){
-        		//创建封装类
-        		LogVo log = t.getClass().newInstance();
-        		//封装对象
-        		BeanUtils.copyProperties(log, t);
-        		log.setFieldName(oldName);
-        		log.setOldValue(oldValue);
-        		log.setNewValue(newValue);
-        		list.add((T)log);
-        	}
+        	fields[i].setAccessible(true);
+        	fieldName = fields[i].getName();
+			try {
+				oldValue = fields[i].get(o)==null?null:fields[i].get(o).toString();
+	        	newValue = fields[i].get(n)==null?null:fields[i].get(n).toString();
+	        	LogVo log;
+	        	if(!compareValue(oldValue,newValue)){
+	        		//创建封装类
+	        		log = t.getClass().newInstance();
+	        		//封装对象
+	        		BeanUtils.copyProperties( t,log);
+	        		log.setFieldName(fieldName);
+	        		log.setOldValue(oldValue);
+	        		log.setNewValue(newValue);
+	        		list.add((T)log);
+	        	}
+        	}catch (InstantiationException e) {
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
         }
         return list;
 	}
