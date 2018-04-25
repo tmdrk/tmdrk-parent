@@ -139,6 +139,10 @@ public final class DateUtil {
 	public static String dateFormatYYYYMMDD(Date date) {
 		return NORMAL_DATE_FORMAT_YY_MM_DD_.format(date);
 	}
+	
+	public static String dateFormatYMD(Date date) {
+		return NORMAL_DATE_FORMAT_YY_MM_DD.format(date);
+	}
 
 	/**
 	 * 正常日期格式化.
@@ -446,7 +450,31 @@ public final class DateUtil {
         return dateFormat(Long.parseLong(str));
     }
 	
-
+    public static String monthAddFrist(String date){  
+        DateFormat df=new SimpleDateFormat("yyyy-MM-dd");  
+        try {  
+            Calendar ct=Calendar.getInstance();  
+            ct.setTime(df.parse(date));  
+            ct.add(Calendar.MONTH, +1);  
+            return df.format(ct.getTime());  
+        } catch (ParseException e) {  
+            e.printStackTrace();  
+        }  
+        return "";
+    }
+    public static Date monthAdd(Date date,int add){
+//	    Calendar calendar = Calendar.getInstance();
+//	    calendar.setTime(date);
+//	    int month = calendar.get(Calendar.MONTH);
+//	    month++;
+//	    calendar.set(Calendar.MONTH, month);
+    	Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int month = calendar.get(Calendar.MONTH);
+        month++;
+        calendar.set(Calendar.MONTH, month);
+	    return calendar.getTime();
+    }
 	/* public static void main(String[] args) {
 		 *//*System.out.println(dateFormat(1462413208));
 		 System.out.println(getFirstDayOfMonth("2015", "9"));
@@ -469,4 +497,10 @@ public final class DateUtil {
 		 System.out.println("args = [" + DateUtil.parse("2016-01-19","yyyy-MM-dd").getTime() + "]");
 		 
 	 }*/
+    public static void main(String[] args) {
+    	System.out.println(monthAddFrist(getCurrentDateYYYYMMDDStr()));
+    	Date date = new Date();
+    	date = monthAdd(date,2);
+    	System.out.println(dateFormatYMD(date));
+	}
 }

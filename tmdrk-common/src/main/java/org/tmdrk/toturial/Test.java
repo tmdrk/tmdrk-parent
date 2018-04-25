@@ -1,6 +1,20 @@
 package org.tmdrk.toturial;
 
+import java.math.BigDecimal;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class Test {
+    /** 保险计算规则map. */
+    public static Map<BigDecimal, String> insurCalMap = new LinkedHashMap<BigDecimal, String>();
+    
+    static {
+    	insurCalMap.put(new BigDecimal("1000"), "基数*比例");
+    	insurCalMap.put(new BigDecimal("1001"), "基数无上限*比例");
+    	insurCalMap.put(new BigDecimal("1002"), "固定额*子女数");
+    	insurCalMap.put(new BigDecimal("1003"), "固定额");
+    	insurCalMap.put(new BigDecimal("1004"), "特殊规则");
+    }
 	public static void main(String[] args) {
 		Test t = new Test();
 		User u = new User("huanhuan",21);
@@ -18,6 +32,10 @@ public class Test {
 		System.out.println(u+"|"+name+"|"+aa);
 		t.make2(u.u);
 		System.out.println(u+"|"+name+"|"+aa);
+		
+		BigDecimal bd =new BigDecimal("1000.00");
+//		BigDecimal bd1 =new BigDecimal("");
+		System.out.println(Test.insurCalMap.get(bd.intValue()));
 	}
 	public void make(User uu,String name,int aa){
 //		u = new User("zhouzhou",23);
@@ -66,5 +84,5 @@ class User{
 	public String toString() {
 		return "User [name=" + name + ", age=" + age + ", u=" + u + "]";
 	}
-	
+
 }
