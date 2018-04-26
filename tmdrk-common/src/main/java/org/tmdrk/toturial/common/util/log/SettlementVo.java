@@ -47,5 +47,10 @@ public class SettlementVo {
 	public void setMoney(BigDecimal money) {
 		this.money = money;
 	}
+	@Override
+	public String toString() {
+		return "SettlementVo [id=" + id + ", name=" + name + ", nickName=" + nickName + ", current=" + current
+				+ ", startTime=" + startTime + ", money=" + money + "]";
+	}
 	
 }
