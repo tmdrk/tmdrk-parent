@@ -22,4 +22,12 @@ public abstract class BaseSort {
 		}
 		System.out.println();
 	}
+
+	public static<T> void printArray(String pre,T[] a){
+		System.out.print(pre+":");
+		for(T i:a){
+			System.out.print(i+",");
+		}
+		System.out.println();
+	}
 }

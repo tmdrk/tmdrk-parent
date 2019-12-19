@@ -8,7 +8,7 @@ public class ReflectTest {
 	@SuppressWarnings({ "unused", "rawtypes" })
 	public static void main(String[] args) {
 		try {
-			Class clazz = Class.forName("com.test.service.impl.UserServiceImpl");
+			Class clazz = Class.forName("com.Test.service.impl.UserServiceImpl");
 //			UserService userService = (UserService) clazz.newInstance();
 			Constructor<?> con = clazz.getDeclaredConstructor((Class[]) null);
 			Object[] o = new Object[]{};

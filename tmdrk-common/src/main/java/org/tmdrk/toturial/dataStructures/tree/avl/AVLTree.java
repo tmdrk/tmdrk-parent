@@ -11,7 +11,7 @@ public class AVLTree {
 	public AVLTree(){
 		
 	}
-	/** 哨兵节点 **/
+	/** 哨兵节点**/
 	Node sentinel = new Node();
 	/** 树容量 **/
 	int size = 0;

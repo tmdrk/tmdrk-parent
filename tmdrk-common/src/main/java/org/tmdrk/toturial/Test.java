@@ -36,6 +36,8 @@ public class Test {
 		BigDecimal bd =new BigDecimal("1000.00");
 //		BigDecimal bd1 =new BigDecimal("");
 		System.out.println(Test.insurCalMap.get(bd.intValue()));
+
+		System.out.println(doSomething());
 	}
 	public void make(User uu,String name,int aa){
 //		u = new User("zhouzhou",23);
@@ -48,6 +50,23 @@ public class Test {
 	}
 	public void make2(User uuu){
 		uuu.age=65;
+	}
+
+	public static Integer doSomething(){
+//		StringBuilder a = new StringBuilder();
+		Integer a=22222;
+		try {
+			a=19999;
+//			a.append("1");
+//			a=1/0;
+			return a;
+		}catch (Exception e){
+			a=29999;
+//			a.append("2");
+			return a;
+		}finally {
+//			a.append("3");
+		}
 	}
 }
 class User{

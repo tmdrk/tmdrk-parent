@@ -35,13 +35,14 @@ public class BlockingQueueTest {
 //		}); //双缓冲队列
 		ExecutorService executor = Executors.newFixedThreadPool(10);
 		Consumer Consumer = new Consumer(msgQueue);
-		executor.execute(Consumer);
-		for(int i=0;i<20;i++){
+//		executor.execute(Consumer);
+		for(int i=0;i<10;i++){
 			System.out.println(i);
 			msgQueue.put(i+"");
 		}
+		msgQueue.offer("43");
 		executor.shutdown();
-		
+
 		AtomicInteger ai = new AtomicInteger();
 		ai.set(4);
 		System.out.println(ai.get());

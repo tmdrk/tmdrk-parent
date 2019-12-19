@@ -1,0 +1,3 @@
+#server.port=${port:40100}
+#spring.application.name=tmdrk-chat-elasticsearch
+#xc.elasticsearch.hostlist=${eshostlist:192.168.1.73:9200,192.168.1.74:9200}

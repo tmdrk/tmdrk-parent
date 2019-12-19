@@ -2,15 +2,15 @@ package org.tmdrk.toturial.design.bridge;
 
 public class TestBridge {
 	public static void main(String[] args) throws ClassNotFoundException {
-		Class.forName("com.test.design.bridge.MysqlDriver");
+		Class.forName("com.Test.design.bridge.MysqlDriver");
 		Connection con = ConnectionManager.getConnection();
 		con.execute();
 		
-		Class.forName("com.test.design.bridge.OracleDriver");
+		Class.forName("com.Test.design.bridge.OracleDriver");
 		Connection con1 = ConnectionManager.getConnection();
 		con1.execute();
 		
-		Class.forName("com.test.design.bridge.MysqlDriver");
+		Class.forName("com.Test.design.bridge.MysqlDriver");
 		Connection con2 = ConnectionManager.getConnection();
 		con2.execute();
 	}

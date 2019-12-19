@@ -15,7 +15,8 @@ public class AmountUtil {
 	 * @param amountStr
 	 * @return
 	 */
-	public static long parseAmountStr2Long(String amountStr) {
+	public synchronized static long parseAmountStr2Long(String amountStr) {
+
 		if (amountStr == null || "".equals(amountStr)) {
 			return 0L;
 		}

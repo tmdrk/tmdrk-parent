@@ -15,9 +15,10 @@
   </properties>
 
   <modules>
-  	<module>tmdrk-web</module>
-  	<module>tmdrk-service</module>
-  	<module>tmdrk-common</module>
+  	  <module>tmdrk-web</module>
+  	  <module>tmdrk-service</module>
+  	  <module>tmdrk-common</module>
+      <module>tmdrk-springmvc</module>
   </modules>
   
   <build>  
