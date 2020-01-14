@@ -30,9 +30,9 @@ public class MyServer {
 //                    .handler(new LoggingHandler(LogLevel.INFO)) //handler-->bossGroup
                     .childHandler(new MyServerInitializer());
 //            serverBootstrap.bind(8899).addListener((ChannelFutureListener) future->{
-//                System.out.println("bind success in "+8899);
+//                System.color.println("bind success in "+8899);
 //            });
-//            System.out.println("server started!");
+//            System.color.println("server started!");
 //        }finally {
 ////            bossGroup.shutdownGracefully();
 ////            workerGroup.shutdownGracefully();

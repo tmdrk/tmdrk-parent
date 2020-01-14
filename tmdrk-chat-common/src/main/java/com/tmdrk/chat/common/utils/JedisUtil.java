@@ -1569,4 +1569,49 @@ public class JedisUtil {
         }
     }
     //----------------------publish subscribe end------------------------------------------
+
+    //----------------------HiperLogLog  start------------------------------------------
+
+    public static long pfadd (String key,String... value){
+        Jedis jedis = null;
+        try {
+            jedis = JedisPoolUtil.getJedis();
+            return jedis.pfadd(key,value);
+        } finally {
+            JedisPoolUtil.closeJedis(jedis);
+        }
+    }
+
+    public static long pfcount (String key){
+        Jedis jedis = null;
+        try {
+            jedis = JedisPoolUtil.getJedis();
+            return jedis.pfcount(key);
+        } finally {
+            JedisPoolUtil.closeJedis(jedis);
+        }
+    }
+
+    public static long pfcount (String... key){
+        Jedis jedis = null;
+        try {
+            jedis = JedisPoolUtil.getJedis();
+            return jedis.pfcount(key);
+        } finally {
+            JedisPoolUtil.closeJedis(jedis);
+        }
+    }
+
+
+    public static String pfmerge (String destkey,String... origKey){
+        Jedis jedis = null;
+        try {
+            jedis = JedisPoolUtil.getJedis();
+            return jedis.pfmerge(destkey,origKey);
+        } finally {
+            JedisPoolUtil.closeJedis(jedis);
+        }
+    }
+
+    //----------------------HiperLogLog  end------------------------------------------
 }

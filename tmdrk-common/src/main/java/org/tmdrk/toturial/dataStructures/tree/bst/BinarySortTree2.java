@@ -276,16 +276,16 @@ public class BinarySortTree2<E> {
 //		BinarySortTree2 bst = new BinarySortTree2();
 //		int[] data = {30,17,23,20,18,19,15,16,13,36,26,35};
 //		for(int i=0;i<data.length;i++){
-//			System.out.print(data[i]+":");
+//			System.color.print(data[i]+":");
 //			bst.insert(data[i]);
 //		}
-//		System.out.println("大小:"+bst.size);
+//		System.color.println("大小:"+bst.size);
 //		bst.printTree(bst.getRoot());
-//		System.out.println();
-//		System.out.println(bst.isExist(23));
-//		System.out.println(bst.delete(30));
+//		System.color.println();
+//		System.color.println(bst.isExist(23));
+//		System.color.println(bst.delete(30));
 //		bst.printTree(bst.getRoot());
-//		System.out.println();
+//		System.color.println();
 //	}
 	public static void main(String[] args) {
 		BinarySortTree2<String> bst = new BinarySortTree2<String>();

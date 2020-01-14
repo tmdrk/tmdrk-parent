@@ -9,7 +9,7 @@ import java.lang.annotation.*;
  * @Date 2019/12/18 21:33
  * @Version 1.0
  **/
-@Target({ElementType.TYPE})
+@Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Analyzer {

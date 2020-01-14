@@ -43,8 +43,8 @@ class MyTest1{
         try {
             Thread thread = Thread.currentThread();
 //            Thread.sleep(2000);
-//            System.out.println(Thread.currentThread().getName()+"进来了11 "+in+thread.interrupted());
-//            System.out.println(Thread.currentThread().getName()+"休眠结束11"+in);
+//            System.color.println(Thread.currentThread().getName()+"进来了11 "+in+thread.interrupted());
+//            System.color.println(Thread.currentThread().getName()+"休眠结束11"+in);
 
 
             for (int i = 0; i < 1000; i++) {

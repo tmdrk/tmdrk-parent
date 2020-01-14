@@ -13,7 +13,7 @@ import java.lang.annotation.*;
  * @Date 2019/12/18 17:36
  * @Version 1.0
  **/
-@Target({ElementType.FIELD,ElementType.METHOD})
+@Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Properties {
@@ -74,6 +74,8 @@ public @interface Properties {
     //"doc_value":true（缺省）| false
     DocValue doc_value() default @DocValue();
 
+    //fielddata：是否为text类型启动fielddata，实现排序和聚合分析
+    //针对分词字段，参与排序或聚合时能提高性能，不分词字段统一建议使用doc_value
     Fielddata fielddata() default @Fielddata();
 
     Store store() default @Store();
@@ -114,6 +116,9 @@ public @interface Properties {
 
     //similarity：默认时TF/IDF算法，指定一个字段评分策略，仅仅对字符串型和分词类型有效
     //"similarity": "BM25"
+    //similarity 参数用于指定文档评分模型，参数有三个：
+    //• BM25 Elasticsearch 和 Lucene 默认的评分模型。 • classic TF/IDF 评分。 • boolean 布尔模型评分。
+    //default field 自动使用 BM25 评分模型， classic field 使用 TF/IDF 经典评分模型， boolean sim field 使用布尔评分模型。
     Similarity similarity() default @Similarity();
 
     //trem_vector：默认不存储向量信息，支持参数yes（term存储），with_positions（term+位置），with_offsets（term+偏移量），with_positions_offsets（term+位置+偏移量）对快速高亮fast vector highlighter能提升性能，但开启又会加大索引体积，不适合大数据量用

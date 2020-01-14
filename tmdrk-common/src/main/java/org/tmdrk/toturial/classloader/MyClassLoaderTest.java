@@ -12,19 +12,38 @@ import java.lang.reflect.Method;
  **/
 public class MyClassLoaderTest {
     public static void main(String[] args) throws ClassNotFoundException {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true){
+                    try {
+                        String name = Thread.currentThread().getName()+" ";
+                        Person p = new Person();
+                        p.sayHello();
+                        System.out.println(name+p.getClass().getClassLoader()+p);
+                        Thread.sleep(2000) ;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        }).start();
 
         int i = 0 ;
 
+        String name = Thread.currentThread().getName()+" ";
         while(true){
             MyClassLoader mcl = new MyClassLoader() ;
-            System.out.println(mcl.getParent());
+            System.out.println(name+mcl.getParent());
             Class<?> personClass =  mcl.findClass("org.tmdrk.toturial.classloader.Person");
 
             try {
                 Object person =  personClass.newInstance() ;
                 Method sayHelloMethod = personClass.getMethod("sayHello") ;
                 sayHelloMethod.invoke(person) ;
-                System.out.println(++i);
+                System.out.println(name+person.getClass().getClassLoader()+person);
+                System.out.println(name+(++i));
             } catch (InstantiationException e1) {
                 e1.printStackTrace();
             } catch (IllegalAccessException e1) {

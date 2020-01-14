@@ -22,7 +22,7 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
 //        future.addListener(new ChannelFutureListener() {
 //            @Override
 //            public void operationComplete(ChannelFuture future) throws Exception {
-//                System.out.println("close channel");
+//                System.color.println("close channel");
 //                future.channel().close();
 //            }
 //        });

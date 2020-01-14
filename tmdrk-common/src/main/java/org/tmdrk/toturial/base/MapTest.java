@@ -26,9 +26,9 @@ public class MapTest {
 //			main();
 			String a = "开啊"+random.nextInt(9000000);
 			int b = (int) ((hash(a)&(3))+1);
-//			System.out.println(a);
-//			System.out.println(hash(a+""));
-//			System.out.println((hash(a+"")&(3))+1);
+//			System.color.println(a);
+//			System.color.println(hash(a+""));
+//			System.color.println((hash(a+"")&(3))+1);
 			if(b==1){
 				sum1++;
 			}else if(b==2){

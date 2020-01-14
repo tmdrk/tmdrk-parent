@@ -11,9 +11,9 @@
       <module fileurl="file://$PROJECT_DIR$/tmdrk-common/tmdrk-common.iml" filepath="$PROJECT_DIR$/tmdrk-common/tmdrk-common.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/tmdrk-parent.iml" filepath="$PROJECT_DIR$/.idea/tmdrk-parent.iml" />
       <module fileurl="file://$PROJECT_DIR$/tmdrk-service/tmdrk-service.iml" filepath="$PROJECT_DIR$/tmdrk-service/tmdrk-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tmdrk-servlet3/tmdrk-servlet3.iml" filepath="$PROJECT_DIR$/tmdrk-servlet3/tmdrk-servlet3.iml" />
       <module fileurl="file://$PROJECT_DIR$/tmdrk-springmvc/tmdrk-springmvc.iml" filepath="$PROJECT_DIR$/tmdrk-springmvc/tmdrk-springmvc.iml" />
       <module fileurl="file://$PROJECT_DIR$/tmdrk-web/tmdrk-web.iml" filepath="$PROJECT_DIR$/tmdrk-web/tmdrk-web.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tmdrk-springmvc/tmdrkspringmvc.iml" filepath="$PROJECT_DIR$/tmdrk-springmvc/tmdrkspringmvc.iml" />
     </modules>
   </component>
 </project>

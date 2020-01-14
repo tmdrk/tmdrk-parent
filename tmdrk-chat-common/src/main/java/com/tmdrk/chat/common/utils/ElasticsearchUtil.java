@@ -1,6 +1,7 @@
 package com.tmdrk.chat.common.utils;
 
 import com.tmdrk.chat.common.entity.es.Properties;
+import com.tmdrk.chat.common.entity.es.PropertiesNew;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -13,6 +14,21 @@ import java.lang.reflect.Method;
  * @Version 1.0
  **/
 public class ElasticsearchUtil {
+
+    public static String dealWithMappings(Field[] declaredFields) throws Exception {
+        String json = "{\"mappings\":{"+"\"_doc\":";
+        json += dealWithProperties(declaredFields);
+        json += "}"+"}";
+        return json;
+    }
+
+    public static String dealWithProperties(Field[] declaredFields) throws Exception {
+        String json = "{\"properties\":{";
+        json += dealWithFields(declaredFields);
+        json += "}}";
+        return json;
+    }
+
     /**
      * @Author zhoujie
      * @Description //处理所有声明Properties注解的字段
@@ -20,29 +36,32 @@ public class ElasticsearchUtil {
      * @Param [declaredFields]
      * @return java.lang.String
      **/
-    public static String dealWithProperties(Field[] declaredFields) throws Exception {
-        StringBuilder propertiesJson = new StringBuilder();
+    public static String dealWithFields(Field[] declaredFields) throws Exception {
+        StringBuilder fieldsJson = new StringBuilder();
         for(Field field:declaredFields){
-            propertiesJson.append("\""+field.getName()+"\":{");
-            if (field.isAnnotationPresent(Properties.class)) {
-                Properties properties = field.getAnnotation(Properties.class);
+            fieldsJson.append("\""+field.getName()+"\":{");
+            if (field.isAnnotationPresent(PropertiesNew.class)) {
+                PropertiesNew properties = field.getAnnotation(PropertiesNew.class);
                 Method[] declaredMethods = properties.getClass().getDeclaredMethods();
-                String pro = dealWith(properties, declaredMethods);
-                propertiesJson.append(pro);
+                String pro = dealWithProperties(properties, declaredMethods);
+                fieldsJson.append(pro);
             }
-            propertiesJson.append("},");
+            fieldsJson.append("},");
         }
-        return propertiesJson.substring(0, propertiesJson.length() - 1);
+        if(fieldsJson.length()>0){
+            fieldsJson.delete(fieldsJson.length() - 1,fieldsJson.length());
+        }
+        return fieldsJson.toString();
     }
 
     /**
      * @Author zhoujie
-     * @Description //单独处理声明了注解属性值
+     * @Description //处理单个声明了注解属性值
      * @Date 13:04 2019/12/19
      * @Param [properties, declaredMethods]
      * @return java.lang.String
      **/
-    public static String dealWith(Object properties,Method[] declaredMethods) throws Exception {
+    public static String dealWithProperties(Object properties,Method[] declaredMethods) throws Exception {
         StringBuilder fieldJson = new StringBuilder();
         //循环处理属性值所声明的注解内容
         for (Method method:declaredMethods){
@@ -77,7 +96,7 @@ public class ElasticsearchUtil {
                         Object object = cla.newInstance();
                         Field[] declaredFields1 = object.getClass().getDeclaredFields();
                         //递归dealWithProperties
-                        fieldJson.append(dealWithProperties(declaredFields1));
+                        fieldJson.append(dealWithFields(declaredFields1));
                         fieldJson.append("},");
                     }
                 }else{
@@ -87,6 +106,9 @@ public class ElasticsearchUtil {
                 }
             }
         }
-        return fieldJson.substring(0,fieldJson.length()-1);
+        if(fieldJson.length()>0){
+            fieldJson.delete(fieldJson.length() - 1,fieldJson.length());
+        }
+        return fieldJson.toString();
     }
 }

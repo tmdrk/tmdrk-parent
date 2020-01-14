@@ -1,12 +1,10 @@
 package com.tmdrk.chat.common.entity.es;
 
-import com.tmdrk.chat.common.entity.es.fieldAnnotation.Analyzer;
-import com.tmdrk.chat.common.entity.es.fieldAnnotation.Fields;
-import com.tmdrk.chat.common.entity.es.fieldAnnotation.IndexOptions;
-import com.tmdrk.chat.common.entity.es.fieldAnnotation.Type;
+import com.tmdrk.chat.common.entity.es.fieldAnnotation.*;
+import com.tmdrk.chat.common.utils.ElasticsearchUtil;
+import com.tmdrk.chat.common.utils.StringUtil;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.Date;
 
 /**
@@ -16,9 +14,38 @@ import java.util.Date;
  * @Date 2019/12/18 17:05
  * @Version 1.0
  **/
-@EsIndex(settings=@Settings(numberOfShards=2,numberOfReplicas = 1),needMapping = true,aliases = {"test_p_1","test_p_2"})
+@EsIndex(settings=@Settings(numberOfShards=2,numberOfReplicas = 1,analysis="{\n" +
+        "\t\"char_filter\": {\n" +
+        "\t\t\"&_to_and\": {\n" +
+        "\t\t\t\"type\": \"mapping\",\n" +
+        "\t\t\t\"mappings\": [\" & => and \"]\n" +
+        "\t\t},\n" +
+        "\t\t\"minus_to_underline\": {\n" +
+        "          \"type\": \"pattern_replace\",\n" +
+        "          \"pattern\": \"(\\\\d+)-(?=\\\\d)\",\n" +
+        "          \"replacement\": \"$1_\"\n" +
+        "        }\n" +
+        "\t},\n" +
+        "\t\"filter\": {\n" +
+        "\t\t\"my_stopwords\": {  \n" +
+        "\t\t\t\"type\": \"stop\",\n" +
+        "\t\t\t\"stopwords\": [\"the\",\"a\"]\n" +
+        "\t\t}\n" +
+        "\t},\n" +
+        "\t\"analyzer\": {\n" +
+        "\t\t\"my_analyzer\": {\n" +
+        "\t\t\t\"type\": \"custom\",\n" +
+        "\t\t    \"char_filter\": [\"htmp_strip\",\"&_to_and\",\"minus_to_underline\"],\n" +
+        "\t\t\t\"tokenizer\": \"ik_max_word\",\n" +
+        "\t\t    \"filter\": [\"lowercase\",\"my_stopwords\"]\n" +
+        "\t\t}\n" +
+        "\t}\n" +
+        "}"),
+        needMapping = true,
+        aliases = {"tp31","tp32"})
 public class TestProduct {
     public static void main(String[] args) throws Exception {
+        StringBuilder esIndex = new StringBuilder();
         TestProduct testProduct = new TestProduct();
         Class clazz = testProduct.getClass();
         Field[] fields = clazz.getDeclaredFields();
@@ -27,24 +54,74 @@ public class TestProduct {
             Settings settings = indexAnno.settings();
             int numberOfShards = settings.numberOfShards();
             int numberOfReplicas = settings.numberOfReplicas();
-            System.out.println(indexAnno);
-            System.out.println(settings);
-            System.out.println(numberOfShards);
-            System.out.println(numberOfReplicas);
+            String analysis = settings.analysis();
+//            System.color.println(indexAnno);
+//            System.color.println(settings);
+//            System.color.println(numberOfShards);
+//            System.color.println(numberOfReplicas);
+//            System.color.println(analysis);
 
             String[] aliases = indexAnno.aliases();
-            if(aliases.length>0){
-                System.out.println(aliases[0]);
+
+            esIndex.append("{\"settings\":{\"index\" :{\"number_of_shards\" :").append(numberOfShards);
+            esIndex.append(",").append("\"number_of_replicas\" :").append(numberOfReplicas).append("},");
+            if(!StringUtil.isEmpty(analysis)){
+                esIndex.append("\"analysis\": {").append(analysis).append("}");
+            }else{
+                esIndex.delete(esIndex.length()-1,esIndex.length());
+            }
+            esIndex.append("},");
+
+            if(aliases.length>0) {
+                esIndex.append("\"aliases\" : {");
+                for (String aliase:aliases){
+                    esIndex.append("\""+aliase+"\" : {},");
+                }
+                esIndex.delete(esIndex.length()-1,esIndex.length());
+                esIndex.append("},");
             }
 
+            String methodJson = null;
             if(!indexAnno.needMapping()){
                 System.out.println("mapping no need");
-                return;
+            }else{
+                methodJson = ElasticsearchUtil.dealWithMappings(fields);
+                esIndex.append(methodJson);
             }
-            String methodJson = "{\"properties\":{";
-            methodJson += dealWithProperties(fields);
-            methodJson += "}}";
-            System.out.println(methodJson);
+            if(methodJson==null){
+                esIndex.delete(esIndex.length()-1,esIndex.length());
+            }
+            System.out.println(esIndex.toString());
+
+
+            analysis="{\n" +
+                    "\t\"char_filter\": {\n" +
+                    "\t\t\"&_to_and\": {\n" +
+                    "\t\t\t\"type\": \"mapping\",\n" +
+                    "\t\t\t\"mappings\": [\" & => and \"]\n" +
+                    "\t\t},\n" +
+                    "\t\t\"minus_to_underline\": {\n" +
+                    "          \"type\": \"pattern_replace\",\n" +
+                    "          \"pattern\": \"(\\\\d+)-(?=\\\\d)\",\n" +
+                    "          \"replacement\": \"$1_\"\n" +
+                    "        }\n" +
+                    "\t},\n" +
+                    "\t\"filter\": {\n" +
+                    "\t\t\"my_stopwords\": {  \n" +
+                    "\t\t\t\"type\": \"stop\",\n" +
+                    "\t\t\t\"stopwords\": [\"the\",\"a\"]\n" +
+                    "\t\t}\n" +
+                    "\t},\n" +
+                    "\t\"analyzer\": {\n" +
+                    "\t\t\"my_analyzer\": {\n" +
+                    "\t\t\t\"type\": \"custom\",\n" +
+                    "\t\t    \"char_filter\": [\"htmp_strip\",\"&_to_and\",\"minus_to_underline\"],\n" +
+                    "\t\t\t\"tokenizer\": \"ik_max_word\",\n" +
+                    "\t\t    \"filter\": [\"lowercase\",\"my_stopwords\"]\n" +
+                    "\t\t}\n" +
+                    "\t}\n" +
+                    "}";
+            System.out.println(analysis);
         }
     }
 
@@ -55,20 +132,23 @@ public class TestProduct {
      * @Param [declaredFields]
      * @return java.lang.String
      **/
-    public static String dealWithProperties(Field[] declaredFields) throws Exception {
-        StringBuilder propertiesJson = new StringBuilder();
-        for(Field field:declaredFields){
-            propertiesJson.append("\""+field.getName()+"\":{");
-            if (field.isAnnotationPresent(Properties.class)) {
-                Properties properties = field.getAnnotation(Properties.class);
-                Method[] declaredMethods = properties.getClass().getDeclaredMethods();
-                String pro = dealWith(properties, declaredMethods);
-                propertiesJson.append(pro);
-            }
-            propertiesJson.append("},");
-        }
-        return propertiesJson.substring(0, propertiesJson.length() - 1);
-    }
+//    public static String dealWithProperties(Field[] declaredFields) throws Exception {
+//        StringBuilder propertiesJson = new StringBuilder();
+//        for(Field field:declaredFields){
+//            propertiesJson.append("\""+field.getName()+"\":{");
+//            if (field.isAnnotationPresent(Properties.class)) {
+//                Properties properties = field.getAnnotation(Properties.class);
+//                Method[] declaredMethods = properties.getClass().getDeclaredMethods();
+//                String pro = dealWith(properties, declaredMethods);
+//                propertiesJson.append(pro);
+//            }
+//            propertiesJson.append("},");
+//        }
+//        if(propertiesJson.length()>0){
+//            propertiesJson.delete(propertiesJson.length() - 1,propertiesJson.length());
+//        }
+//        return propertiesJson.toString();
+//    }
 
     /**
      * @Author zhoujie
@@ -77,53 +157,56 @@ public class TestProduct {
      * @Param [properties, declaredMethods]
      * @return java.lang.String
      **/
-    public static String dealWith(Object properties,Method[] declaredMethods) throws Exception {
-        StringBuilder fieldJson = new StringBuilder();
-        //循环处理属性值所声明的注解内容
-        for (Method method:declaredMethods){
-            String methodName = method.getName();
-            if(!(methodName.equals("equals")||methodName.equals("hashCode")||
-                    methodName.equals("toString")||methodName.equals("annotationType"))){
-                Object obj = method.invoke(properties);
-                Method[] methods = obj.getClass().getDeclaredMethods();
-                boolean use = false; //注解是否生效
-                Object value = null; //注解vlaue
-                Class cla = null; //注解vlaue明确为class
-                //循环获取注解内use，和value值
-                for (Method md:methods){
-                    if(md.getName().equals("use")){
-                        use = (Boolean) md.invoke(obj);
-                        if(!use){
-                            break;//如果注解不生效则直接中止本字段其他操作；
-                        }
-                    } else if(md.getName().equals("value")){
-                        if(methodName.equals("fields")){
-                            cla = (Class) md.invoke(obj);
-                        }else{
-                            value = md.invoke(obj);
-                        }
-                    }else{
-                    }
-                }
-                //单独处理fields类型，因为Fields注解value返回值为Class
-                if(methodName.equals("fields")){
-                    if(use){
-                        fieldJson.append("\""+methodName+"\":{");
-                        Object object = cla.newInstance();
-                        Field[] declaredFields1 = object.getClass().getDeclaredFields();
-                        //递归dealWithProperties
-                        fieldJson.append(dealWithProperties(declaredFields1));
-                        fieldJson.append("},");
-                    }
-                }else{
-                    if(use){
-                        fieldJson.append("\""+methodName +"\":\"" + value +"\",");
-                    }
-                }
-            }
-        }
-        return fieldJson.substring(0,fieldJson.length()-1);
-    }
+//    public static String dealWith(Object properties,Method[] declaredMethods) throws Exception {
+//        StringBuilder fieldJson = new StringBuilder();
+//        //循环处理属性值所声明的注解内容
+//        for (Method method:declaredMethods){
+//            String methodName = method.getName();
+//            if(!(methodName.equals("equals")||methodName.equals("hashCode")||
+//                    methodName.equals("toString")||methodName.equals("annotationType"))){
+//                Object obj = method.invoke(properties);
+//                Method[] methods = obj.getClass().getDeclaredMethods();
+//                boolean use = false; //注解是否生效
+//                Object value = null; //注解vlaue
+//                Class cla = null; //注解vlaue明确为class
+//                //循环获取注解内use，和value值
+//                for (Method md:methods){
+//                    if(md.getName().equals("use")){
+//                        use = (Boolean) md.invoke(obj);
+//                        if(!use){
+//                            break;//如果注解不生效则直接中止本字段其他操作；
+//                        }
+//                    } else if(md.getName().equals("value")){
+//                        if(methodName.equals("fields")){
+//                            cla = (Class) md.invoke(obj);
+//                        }else{
+//                            value = md.invoke(obj);
+//                        }
+//                    }else{
+//                    }
+//                }
+//                //单独处理fields类型，因为Fields注解value返回值为Class
+//                if(methodName.equals("fields")){
+//                    if(use){
+//                        fieldJson.append("\""+methodName+"\":{");
+//                        Object object = cla.newInstance();
+//                        Field[] declaredFields1 = object.getClass().getDeclaredFields();
+//                        //递归dealWithProperties
+//                        fieldJson.append(dealWithProperties(declaredFields1));
+//                        fieldJson.append("},");
+//                    }
+//                }else{
+//                    if(use){
+//                        fieldJson.append("\""+methodName +"\":\"" + value +"\",");
+//                    }
+//                }
+//            }
+//        }
+//        if(fieldJson.length()>0){
+//            fieldJson.delete(fieldJson.length() - 1,fieldJson.length());
+//        }
+//        return fieldJson.toString();
+//    }
     /** 商品id **/
     @Properties(type = @Type(value="long"))
     public long id;
@@ -131,9 +214,12 @@ public class TestProduct {
     @Properties()
     public String procuctShortName;
     /** 商品全称 **/
-    @Properties(type = @Type(value="text"),analyzer = @Analyzer(value="ik_max_word",use=true),fields = @Fields(value=FieldsProperties.class,use=true),
+    @Properties(type = @Type(value="text"),
+            analyzer = @Analyzer(value="ik_max_word",use=true),
+            norms = @Norms(value=true,use=true),
+            search_analyzer = @SearchAnalyzer(value="ik_smart",use=true),
+            fields = @Fields(value=Default.class,use=true),
             index_options = @IndexOptions(value=IndexOption.positions))
-//    @Properties(type = @Type(value="text"),analyzer = @Analyzer(value="ik_max_word",use=true))
     public String procuctFullName;
     /** 商品sku **/
     @Properties()
@@ -157,8 +243,11 @@ public class TestProduct {
     @Properties(type = @Type(value="boolean"))
     public boolean onShelveStatus;
     /** 商品描述 **/
-    @Properties(type = @Type(value="text"),analyzer = @Analyzer(value="ik_smart",use=true),
-            index_options = @IndexOptions(value=IndexOption.positions))
+    @Properties(type = @Type(value="text"),
+            analyzer = @Analyzer(value="ik_max_word",use=true),
+            norms = @Norms(value=true,use=true),
+            index_options = @IndexOptions(value=IndexOption.positions,use=true),
+            search_analyzer = @SearchAnalyzer(value="ik_smart",use=true))
     public String procuctDescription;
     /** 商品创建时间 **/
     @Properties(type = @Type(value="date"))

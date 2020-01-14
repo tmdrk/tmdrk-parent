@@ -13,6 +13,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Norms {
-    boolean value() default true; //
+    boolean value() default false; //
     boolean use() default false;   //是否使用
 }

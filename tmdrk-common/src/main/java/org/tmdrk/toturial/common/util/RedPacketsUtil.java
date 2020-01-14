@@ -48,10 +48,10 @@ public class RedPacketsUtil {
 //		}
 //		int sum=0;
 //		for (int i : array) {
-//			System.out.println(i);
+//			System.color.println(i);
 //			sum+=i;
 //		}
-//		System.out.println("sum="+sum);
+//		System.color.println("sum="+sum);
 //	}
 //	private static int[] calculateMaxMin(int currentIndex) {
 //		int[] range = new int[2];

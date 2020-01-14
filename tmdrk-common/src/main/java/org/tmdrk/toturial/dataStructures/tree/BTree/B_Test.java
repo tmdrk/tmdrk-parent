@@ -39,7 +39,7 @@ public class B_Test {
 		Long startTime13 = System.currentTimeMillis();
 		for(int i=0;i<data1.length;i++){
 			but1.getAddNode(data1[i]);
-//			System.out.println(data1[i]+":"+but1.getAddNode(data1[i]));
+//			System.color.println(data1[i]+":"+but1.getAddNode(data1[i]));
 		}
 		Long endTime13 = System.currentTimeMillis();
 		System.out.println("获取添加节点，查询"+data1.length+"条数据耗时"+(endTime13-startTime13)+"毫秒");
@@ -50,7 +50,7 @@ public class B_Test {
 		}
 		Long endTime14 = System.currentTimeMillis();
 		System.out.println("删除"+data1.length+"条数据耗时"+(endTime14-startTime14)+"毫秒");
-//		System.out.println(JSON.toJSONString(but1.getRoot(),true));
+//		System.color.println(JSON.toJSONString(but1.getRoot(),true));
 
 		System.out.println();
 
@@ -71,7 +71,7 @@ public class B_Test {
 		Long startTime23 = System.currentTimeMillis();
 		for(int i=0;i<data2.length;i++){
 			but2.getAddNode(data2[i]);
-//			System.out.println(data2[i]+":"+but2.getAddNode(data2[i]));
+//			System.color.println(data2[i]+":"+but2.getAddNode(data2[i]));
 		}
 		Long endTime23 = System.currentTimeMillis();
 		System.out.println("获取添加节点，查询"+data2.length+"条数据耗时"+(endTime23-startTime23)+"毫秒");
@@ -82,6 +82,6 @@ public class B_Test {
 		}
 		Long endTime24 = System.currentTimeMillis();
 		System.out.println("删除"+data2.length+"条数据耗时"+(endTime24-startTime24)+"毫秒");
-//		System.out.println(JSON.toJSONString(but2.getRoot(),true));
+//		System.color.println(JSON.toJSONString(but2.getRoot(),true));
 	}
 }

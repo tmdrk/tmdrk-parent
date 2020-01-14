@@ -13,7 +13,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 public class MyServerHandler extends SimpleChannelInboundHandler<MyDataInfo.MyMessage> {
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, MyDataInfo.MyMessage msg) throws Exception {
-//        System.out.println(person.getName()+","+person.getAge()+","+person.getAddress());
+//        System.color.println(person.getName()+","+person.getAge()+","+person.getAddress());
         MyDataInfo.MyMessage.DataType dataType = msg.getDataType();
         if(dataType == MyDataInfo.MyMessage.DataType.PersonType){
             MyDataInfo.Person person = msg.getPerson();

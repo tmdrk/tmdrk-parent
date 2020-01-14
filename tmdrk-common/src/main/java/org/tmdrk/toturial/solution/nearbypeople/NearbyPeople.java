@@ -19,14 +19,14 @@ public class NearbyPeople {
         System.out.println("start...");
         String userName = "耶稣";
         List<UserInfo> list = new ArrayList<>(10000000);
-        List<UserInfo> distanceList1 = new ArrayList<>(1000);//0-100
-        List<UserInfo> distanceList2 = new ArrayList<>(1000);//100-200
-        List<UserInfo> distanceList3 = new ArrayList<>(1000);//200-500
-        List<UserInfo> distanceList4 = new ArrayList<>(1000);//500-2000
-        List<UserInfo> distanceList5 = new ArrayList<>(1000);//2000以上
+        List<UserInfo> distanceList1 = new ArrayList<>();//0-100
+        List<UserInfo> distanceList2 = new ArrayList<>();//100-200
+        List<UserInfo> distanceList3 = new ArrayList<>();//200-500
+        List<UserInfo> distanceList4 = new ArrayList<>();//500-2000
+        List<UserInfo> distanceList5 = new ArrayList<>();//2000以上
         UserInfo myUserInfo = new UserInfo(userName,randomFloat(180,2),randomFloat(90,2));
         long start1 = System.currentTimeMillis();
-        for(int i=0;i<10000000;i++){
+        for(int i=0;i<1000000;i++){
             UserInfo userInfo = new UserInfo(userName+i,randomFloat(180,2),randomFloat(90,2));
             list.add(userInfo);
         }

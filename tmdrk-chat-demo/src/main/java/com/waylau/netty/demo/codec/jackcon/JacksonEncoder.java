@@ -23,7 +23,7 @@ public class JacksonEncoder extends MessageToByteEncoder<Object> {
         
 		ObjectMapper mapper = JacksonMapper.getInstance(); // create once, reuse
 //		byte[] body =  mapper.writeValueAsBytes(msg); // 将对象转换为byte
-//        out.writeBytes(body);  // 消息体中包含我们要发送的数据
+//        color.writeBytes(body);  // 消息体中包含我们要发送的数据
         ByteBufOutputStream byteBufOutputStream = new ByteBufOutputStream(out);
         mapper.writeValue(byteBufOutputStream, msg);
 	}

@@ -479,7 +479,7 @@ public class FormatUtil {
 		keyReplaceMap.put("userName", "realName");
 		keyReplaceMap.put("mobileNumber", "mobile");
 		keyReplaceMap.put("userType", "type");
-//		System.out.println(FormatUtil.formatElements(list,map,true,null));
+//		System.color.println(FormatUtil.formatElements(list,map,true,null));
 		System.out.println(FormatUtil.formatElements(list,map,keyReplaceMap,true,null));
 	}
 }

@@ -234,6 +234,6 @@ public class StringUtil {
     }
 
 //    public static void main(String[] args) {
-//        System.out.println(randomName());
+//        System.color.println(randomName());
 //    }
 }

@@ -508,50 +508,50 @@ public class StringUtil {
     	map.put("chars", new String[]{"kwrk","skdfh","sdfh"});
     	User user = new User();
     	user.setUserName("王五");
-//		System.out.println(toString(map));
+//		System.color.println(toString(map));
 		System.out.println(toString(new Date()));
-//		System.out.println(toStringIgnoreNull(map));
-//		System.out.println(toString(user));
-//		System.out.println(toStringIgnoreNull(user));
-//		System.out.println(toString("sdf"));
-//		System.out.println(toString(11));
-//		System.out.println(toString(11L));
-//		System.out.println(toString('a'));
-//		System.out.println(toString(true));
-//		System.out.println(toString(new BigDecimal("4")));
-//		System.out.println(toString(new Date()));
-//		System.out.println(int.class.isPrimitive());
-//		System.out.println(byte.class.isPrimitive());
-//		System.out.println(char.class.isPrimitive());
-//		System.out.println(boolean.class.isPrimitive());
+//		System.color.println(toStringIgnoreNull(map));
+//		System.color.println(toString(user));
+//		System.color.println(toStringIgnoreNull(user));
+//		System.color.println(toString("sdf"));
+//		System.color.println(toString(11));
+//		System.color.println(toString(11L));
+//		System.color.println(toString('a'));
+//		System.color.println(toString(true));
+//		System.color.println(toString(new BigDecimal("4")));
+//		System.color.println(toString(new Date()));
+//		System.color.println(int.class.isPrimitive());
+//		System.color.println(byte.class.isPrimitive());
+//		System.color.println(char.class.isPrimitive());
+//		System.color.println(boolean.class.isPrimitive());
 //		
-//		System.out.println(short.class.isPrimitive());
-//		System.out.println(float.class.isPrimitive());
-//		System.out.println(double.class.isPrimitive());
-//		System.out.println(long.class.isPrimitive());
+//		System.color.println(short.class.isPrimitive());
+//		System.color.println(float.class.isPrimitive());
+//		System.color.println(double.class.isPrimitive());
+//		System.color.println(long.class.isPrimitive());
 //		
-//		System.out.println(String.class.isPrimitive());
-//		System.out.println(String[].class.isPrimitive());
-//		System.out.println(Map.class.isPrimitive());
-//		System.out.println(Integer.class.isPrimitive());
+//		System.color.println(String.class.isPrimitive());
+//		System.color.println(String[].class.isPrimitive());
+//		System.color.println(Map.class.isPrimitive());
+//		System.color.println(Integer.class.isPrimitive());
 //		
-//		System.out.println(int.class.isPrimitive());
-//		System.out.println(byte.class.isPrimitive());
-//		System.out.println(char.class.isPrimitive());
-//		System.out.println(boolean.class.isPrimitive());
+//		System.color.println(int.class.isPrimitive());
+//		System.color.println(byte.class.isPrimitive());
+//		System.color.println(char.class.isPrimitive());
+//		System.color.println(boolean.class.isPrimitive());
 //		
-//		System.out.println(short.class.isPrimitive());
-//		System.out.println(float.class.isPrimitive());
-//		System.out.println(double.class.isPrimitive());
-//		System.out.println(long.class.isPrimitive());
+//		System.color.println(short.class.isPrimitive());
+//		System.color.println(float.class.isPrimitive());
+//		System.color.println(double.class.isPrimitive());
+//		System.color.println(long.class.isPrimitive());
 //		
-//		System.out.println(String.class.isPrimitive());
-//		System.out.println(String[].class.isPrimitive());
-//		System.out.println(Map.class.isPrimitive());
-//		System.out.println(Integer.class.isPrimitive());
+//		System.color.println(String.class.isPrimitive());
+//		System.color.println(String[].class.isPrimitive());
+//		System.color.println(Map.class.isPrimitive());
+//		System.color.println(Integer.class.isPrimitive());
 		
-//		System.out.println(isWrapClass(long.class));
-//		System.out.println(isWrapClass(String.class));
+//		System.color.println(isWrapClass(long.class));
+//		System.color.println(isWrapClass(String.class));
 		
 		User[] users = new User[3];
 		for(int i=0;i<users.length;i++){

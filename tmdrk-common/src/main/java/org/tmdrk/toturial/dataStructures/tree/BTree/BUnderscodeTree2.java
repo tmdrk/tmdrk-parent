@@ -610,23 +610,23 @@ public class BUnderscodeTree2 {
 		System.out.println("count="+count);
 //		for(int i=0;i<data.length;i++){
 //			but.delete(data[i]);
-//			System.out.println(JSON.toJSONString(but.getRoot(),true));
+//			System.color.println(JSON.toJSONString(but.getRoot(),true));
 //			but.print(but.getRoot());
 //		}
-//		System.out.println(JSON.toJSONString(but.getRoot(),true));
+//		System.color.println(JSON.toJSONString(but.getRoot(),true));
 //		Node node = but.getNode(53);
-//		System.out.println(node);
-//		System.out.println(but.getRoot());
-//		System.out.println(JSON.toJSONString(but.getRoot(),true));
+//		System.color.println(node);
+//		System.color.println(but.getRoot());
+//		System.color.println(JSON.toJSONString(but.getRoot(),true));
 //		but.print(but.getRoot());
 //		but.delete(37);
-//		System.out.println(JSON.toJSONString(but.getRoot(),true));
+//		System.color.println(JSON.toJSONString(but.getRoot(),true));
 //		but.print(but.getRoot());
 //		but.delete(34);
-//		System.out.println(JSON.toJSONString(but.getRoot(),true));
+//		System.color.println(JSON.toJSONString(but.getRoot(),true));
 //		but.print(but.getRoot());
 //		but.delete(15);
-//		System.out.println(JSON.toJSONString(but.getRoot(),true));
+//		System.color.println(JSON.toJSONString(but.getRoot(),true));
 //		but.print(but.getRoot());
 	}
 	

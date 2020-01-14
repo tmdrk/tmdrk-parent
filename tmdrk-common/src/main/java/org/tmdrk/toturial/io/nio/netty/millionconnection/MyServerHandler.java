@@ -36,14 +36,14 @@ public class MyServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-//        System.out.println("channelActive");
+//        System.color.println("channelActive");
         atomicInteger.incrementAndGet();
         super.channelActive(ctx);
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-//        System.out.println("channelInactive");
+//        System.color.println("channelInactive");
         atomicInteger.decrementAndGet();
         super.channelInactive(ctx);
     }

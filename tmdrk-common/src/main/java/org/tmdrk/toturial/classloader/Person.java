@@ -1,5 +1,9 @@
 package org.tmdrk.toturial.classloader;
 
+import com.baibo.web.util.TestPerson;
+
+import java.lang.reflect.Field;
+
 /**
  * @ClassName Person
  * @Description TODO
@@ -8,10 +12,20 @@ package org.tmdrk.toturial.classloader;
  * @Version 1.0
  **/
 public class Person {
-    public void sayHello(){
-//        System.out.println("hello world！");
-
+    public int sayHello(){
+//        System.color.println("hello world！");
         System.out.println("we are the loser");
+        return 0;
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException {
+//        TestPerson person = new TestPerson();
+        Class<?> aClass = Class.forName("com.baibo.web.util.TestPerson");
+        System.out.println(aClass.getClassLoader());
+        Field[] declaredFields = aClass.getDeclaredFields();
+        for(Field field:declaredFields){
+            System.out.println(Thread.currentThread().getName()+" "+field.getName());
+        }
     }
 
 }

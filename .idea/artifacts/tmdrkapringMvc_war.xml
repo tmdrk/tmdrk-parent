@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="tmdrkapringMvc:war">
-    <output-path>$PROJECT_DIR$/tmdrk-apringMvc/target</output-path>
-    <root id="archive" name="tmdrk-apringMvc.war">
-      <element id="artifact" artifact-name="tmdrkapringMvc:war exploded" />
-    </root>
-  </artifact>
-</component>

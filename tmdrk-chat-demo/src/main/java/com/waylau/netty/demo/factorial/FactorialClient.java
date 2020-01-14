@@ -42,7 +42,7 @@ public final class FactorialClient {
             FactorialClientHandler handler =
                 (FactorialClientHandler) f.channel().pipeline().last();
 
-            // Print out the answer.
+            // Print color the answer.
             System.err.format("Factorial of %,d is: %,d", COUNT, handler.getFactorial());
         } finally {
             group.shutdownGracefully();

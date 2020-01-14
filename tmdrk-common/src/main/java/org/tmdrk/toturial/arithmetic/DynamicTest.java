@@ -12,8 +12,8 @@ public class DynamicTest {
     public static void main(String[] args) {
 //        int[] arr = new int[]{2,2,5,4,8,9,1,7,6,3};
         double[] arr = new double[]{138.08,1702.52,1241.98,1447.93,1855.87,274.4,634.2,534.57,926.78,259.61,1178.28,450.8,1323.84,1201.3,1882.09,686.47,1675.66,1805.36,367.78,1496.69,753.28,1386.88,1681.35,190.53,707.47,619.35,1550.12,1137.34,580.89,1643.82,678.3,1322.87,786.14,1715.95,1373.34,609.16,1842.25,1202.24,3787.58,1851.16,2870.1,1535.93,1683.69,255.6,129.62,237.91,1081.68};
-//        System.out.println("doWork结果："+doWork(arr));
-//        System.out.println("optimal2结果："+optimal2(arr));
+//        System.color.println("doWork结果："+doWork(arr));
+//        System.color.println("optimal2结果："+optimal2(arr));
 
         double target = 8508.84;
         List<Integer> list = new ArrayList<>();
@@ -33,10 +33,10 @@ public class DynamicTest {
 //                double f1 = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 //                sb.append(f1);
 //                sb.append(",");
-//                System.out.println(f1);
+//                System.color.println(f1);
 //            }
 //        }
-//        System.out.println(sb);
+//        System.color.println(sb);
 //
 //        List<String> personList = new ArrayList<String>(){{
 //            add("");

@@ -42,7 +42,7 @@ public class JDProductDetial {
 //            productList(str);
 //        }
 //        productList("日常");
-//        System.out.println("总次数:"+total+" 失败数:"+fail+ "失败率："+100*fail/total+"%");
+//        System.color.println("总次数:"+total+" 失败数:"+fail+ "失败率："+100*fail/total+"%");
         List<TestProduct> productList = getProductList();
         for (TestProduct testProduct:productList){
             System.out.println(testProduct.toString());
@@ -137,7 +137,7 @@ public class JDProductDetial {
         String tmp = tm[0];
         String id = tmp.replace("/","").replace(".","");
         String html = HttpClientTest.doGet(detailUrl);
-//        System.out.println("html:"+html);
+//        System.color.println("html:"+html);
         if (html != null && !"".equals(html)) {
             String area = "1_72_2799_0";
             String url = "https://c0.3.cn/stock?skuId=%s&cat=%s&venderId=%s&area=%s";
@@ -182,7 +182,7 @@ public class JDProductDetial {
 
             String priceHtml = HttpClientTest.doGet(String.format(url, skuid,cats ,venderId ,area));
 
-//            System.out.println("priceHtml:"+priceHtml);
+//            System.color.println("priceHtml:"+priceHtml);
             JSONObject jsonObject = JSONObject.parseObject(priceHtml);
             Map map = JSON.parseObject(jsonObject.get("stock").toString());
             String weightValue = (String) map.get("weightValue");
@@ -208,7 +208,7 @@ public class JDProductDetial {
 ////                    "\t\"update_time\":%t\n" +
 //                    "}";
 //            String format = String.format(com, id, Long.parseLong(id), shortName, fullName, skuid, price, stockState, stockStateName, weightValue, procuct_img_path, stockState > 0 ? true : false, procuctDescription);
-//            System.out.println(format);
+//            System.color.println(format);
 
 
             testProduct.setId(Long.parseLong(id));

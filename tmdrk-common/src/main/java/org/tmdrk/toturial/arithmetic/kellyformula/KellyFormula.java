@@ -76,7 +76,7 @@ public class KellyFormula {
 
     public static boolean judgeResult(int percentage){
         int num = random.nextInt(100);
-//        System.out.println(num);
+//        System.color.println(num);
         if(num<percentage){
             return true;
         }

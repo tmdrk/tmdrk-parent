@@ -4,9 +4,12 @@ import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import org.tmdrk.protobuf.DataInfo;
 import org.tmdrk.toturial.common.util.ListUtil;
 import org.tmdrk.toturial.common.util.StringUtil;
+import org.tmdrk.toturial.dataStructures.tree.bst.Student;
 
 public class JdkStream {
 	public static void main(String[] args) {
@@ -32,5 +35,15 @@ public class JdkStream {
 	    .map(StringUtil::firstUpperCase)
 	    .sorted((a, b) -> b.compareTo(a))
 	    .forEach(System.out::println);
-	}
+
+		String namePrefix = "oka_";
+		List<Student> list = new ArrayList<Student>();
+		list.add(new Student("zhoujie",12));
+		list.add(new Student("zhangsna",22));
+		list.add(new Student("lisi",23));
+		list.stream().forEach(stu->{
+			System.out.println(namePrefix+stu.getName());
+		});
+        Stream<Student> z = list.stream().filter(stu -> stu.getName().startsWith("z"));
+    }
 }

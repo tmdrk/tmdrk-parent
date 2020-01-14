@@ -30,7 +30,7 @@ public class AmountUtil {
 	/**
 	 * 将分转换为元
 	 * 
-	 * @param amountStr
+	 * @param amountLong
 	 * @return
 	 */
 	public static String parseAmountLong2Str(Long amountLong) {
@@ -57,7 +57,7 @@ public class AmountUtil {
     /**
      * 格式化金额，将金额四舍五入
      * 
-     * @param money 金额
+     * @param value 金额
      * @param wei 保留的小数位数
      * @return
      */

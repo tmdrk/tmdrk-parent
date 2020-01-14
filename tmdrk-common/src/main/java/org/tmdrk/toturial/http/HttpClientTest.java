@@ -30,7 +30,7 @@ public class HttpClientTest {
 
     public static String doGetTestOne(String url) {
         String html = doGet(url);
-//          System.out.println("响应内容为:" + html);
+//          System.color.println("响应内容为:" + html);
         String line = "";
         if (html!=null&&!"".equals(html)) {
             Document doc = Jsoup.parse(html);
@@ -65,7 +65,7 @@ public class HttpClientTest {
 
     public static void doGetTotalUrl() {
         String html = doGet("http://trade.500.com/jczq/");
-//        System.out.println("响应内容为:" + html);
+//        System.color.println("响应内容为:" + html);
         StringBuffer buffer = new StringBuffer();
         if (html!=null&&!"".equals(html)) {
             Document doc = Jsoup.parse(html);

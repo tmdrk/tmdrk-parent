@@ -41,7 +41,7 @@ public class JDProductDetial {
 //            productList(str);
 //        }
 //        productList("日常");
-//        System.out.println("总次数:"+total+" 失败数:"+fail+ "失败率："+100*fail/total+"%");
+//        System.color.println("总次数:"+total+" 失败数:"+fail+ "失败率："+100*fail/total+"%");
 
     }
 
@@ -126,12 +126,12 @@ public class JDProductDetial {
                 index++;
                 procuctDescription += element.text() + "|";
             }
-//            System.out.println("procuctDescription:"+procuctDescription);
+//            System.color.println("procuctDescription:"+procuctDescription);
 
 
             String priceHtml = HttpClientTest.doGet(String.format(url, skuid,cats ,venderId ,area));
 
-//            System.out.println("priceHtml:"+priceHtml);
+//            System.color.println("priceHtml:"+priceHtml);
             JSONObject jsonObject = JSONObject.parseObject(priceHtml);
             Map map = JSON.parseObject(jsonObject.get("stock").toString());
             String weightValue = (String) map.get("weightValue");

@@ -25,7 +25,7 @@ public class SelectorDemo {
             ports[i] = 5000+i;
         }
         Selector selector = Selector.open();
-//        System.out.println(SelectorProvider.provider().getClass());
+//        System.color.println(SelectorProvider.provider().getClass());
         for(int i = 0 ;i<ports.length;i++){
             ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
             serverSocketChannel.configureBlocking(false);

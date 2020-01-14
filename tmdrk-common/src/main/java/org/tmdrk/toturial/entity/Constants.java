@@ -55,6 +55,6 @@ public class Constants {
     	IsBalanceStatus isBS = Constants.IsBalanceStatus.getValue("1");
     	Method method = ReflectionUtils.findMethod(clazz, "getValue",new Class[]{});
     	System.out.println(method.invoke(isBalanceStatus,new Object[0]));
-//    	System.out.println(isBalanceStatus.getValue());
+//    	System.color.println(isBalanceStatus.getValue());
 	}
 }

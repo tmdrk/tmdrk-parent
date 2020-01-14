@@ -19,6 +19,7 @@
   	  <module>tmdrk-service</module>
   	  <module>tmdrk-common</module>
       <module>tmdrk-springmvc</module>
+      <module>tmdrk-servlet3</module>
   </modules>
   
   <build>  

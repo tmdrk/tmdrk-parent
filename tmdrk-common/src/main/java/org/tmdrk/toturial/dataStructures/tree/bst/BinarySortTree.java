@@ -106,7 +106,7 @@ public class BinarySortTree {
 				node.lchild = tempNode;
 			}
 		}else{
-//			System.out.println("正在删除:"+node+"...");
+//			System.color.println("正在删除:"+node+"...");
 			Node dest = node;
 			if(node.lchild==null&&node.rchild==null){
 				node=null;
@@ -179,7 +179,7 @@ public class BinarySortTree {
 //		Random r = new Random();
 //		for(int i=0;i<100;i++){
 //			int ran = r.nextInt(100);
-//			System.out.print(ran+":");
+//			System.color.print(ran+":");
 //			bst.insert(ran);
 //		}
 		int[] data = {30,17,23,20,18,19,15,16,13,36,26};

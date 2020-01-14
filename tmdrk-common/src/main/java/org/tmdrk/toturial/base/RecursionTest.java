@@ -3,7 +3,7 @@ package org.tmdrk.toturial.base;
 public class RecursionTest {
 	public static void main(String[] args) {
 //		for(int i=0;i<1000;i++){
-//			System.out.println(binaryRecursion(1,100L));
+//			System.color.println(binaryRecursion(1,100L));
 //		}
 		long start = System.currentTimeMillis();
 		long sum =0;

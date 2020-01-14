@@ -28,10 +28,10 @@ public class CompareAndAssembleUtil {
 //		oldSV.setCurrent("喂马");
 //		oldSV.setStartTime(new Date());
 //		String str = JSON.toJSONString(oldSV);
-//		System.out.println(str);
-//		System.out.println(JSON.parseObject(str, SettlementVo.class));
+//		System.color.println(str);
+//		System.color.println(JSON.parseObject(str, SettlementVo.class));
 //		String strMap =JSON.toJSONString(map);
-//		System.out.println(JSON.parseObject(strMap, SettlementVo.class));
+//		System.color.println(JSON.parseObject(strMap, SettlementVo.class));
 		
 		SettlementVo oldSV = new SettlementVo();
 		oldSV.setId(1);

@@ -1,5 +1,6 @@
 package com.tmdrk.chat.server;
 
+import com.tmdrk.chat.common.entity.User;
 import com.tmdrk.chat.common.utils.JedisPoolUtil;
 import com.tmdrk.chat.common.utils.JedisUtil;
 import com.tmdrk.chat.common.utils.RedisUtil;
@@ -14,6 +15,7 @@ import redis.clients.jedis.BitOP;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Transaction;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -52,6 +54,25 @@ public class RedisTest {
         System.out.println("test:name="+redisUtil.get("my:name"));
 
 
+    }
+
+    @Test
+    public void listTest() {
+        init(Thread.currentThread().getStackTrace()[1]);
+        String test1 = "my:list:test1";
+        redisUtil.del(test1);
+        List<Object> users = new ArrayList<>();
+        for(int i=0;i<20;i++){
+            User user = new User();
+            user.setId(i);
+            user.setName("name_"+i);
+            users.add(user);
+        }
+        System.out.println(redisUtil.lSet(test1,users));
+
+        System.out.println(redisUtil.lGetListSize(test1));
+        List<Object> objects = redisUtil.lGet(test1, 0, 5);
+        objects.forEach(user -> System.out.println("objects.size:"+objects.size()+" contents:"+user.toString()));
     }
 
     @Test
@@ -149,9 +170,9 @@ public class RedisTest {
             Object result = jedis.evalsha(jedis.scriptLoad(lua), Arrays.asList("localhost"), Arrays.asList("20", "2"));
             System.out.println(JedisUtil.get("localhost"));
 //            Object result2 = jedis.eval(lua, Arrays.asList("localhost"), Arrays.asList("20", "2"));
-//            System.out.println(JedisUtil.get("localhost"));
+//            System.color.println(JedisUtil.get("localhost"));
             System.out.println("result:"+result);
-//            System.out.println("result2:"+result2);
+//            System.color.println("result2:"+result2);
         }catch (Exception e){
             e.printStackTrace();
         }finally {
@@ -170,5 +191,35 @@ public class RedisTest {
         Jedis jedis = JedisPoolUtil.getJedis();
         System.out.println(jedis.publish("my_channel", "你好呀"));
         System.out.println(jedis.publish("you_channel", "我很好"));
+    }
+
+    @Test
+    public void hyperLogLog() {
+        String key1 = "mysql";
+        String key2 = "oracle";
+        String key3 = "postgresql";
+        String key4 = "sqlserver";
+        String key5 = "database";
+        String key6 = "database1";
+        long result = JedisUtil.pfadd(key1, "1", "1", "3", "4", "5");
+        System.out.println("result:"+result);
+        System.out.println(JedisUtil.pfcount(key5));
+
+//        int total = 10000;
+//        int succ = 0;
+//        int toa = 0;
+//        for(int i=0;i<total;i++){
+//            long result1 = JedisUtil.pfadd(key4,"test"+i);
+//            toa++;
+//            if(result1==1){
+//                succ++;
+//            }else {
+//                System.color.println(result1+"|"+i);
+//            }
+//        }
+//        System.color.println("总操作:"+toa+" 实际存入:"+succ+" hyperLogLog计数:"+JedisUtil.pfcount(key4));
+
+        System.out.println(JedisUtil.pfmerge(key6,key4,key3));
+        System.out.println(JedisUtil.pfcount(key6));
     }
 }

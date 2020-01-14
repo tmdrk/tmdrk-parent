@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="Encoding">
+  <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/tmdrk-chat-admin" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/tmdrk-chat-common" charset="UTF-8" />
@@ -10,7 +10,9 @@
     <file url="file://$PROJECT_DIR$/tmdrk-chat-server" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/tmdrk-common" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/tmdrk-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tmdrk-servlet3" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/tmdrk-springmvc" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/tmdrk-web" charset="UTF-8" />
+    <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>

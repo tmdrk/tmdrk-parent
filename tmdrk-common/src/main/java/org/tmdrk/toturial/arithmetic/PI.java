@@ -21,7 +21,7 @@ public class PI {
         for(int i = 0;i<100000000L;i++){
             sum += 1/Math.pow(a,2);
             a++;
-//            System.out.println(sum+":"+a);
+//            System.color.println(sum+":"+a);
         }
         sum = sum * 6;
         sum = Math.sqrt(sum);

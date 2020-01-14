@@ -4,6 +4,8 @@ import com.tmdrk.chat.common.entity.es.EsIndex;
 import com.tmdrk.chat.common.entity.es.Settings;
 import com.tmdrk.chat.common.utils.ElasticsearchUtil;
 import com.tmdrk.chat.common.utils.StringUtil;
+import org.apache.commons.beanutils.BeanMap;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
 import org.elasticsearch.action.DocWriteResponse;
 import org.elasticsearch.action.admin.indices.alias.Alias;
@@ -20,6 +22,7 @@ import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.IndicesClient;
+import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +68,7 @@ public class ElasticSearchServiceImpl<T>{
                 System.out.println("mapping no need");
             }
             String methodJson = "{\"properties\":{";
-            methodJson += ElasticsearchUtil.dealWithProperties(fields);
+            methodJson += ElasticsearchUtil.dealWithFields(fields);
             methodJson += "}}";
             logger.info("methodJson："+methodJson);
 
@@ -118,15 +121,16 @@ public class ElasticSearchServiceImpl<T>{
             logger.error("参数不能为空");
             return 0;
         }
-        Field[] declaredFields = obj.getClass().getDeclaredFields();
-        Map<String, Object> jsonMap = new HashMap<>();
-        for(Field field:declaredFields){
-            try {
-                jsonMap.put(field.getName(),field.get(obj));
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
+//        Field[] declaredFields = obj.getClass().getDeclaredFields();
+//        Map<String, Object> jsonMap = new HashMap<>();
+//        for(Field field:declaredFields){
+//            try {
+//                jsonMap.put(field.getName(),field.get(obj));
+//            } catch (IllegalAccessException e) {
+//                e.printStackTrace();
+//            }
+//        }
+        BeanMap jsonMap = new BeanMap(obj);
         //索引请求对象
         IndexRequest indexRequest = new IndexRequest(indexName,type==null?"doc":type,id);
         //指定索引文档内容
@@ -168,17 +172,18 @@ public class ElasticSearchServiceImpl<T>{
             logger.error("参数不能为空");
             return false;
         }
-        Field[] declaredFields = obj.getClass().getDeclaredFields();
-        Map<String, Object> jsonMap = new HashMap<>();
-        for(Field field:declaredFields){
-            try {
-                if(field.get(obj)!=null){
-                    jsonMap.put(field.getName(),field.get(obj));
-                }
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
+//        Field[] declaredFields = obj.getClass().getDeclaredFields();
+//        Map<String, Object> jsonMap = new HashMap<>();
+//        for(Field field:declaredFields){
+//            try {
+//                if(field.get(obj)!=null){
+//                    jsonMap.put(field.getName(),field.get(obj));
+//                }
+//            } catch (IllegalAccessException e) {
+//                e.printStackTrace();
+//            }
+//        }
+        BeanMap jsonMap = new BeanMap(obj);
         //索引请求对象
         UpdateRequest updateRequest = new UpdateRequest(indexName,type==null?"doc":type,id);
         //指定索引文档内容

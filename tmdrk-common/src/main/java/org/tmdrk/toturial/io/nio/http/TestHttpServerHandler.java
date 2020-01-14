@@ -21,7 +21,7 @@ public class TestHttpServerHandler extends SimpleChannelInboundHandler<HttpObjec
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, HttpObject httpObject) throws Exception {
         System.out.println("channelRead0..."+httpObject.getClass());
         System.out.println("remoteAddress:"+channelHandlerContext.channel().remoteAddress());
-//        System.out.println("httpObject:"+httpObject.toString());
+//        System.color.println("httpObject:"+httpObject.toString());
         if(httpObject instanceof HttpRequest){
             HttpRequest httpRequest = (HttpRequest)httpObject;
             System.out.println("请求方法名:"+httpRequest.getMethod().name());

@@ -12,7 +12,8 @@
   <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <spring.version>4.2.6.RELEASE</spring.version>
+    <!--<spring.version>4.2.6.RELEASE</spring.version>-->
+    <spring.version>5.1.8.RELEASE</spring.version>
   </properties>
   <dependencies>
     <dependency>
@@ -51,6 +52,7 @@
       <version>${spring.version}</version>
       <scope>compile</scope>
     </dependency>
+
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jms</artifactId>
@@ -66,7 +68,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.1</version>
+      <version>4.12</version>
       <scope>test</scope>
     </dependency>
     <!-- https://mvnrepository.com/artifact/commons-lang/commons-lang -->
@@ -132,6 +134,10 @@
         <exclusion>
           <artifactId>guava</artifactId>
           <groupId>com.google.guava</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>asm</artifactId>
+          <groupId>asm</groupId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -233,36 +239,136 @@
       <version>1.10.3</version>
     </dependency>-->
 
+    <!-- classload-import -->
+    <dependency>
+      <groupId>com.baibo</groupId>
+      <artifactId>classload-test</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.baibo</groupId>
+      <artifactId>classload-test</artifactId>
+      <version>1.0.1</version>
+    </dependency>
+    <!--    <dependency>
+          <groupId>com.baibo</groupId>
+          <artifactId>classload-test</artifactId>
+          <version>1.0.2</version>
+        </dependency>-->
+
+    <!-- asm start -->
+    <!-- asm 核心api -->
+    <dependency>
+      <groupId>org.ow2.asm</groupId>
+      <artifactId>asm</artifactId>
+      <version>5.0.3</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.ow2.asm</groupId>
+      <artifactId>asm-util</artifactId>
+      <version>5.0.3</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.ow2.asm</groupId>
+      <artifactId>asm-commons</artifactId>
+      <version>5.0.3</version>
+    </dependency>
+
+    <!-- asm 树api -->
+    <dependency>
+      <groupId>org.ow2.asm</groupId>
+      <artifactId>asm-tree</artifactId>
+      <version>5.0.3</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.ow2.asm</groupId>
+      <artifactId>asm-analysis</artifactId>
+      <version>5.0.3</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>RELEASE</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>RELEASE</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>RELEASE</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>RELEASE</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- asm end -->
+
+
+
+
 
   </dependencies>
 
 
   <build>
     <plugins>
+
       <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.4.2</version>
         <configuration>
-          <appendAssemblyId>false</appendAssemblyId>
-          <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
-          </descriptorRefs>
-          <archive>
-            <manifest>
-              <mainClass>org.tmdrk.toturial.io.nio.netty.millionconnection.MyClient</mainClass>
-              <!--<mainClass>org.tmdrk.toturial.io.nio.netty.millionconnection.MyServer</mainClass>-->
-            </manifest>
-          </archive>
+          <skipTests>true</skipTests>
         </configuration>
-        <executions>
-          <execution>
-            <id>make-assembly</id>
-            <phase>package</phase>
-            <goals>
-              <goal>assembly</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
+
+      <!--<plugin>-->
+        <!--<artifactId>maven-assembly-plugin</artifactId>-->
+        <!--<configuration>-->
+          <!--<appendAssemblyId>false</appendAssemblyId>-->
+          <!--<descriptorRefs>-->
+            <!--<descriptorRef>jar-with-dependencies</descriptorRef>-->
+          <!--</descriptorRefs>-->
+          <!--<archive>-->
+            <!--<manifest>-->
+              <!--<mainClass>org.tmdrk.toturial.io.nio.netty.millionconnection.MyClient</mainClass>-->
+              <!--&lt;!&ndash;<mainClass>org.tmdrk.toturial.io.nio.netty.millionconnection.MyServer</mainClass>&ndash;&gt;-->
+            <!--</manifest>-->
+          <!--</archive>-->
+        <!--</configuration>-->
+        <!--<executions>-->
+          <!--<execution>-->
+            <!--<id>make-assembly</id>-->
+            <!--<phase>package</phase>-->
+            <!--<goals>-->
+              <!--<goal>assembly</goal>-->
+            <!--</goals>-->
+          <!--</execution>-->
+        <!--</executions>-->
+      <!--</plugin>-->
     </plugins>
+
+    <!--<resources>-->
+      <!--<resource>-->
+        <!--<directory>src/main/resources</directory>-->
+      <!--</resource>-->
+    <!--</resources>-->
+
+    <!--<testResources>-->
+      <!--<testResource>-->
+        <!--<directory>src/main/resources</directory>-->
+      <!--</testResource>-->
+    <!--</testResources>-->
   </build>
 </project>

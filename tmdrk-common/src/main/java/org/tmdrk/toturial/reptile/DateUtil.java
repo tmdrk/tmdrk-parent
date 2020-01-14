@@ -471,31 +471,31 @@ public final class DateUtil {
 	    return calendar.getTime();
     }
 	/* public static void main(String[] args) {
-		 *//*System.out.println(dateFormat(1462413208));
-		 System.out.println(getFirstDayOfMonth("2015", "9"));
-		 System.out.println(getLastDayOfMonth("2015", "8"));
-		 System.out.println(dateFormat(getLastMonthTime()));
-		 System.out.println(dateFormat(getLastWeekTime()));
-		 System.out.println(parseLong("2017-01-01 00:00:00"));
-		 System.out.println(getTime());
-		 System.out.println(dateFormat(1451624155));
-		 System.out.println(parse("20151222","yyyyMMdd"));
+		 *//*System.color.println(dateFormat(1462413208));
+		 System.color.println(getFirstDayOfMonth("2015", "9"));
+		 System.color.println(getLastDayOfMonth("2015", "8"));
+		 System.color.println(dateFormat(getLastMonthTime()));
+		 System.color.println(dateFormat(getLastWeekTime()));
+		 System.color.println(parseLong("2017-01-01 00:00:00"));
+		 System.color.println(getTime());
+		 System.color.println(dateFormat(1451624155));
+		 System.color.println(parse("20151222","yyyyMMdd"));
 		 Calendar c = Calendar.getInstance();
 		 Date nowDate = c.getTime();
 		 c.set(Calendar.MINUTE, -1);
 		 Date endDate = c.getTime();
-		 System.out.println("nowDate--"+nowDate+";endDate--"+endDate);
-		 System.out.println(getDatePoor(nowDate, endDate));
-		 System.out.println(dateFormatYYYYMMDD(new Date()));*//*
+		 System.color.println("nowDate--"+nowDate+";endDate--"+endDate);
+		 System.color.println(getDatePoor(nowDate, endDate));
+		 System.color.println(dateFormatYYYYMMDD(new Date()));*//*
 
-		 System.out.println("args = [" + DateUtil.currentDateAddDay(0) + "]");
-		 System.out.println("args = [" + DateUtil.parse("2016-01-19","yyyy-MM-dd").getTime() + "]");
+		 System.color.println("args = [" + DateUtil.currentDateAddDay(0) + "]");
+		 System.color.println("args = [" + DateUtil.parse("2016-01-19","yyyy-MM-dd").getTime() + "]");
 
 	 }*/
 //    public static void main(String[] args) {
-//    	System.out.println(monthAddFrist(getCurrentDateYYYYMMDDStr()));
+//    	System.color.println(monthAddFrist(getCurrentDateYYYYMMDDStr()));
 //    	Date date = new Date();
 //    	date = monthAdd(date,2);
-//    	System.out.println(dateFormatYMD(date));
+//    	System.color.println(dateFormatYMD(date));
 //	}
 }

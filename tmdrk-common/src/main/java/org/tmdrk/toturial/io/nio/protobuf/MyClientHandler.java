@@ -17,8 +17,8 @@ public class MyClientHandler extends SimpleChannelInboundHandler<MyDataInfo.MyMe
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, MyDataInfo.MyMessage msg) throws Exception {
         Thread.sleep(3000);
-//        System.out.println(ctx.channel().remoteAddress());
-//        System.out.println("client output:"+msg);
+//        System.color.println(ctx.channel().remoteAddress());
+//        System.color.println("client output:"+msg);
 //        ctx.writeAndFlush("from client:"+ LocalDateTime.now());
 
     }
