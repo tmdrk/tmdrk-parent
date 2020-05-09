@@ -2,7 +2,14 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/tmdrk-chat-admin/admin.iml" filepath="$PROJECT_DIR$/tmdrk-chat-admin/admin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tmdrk-chat-common/common.iml" filepath="$PROJECT_DIR$/tmdrk-chat-common/common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tmdrk-chat-demo/demo.iml" filepath="$PROJECT_DIR$/tmdrk-chat-demo/demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tmdrk-chat-elasticsearch/elasticsearch.iml" filepath="$PROJECT_DIR$/tmdrk-chat-elasticsearch/elasticsearch.iml" />
       <module fileurl="file://$PROJECT_DIR$/tmdrk-chat-front/front.iml" filepath="$PROJECT_DIR$/tmdrk-chat-front/front.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tmdrk-springboot-parent/myboot.iml" filepath="$PROJECT_DIR$/tmdrk-springboot-parent/myboot.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tmdrk-chat-server/server.iml" filepath="$PROJECT_DIR$/tmdrk-chat-server/server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tmdrk-servlet3/servlet3.0.iml" filepath="$PROJECT_DIR$/tmdrk-servlet3/servlet3.0.iml" />
       <module fileurl="file://$PROJECT_DIR$/tmdrk-chat-admin/tmdrk-chat-admin.iml" filepath="$PROJECT_DIR$/tmdrk-chat-admin/tmdrk-chat-admin.iml" />
       <module fileurl="file://$PROJECT_DIR$/tmdrk-chat-common/tmdrk-chat-common.iml" filepath="$PROJECT_DIR$/tmdrk-chat-common/tmdrk-chat-common.iml" />
       <module fileurl="file://$PROJECT_DIR$/tmdrk-chat-demo/tmdrk-chat-demo.iml" filepath="$PROJECT_DIR$/tmdrk-chat-demo/tmdrk-chat-demo.iml" />
@@ -12,6 +19,12 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/tmdrk-parent.iml" filepath="$PROJECT_DIR$/.idea/tmdrk-parent.iml" />
       <module fileurl="file://$PROJECT_DIR$/tmdrk-service/tmdrk-service.iml" filepath="$PROJECT_DIR$/tmdrk-service/tmdrk-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/tmdrk-servlet3/tmdrk-servlet3.iml" filepath="$PROJECT_DIR$/tmdrk-servlet3/tmdrk-servlet3.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tmdrk-springboot-parent/tmdrk-springboot-aceadmin/tmdrk-springboot-aceadmin.iml" filepath="$PROJECT_DIR$/tmdrk-springboot-parent/tmdrk-springboot-aceadmin/tmdrk-springboot-aceadmin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tmdrk-springboot-parent/tmdrk-springboot-jpa/tmdrk-springboot-jpa.iml" filepath="$PROJECT_DIR$/tmdrk-springboot-parent/tmdrk-springboot-jpa/tmdrk-springboot-jpa.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tmdrk-springboot-parent/tmdrk-springboot-myboot/tmdrk-springboot-myboot.iml" filepath="$PROJECT_DIR$/tmdrk-springboot-parent/tmdrk-springboot-myboot/tmdrk-springboot-myboot.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tmdrk-springboot-parent/tmdrk-springboot-parent.iml" filepath="$PROJECT_DIR$/tmdrk-springboot-parent/tmdrk-springboot-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tmdrk-springboot-parent/tmdrk-springboot-webboot/tmdrk-springboot-webboot.iml" filepath="$PROJECT_DIR$/tmdrk-springboot-parent/tmdrk-springboot-webboot/tmdrk-springboot-webboot.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tmdrk-springboot-parent/tmdrk-springboot-webwar/tmdrk-springboot-webwar.iml" filepath="$PROJECT_DIR$/tmdrk-springboot-parent/tmdrk-springboot-webwar/tmdrk-springboot-webwar.iml" />
       <module fileurl="file://$PROJECT_DIR$/tmdrk-springmvc/tmdrk-springmvc.iml" filepath="$PROJECT_DIR$/tmdrk-springmvc/tmdrk-springmvc.iml" />
       <module fileurl="file://$PROJECT_DIR$/tmdrk-web/tmdrk-web.iml" filepath="$PROJECT_DIR$/tmdrk-web/tmdrk-web.iml" />
     </modules>

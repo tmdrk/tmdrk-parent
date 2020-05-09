@@ -8,6 +8,8 @@
     <file type="web" url="file://$PROJECT_DIR$/tmdrk-chat-front" />
     <file type="web" url="file://$PROJECT_DIR$/tmdrk-chat-server" />
     <file type="web" url="file://$PROJECT_DIR$/tmdrk-servlet3" />
+    <file type="web" url="file://$PROJECT_DIR$/tmdrk-springboot-parent/tmdrk-springboot-myboot" />
+    <file type="web" url="file://$PROJECT_DIR$/tmdrk-springboot-parent/tmdrk-springboot-webwar" />
     <file type="web" url="file://$PROJECT_DIR$/tmdrk-springmvc" />
     <file type="web" url="file://$PROJECT_DIR$/tmdrk-web" />
   </component>
@@ -27,12 +29,11 @@
         <option value="$PROJECT_DIR$/tmdrk-chat-server/pom.xml" />
         <option value="$PROJECT_DIR$/tmdrk-chat-common/pom.xml" />
         <option value="$PROJECT_DIR$/tmdrk-chat-elasticsearch/pom.xml" />
+        <option value="$PROJECT_DIR$/springboot/pom.xml" />
+        <option value="$PROJECT_DIR$/tmdrk-springboot-parent/tmdrk-springboot-myboot/pom.xml" />
+        <option value="$PROJECT_DIR$/tmdrk-springboot-parent/tmdrk-springboot-webwar/pom.xml" />
+        <option value="$PROJECT_DIR$/tmdrk-springboot-parent/tmdrk-springboot-jpa/pom.xml" />
       </list>
-    </option>
-    <option name="ignoredFiles">
-      <set>
-        <option value="$PROJECT_DIR$/tmdrk-apringMvc/pom.xml" />
-      </set>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK" />

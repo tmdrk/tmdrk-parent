@@ -1,0 +1,3 @@
+## 端口，若与properties重复则以properties为主
+server:
+  port: 8089

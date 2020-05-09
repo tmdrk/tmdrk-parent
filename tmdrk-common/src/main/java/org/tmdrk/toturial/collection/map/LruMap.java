@@ -1,8 +1,7 @@
 package org.tmdrk.toturial.collection.map;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.function.BiConsumer;
 
 /**
  * @ClassName LruMap
@@ -90,4 +89,5 @@ public class LruMap<K,V> extends LinkedHashMap<K,V>{
     public V lruRemove(Object key){
         return this.remove(key);
     }
+
 }

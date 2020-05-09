@@ -1,8 +1,11 @@
 package org.tmdrk.toturial.spring.app;
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
+import org.tmdrk.toturial.spring.aop.MathCalculator;
 import org.tmdrk.toturial.spring.dao.IndexDao;
 import org.tmdrk.toturial.spring.service.IndexService;
 import org.tmdrk.toturial.spring.service.color.Red;
@@ -13,6 +16,7 @@ import org.tmdrk.toturial.spring.service.vehicle.Car;
 import org.tmdrk.toturial.spring.service.vehicle.Jeep;
 import org.tmdrk.toturial.spring.service.vehicle.Vehicle;
 
+import javax.sql.DataSource;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -71,8 +75,8 @@ public class TestSpring {
      * 给容器中注册组件的方式
      * 1 包扫描+组件注释
      * 2 @Bean[导入第三方包使用]
-     * 3 @Import[快速的给容器中导入组件]
-     *      @Import  输入要导入的组件，默认id是全类名
+     * 3
+     *      @Import  输入要导入的组件，默认id是全@Import[快速的给容器中导入组件]类名
      *      ImportSelector  返回需要导入组件的全类名数组
      *      ImportBeanDefinitionRegistrar
      * 4 使用spring提供的FactoryBean
@@ -96,6 +100,13 @@ public class TestSpring {
 
     }
 
+    /**
+     * @Author zhoujie
+     * @Description 生命周期测试
+     * @Date 16:54 2020/1/21
+     * @Param []
+     * @return void
+     **/
     @Test
     public void lifeCycleTest(){
         AnnotationConfigApplicationContext annocfgappctx = init(true,MainConfigOfLifeCycle.class);
@@ -131,7 +142,7 @@ public class TestSpring {
 
     /**
      * @Author zhoujie
-     * @Description
+     * @Description 自动注入
      * @Date 10:50 2020/1/13
      * @Param []
      * @return void
@@ -146,5 +157,50 @@ public class TestSpring {
 
         annocfgappctx.publishEvent("我的事件");
         annocfgappctx.close();
+    }
+
+    /**
+     * @Author zhoujie
+     * @Description //profile 控制数据源
+     *  1.run configuration 设置虚拟机启动参数 -Dspring.profiles.active=dev
+     *
+     *
+     * @Date 14:34 2020/1/14
+     * @Param []
+     * @return void
+     **/
+    @Test
+    public void profileTest(){
+        //创建一个ApplicationContext
+        AnnotationConfigApplicationContext annocfgappctx = new AnnotationConfigApplicationContext();
+        //设置需要激活的环境
+        annocfgappctx.getEnvironment().setActiveProfiles("dev","test","prod");
+        //注册配置类
+        annocfgappctx.register(MainConfigOfProfile.class);
+        //启动容器刷新
+        annocfgappctx.refresh();
+
+        String[] beanNamesForType = annocfgappctx.getBeanNamesForType(DataSource.class);
+        Arrays.asList(beanNamesForType).forEach(name->{
+            System.out.println(name);
+            ComboPooledDataSource dataSource = (ComboPooledDataSource)annocfgappctx.getBean(name);
+            System.out.println(dataSource.getJdbcUrl());
+        });
+    }
+
+    @Test
+    public void aopTest(){
+        AnnotationConfigApplicationContext annocfgappctx = init(true,MainConfigOfAOP.class);
+        MathCalculator mathCalculator = (MathCalculator)annocfgappctx.getBean("mathCalculator");
+        System.out.println(mathCalculator.div(12,6));
+        System.out.println("-----------------------------");
+        mathCalculator.divoid(12,6);
+        System.out.println("-----------------------------");
+        System.out.println(mathCalculator.div(17,0));
+    }
+
+    @Test
+    public void circleTest(){
+        AnnotationConfigApplicationContext annocfgappctx = init(true,MainConfigOfCircleDepdence.class);
     }
 }

@@ -1,10 +1,14 @@
 package com.tmdrk.springmvc.config;
 
+import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.tmdrk.springmvc.controller.MyFirstInterceptor;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.config.annotation.*;
+
+import java.util.List;
 
 /**
  * @ClassName AppConfig
@@ -35,5 +39,11 @@ public class AppConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new MyFirstInterceptor()).addPathPatterns("/**");
+    }
+
+    //设置FastJson为json转换器，不配置返回json可能会报错
+    @Override
+    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+        converters.add(new FastJsonHttpMessageConverter());
     }
 }

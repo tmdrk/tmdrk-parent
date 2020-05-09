@@ -1,8 +1,6 @@
 package org.tmdrk.toturial.spring.app;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
-import org.tmdrk.toturial.spring.service.vehicle.Car;
 import org.tmdrk.toturial.spring.service.vehicle.Vehicle;
 
 /**

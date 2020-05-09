@@ -6,7 +6,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="admin" />
+        <module name="common" />
+        <module name="demo" />
+        <module name="elasticsearch" />
         <module name="front" />
+        <module name="myboot" />
+        <module name="server" />
+        <module name="servlet3.0" />
         <module name="tmdrk-chat-admin" />
         <module name="tmdrk-chat-common" />
         <module name="tmdrk-chat-demo" />
@@ -16,41 +23,56 @@
         <module name="tmdrk-common" />
         <module name="tmdrk-service" />
         <module name="tmdrk-servlet3" />
+        <module name="tmdrk-springboot-aceadmin" />
+        <module name="tmdrk-springboot-jpa" />
+        <module name="tmdrk-springboot-myboot" />
+        <module name="tmdrk-springboot-webboot" />
+        <module name="tmdrk-springboot-webwar" />
         <module name="tmdrk-springmvc" />
         <module name="tmdrk-web" />
         <module name="tmdrkspringmvc" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
+    <bytecodeTargetLevel target="8">
+      <module name="aceadmin" target="1.8" />
+      <module name="admin" target="1.8" />
+      <module name="common" target="1.8" />
+      <module name="demo" target="1.8" />
+      <module name="elasticsearch" target="1.8" />
       <module name="front" target="1.8" />
-      <module name="pay" target="1.5" />
-      <module name="test" target="1.8" />
-      <module name="tmdrk-chat-admin" target="1.8" />
-      <module name="tmdrk-chat-common" target="1.8" />
-      <module name="tmdrk-chat-demo" target="1.8" />
-      <module name="tmdrk-chat-elasticsearch" target="1.8" />
-      <module name="tmdrk-chat-front" target="1.8" />
-      <module name="tmdrk-chat-server" target="1.8" />
+      <module name="myboot" target="1.8" />
+      <module name="server" target="1.8" />
+      <module name="servlet3.0" target="1.8" />
       <module name="tmdrk-common" target="1.8" />
       <module name="tmdrk-parent" target="1.8" />
       <module name="tmdrk-service" target="1.8" />
-      <module name="tmdrk-servlet3" target="1.8" />
+      <module name="tmdrk-springboot" target="1.8" />
+      <module name="tmdrk-springboot-aceadmin" target="1.8" />
+      <module name="tmdrk-springboot-jpa" target="1.8" />
+      <module name="tmdrk-springboot-myboot" target="1.8" />
+      <module name="tmdrk-springboot-parent" target="1.8" />
+      <module name="tmdrk-springboot-webboot" target="1.8" />
+      <module name="tmdrk-springboot-webwar" target="1.8" />
       <module name="tmdrk-springmvc" target="1.8" />
       <module name="tmdrk-web" target="1.8" />
-      <module name="tmdrkapringMvc" target="1.8" />
-      <module name="tmdrkspringmvc" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="aceadmin" options="-parameters" />
+      <module name="admin" options="-parameters" />
+      <module name="common" options="-parameters" />
+      <module name="demo" options="-parameters" />
+      <module name="elasticsearch" options="-parameters" />
       <module name="front" options="-parameters" />
-      <module name="test" options="-parameters" />
-      <module name="tmdrk-chat-admin" options="-parameters" />
-      <module name="tmdrk-chat-common" options="-parameters" />
-      <module name="tmdrk-chat-demo" options="-parameters" />
-      <module name="tmdrk-chat-elasticsearch" options="-parameters" />
-      <module name="tmdrk-chat-front" options="-parameters" />
-      <module name="tmdrk-chat-server" options="-parameters" />
+      <module name="myboot" options="-parameters" />
+      <module name="server" options="-parameters" />
+      <module name="tmdrk-springboot" options="-parameters" />
+      <module name="tmdrk-springboot-aceadmin" options="-parameters" />
+      <module name="tmdrk-springboot-jpa" options="-parameters" />
+      <module name="tmdrk-springboot-myboot" options="-parameters" />
+      <module name="tmdrk-springboot-webboot" options="-parameters" />
+      <module name="tmdrk-springboot-webwar" options="-parameters" />
       <module name="tmdrk-web" options="-extdirs G:\IdeaProjects\tmdrk-parent\tmdrk-web/src/main/webapp/WEB-INF/lib" />
     </option>
   </component>

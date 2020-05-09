@@ -1,5 +1,7 @@
 package org.tmdrk.toturial.common.util;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.Date;
 import java.util.Locale;
 
@@ -81,6 +83,11 @@ public class StringFormat {
 	    //s的使用  
 	    System.out.printf("1970-1-1 00:00:00 到现在所经过的秒数：%ts%n", date);  
 	    //Q的使用  
-	    System.out.printf("1970-1-1 00:00:00 到现在所经过的毫秒数：%tQ%n", date);  
-	}
+	    System.out.printf("1970-1-1 00:00:00 到现在所经过的毫秒数：%tQ%n", date);
+
+        String leftPad = StringUtils.leftPad(expire_seconds, 20, "*");
+        System.out.println(leftPad);
+        String center = StringUtils.center(expire_seconds, 20);
+        System.out.println(center);
+    }
 }

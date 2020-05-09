@@ -1,0 +1,33 @@
+package org.tmdrk.toturial.thread.interrupt;
+
+/**
+ * @ClassName CountThread
+ * @Description TODO
+ * @Author zhoujie
+ * @Date 2020/4/26 0:26
+ * @Version 1.0
+ **/
+public class CountThread extends Thread{
+
+    @Override
+    public void run() {
+        for(int i=0;i<1000;i++){
+//            try {
+//                Thread.sleep(100);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+            System.out.println(Thread.currentThread().isInterrupted());
+            if(Thread.currentThread().isInterrupted()){
+                System.out.println(Thread.currentThread()+" [is interrupt] "+" i="+i);
+                break;
+            }else{
+                System.out.println(Thread.currentThread()+" i="+i);
+            }
+        }
+        System.out.println(Thread.currentThread()+" 执行中断后任务");
+        while(1==1){
+
+        }
+    }
+}

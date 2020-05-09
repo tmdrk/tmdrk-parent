@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName CollectionSortTest
@@ -39,6 +40,14 @@ public class CollectionSortTest {
             }
         });
         list1.stream().forEach(user -> System.out.println(user.getAge()));
+
+        List<User> list2 = new ArrayList<>();
+        list2.add(new User(3,"aa"));
+        list2.add(new User(6,"bb"));
+        list2.add(new User(4,"cc"));
+        list2.add(new User(1,"dd"));
+
+        list2.stream().sorted((a, b) -> b.getAge() - (a.getAge())).forEach(user -> System.out.println(user.getAge()));
     }
 }
 class User implements Comparable<User>{

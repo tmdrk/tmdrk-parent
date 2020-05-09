@@ -13,13 +13,13 @@ import java.util.concurrent.ConcurrentSkipListSet;
 public class ConcurrentSkipListMapTest {
     public static void main(String[] args) {
         ConcurrentSkipListMap concurrentSkipListMap = new ConcurrentSkipListMap();
-        for (int i=0;i<100;i++){
+        for (int i=0;i<20;i++){
             concurrentSkipListMap.put("key_"+i,i);
         }
         concurrentSkipListMap.forEach((key,value) -> System.out.println(key+"|"+value));
 
         ConcurrentSkipListSet concurrentSkipListSet = new ConcurrentSkipListSet();
-        for (int i=0;i<100;i++){
+        for (int i=0;i<20;i++){
             concurrentSkipListSet.add(i);
         }
         concurrentSkipListSet.forEach(value-> System.out.println(value));

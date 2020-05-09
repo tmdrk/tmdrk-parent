@@ -1,7 +1,7 @@
 package org.tmdrk.toturial.spring.app;
 
 import org.springframework.context.annotation.*;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 import org.tmdrk.toturial.spring.condition.LinuxCondition;
 import org.tmdrk.toturial.spring.condition.MyImportBeanDefinitionRegistrar;
 import org.tmdrk.toturial.spring.condition.MyImportSelector;
@@ -33,11 +33,14 @@ import org.tmdrk.toturial.spring.service.redis.RedisService;
  **/
 @Configuration //没有该配置将会使用原生AppConfig类，初始化bean；如果有该配置，将会使用代理类初始化bean相关配置
 //包扫描，将含有spring注解的相关class都纳入到spring容器管理
-@ComponentScan(value="org.tmdrk.toturial.spring",excludeFilters = {
+@ComponentScan(value="org.tmdrk.toturial.spring.controller",excludeFilters = {
         @ComponentScan.Filter(type = FilterType.ANNOTATION,classes = {ComponentScan.class})
 })
 @Import({Color.class, MyImportSelector.class, MyImportBeanDefinitionRegistrar.class}) //给容器中快速导入组件，支持多个
+@ImportResource
 public class App1Config {
+    private RedisService redisService;
+
     @Bean
     public RedisService redisService(){
         System.out.println("创建redisService bean...");
@@ -83,4 +86,9 @@ public class App1Config {
         return new ColorFactoryBean();
     }
 
+    @Component
+    class Pay{
+
+    }
 }
+

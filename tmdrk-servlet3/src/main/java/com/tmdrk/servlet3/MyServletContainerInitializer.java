@@ -2,10 +2,9 @@ package com.tmdrk.servlet3;
 
 import com.tmdrk.servlet3.service.HelloService;
 
-import javax.servlet.ServletContainerInitializer;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
+import javax.servlet.*;
 import javax.servlet.annotation.HandlesTypes;
+import java.util.EnumSet;
 import java.util.Set;
 
 /**
@@ -22,8 +21,18 @@ public class MyServletContainerInitializer implements ServletContainerInitialize
     @Override
     public void onStartup(Set<Class<?>> set, ServletContext servletContext) throws ServletException {
         System.out.println("感兴趣的类型");
-        set.forEach(clazz->{
-            System.out.println(clazz.getName());
-        });
+        set.forEach(clazz->
+            System.out.println(clazz.getName())
+        );
+
+        ServletRegistration.Dynamic helloServlet = servletContext.addServlet("helloServlet", new HelloServlet());
+        helloServlet.addMapping("/hello");
+
+        //注册监听器
+        servletContext.addListener(HelloListener.class);
+        //注册过滤器
+        FilterRegistration.Dynamic helloFilter = servletContext.addFilter("helloFilter", HelloFilter.class);
+        //配置filter的映射信息
+        helloFilter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST),true,"/*");
     }
 }

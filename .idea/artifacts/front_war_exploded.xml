@@ -8,7 +8,7 @@
         </element>
         <element id="directory" name="lib">
           <element id="archive" name="common-0.0.1-SNAPSHOT.jar">
-            <element id="module-output" name="tmdrk-chat-common" />
+            <element id="module-output" name="common" />
           </element>
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter:2.1.6.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot:2.1.6.RELEASE" />

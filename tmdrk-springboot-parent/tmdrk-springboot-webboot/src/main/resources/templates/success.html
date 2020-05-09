@@ -1,0 +1,16 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"><!-- 语法提示 -->
+<body>
+<h1>欢迎！</h1>
+<div id="div01" class="myDiv" th:id="${hello}" th:class="${hello}" th:text="${hello}">这是一个欢迎信息</div>
+<div id="div02" th:utext="${html}"></div>
+<span th:text="${#locale.country}">US</span>
+<div th:each="user : ${users}">[[${user}]]</div>
+<ul>
+    <li th:text="${user.name}"></li>
+    <li th:text="${user.age}"></li>
+    <li th:text="${user.height}"></li>
+    <li th:text="${user.sex}?'男' : '女'"></li>
+    <li th:text="${user.birthday}"></li>
+</ul>
+</body>
+</html>
