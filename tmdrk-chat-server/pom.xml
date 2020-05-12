@@ -12,7 +12,7 @@
     <artifactId>server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>server</name>
+    <name>tmdrk-chat-server</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -23,7 +23,7 @@
 
         <dependency>
             <groupId>com.tmdrk.chat</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>tmdrk-chat-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 

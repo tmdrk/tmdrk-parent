@@ -55,6 +55,13 @@
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
 
+        <!-- 自定义starter -->
+        <dependency>
+            <artifactId>my-spring-boot-starter</artifactId>
+            <groupId>com.tmdrk</groupId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
 
     <build>

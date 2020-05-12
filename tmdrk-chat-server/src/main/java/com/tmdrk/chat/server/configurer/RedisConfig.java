@@ -65,11 +65,11 @@ public class RedisConfig {
     private boolean testWhileIdle;
 
 
-    @Value("${spring.redis.cluster.nodes}")
-    private String clusterNodes;
-
-    @Value("${spring.redis.cluster.max-redirects}")
-    private Integer mmaxRedirectsac;
+//    @Value("${spring.redis.cluster.nodes}")
+//    private String clusterNodes;
+//
+//    @Value("${spring.redis.cluster.max-redirects}")
+//    private Integer mmaxRedirectsac;
 
     /**
      * JedisPoolConfig 连接池
@@ -106,21 +106,21 @@ public class RedisConfig {
      * @date 2018年2月24日
      * @throws
      */
-//    @Bean
-//    public JedisConnectionFactory JedisConnectionFactory(JedisPoolConfig jedisPoolConfig){
-//        JedisConnectionFactory JedisConnectionFactory = new JedisConnectionFactory(jedisPoolConfig);
-//        //连接池
-//        JedisConnectionFactory.setPoolConfig(jedisPoolConfig);
-//        //IP地址
-//        JedisConnectionFactory.setHostName(host);
-//        //端口号
-//        JedisConnectionFactory.setPort(port);
-//        //如果Redis设置有密码
-//        //JedisConnectionFactory.setPassword(password);
-//        //客户端超时时间单位是毫秒
-//        JedisConnectionFactory.setTimeout(5000);
-//        return JedisConnectionFactory;
-//    }
+    @Bean
+    public JedisConnectionFactory JedisConnectionFactory(JedisPoolConfig jedisPoolConfig){
+        JedisConnectionFactory JedisConnectionFactory = new JedisConnectionFactory(jedisPoolConfig);
+        //连接池
+        JedisConnectionFactory.setPoolConfig(jedisPoolConfig);
+        //IP地址
+        JedisConnectionFactory.setHostName(host);
+        //端口号
+        JedisConnectionFactory.setPort(port);
+        //如果Redis设置有密码
+        //JedisConnectionFactory.setPassword(password);
+        //客户端超时时间单位是毫秒
+        JedisConnectionFactory.setTimeout(5000);
+        return JedisConnectionFactory;
+    }
 
     /**
      * Redis集群的配置
@@ -129,24 +129,24 @@ public class RedisConfig {
      * @date 2017年12月22日
      * @throws
      */
-    @Bean
-    public RedisClusterConfiguration redisClusterConfiguration(){
-        RedisClusterConfiguration redisClusterConfiguration = new RedisClusterConfiguration();
-        //Set<RedisNode> clusterNodes
-        String[] serverArray = clusterNodes.split(",");
-
-        Set<RedisNode> nodes = new HashSet<RedisNode>();
-
-        for(String ipPort:serverArray){
-            String[] ipAndPort = ipPort.split(":");
-            nodes.add(new RedisNode(ipAndPort[0].trim(),Integer.valueOf(ipAndPort[1])));
-        }
-
-        redisClusterConfiguration.setClusterNodes(nodes);
-        redisClusterConfiguration.setMaxRedirects(mmaxRedirectsac);
-
-        return redisClusterConfiguration;
-    }
+//    @Bean
+//    public RedisClusterConfiguration redisClusterConfiguration(){
+//        RedisClusterConfiguration redisClusterConfiguration = new RedisClusterConfiguration();
+//        //Set<RedisNode> clusterNodes
+//        String[] serverArray = clusterNodes.split(",");
+//
+//        Set<RedisNode> nodes = new HashSet<RedisNode>();
+//
+//        for(String ipPort:serverArray){
+//            String[] ipAndPort = ipPort.split(":");
+//            nodes.add(new RedisNode(ipAndPort[0].trim(),Integer.valueOf(ipAndPort[1])));
+//        }
+//
+//        redisClusterConfiguration.setClusterNodes(nodes);
+//        redisClusterConfiguration.setMaxRedirects(mmaxRedirectsac);
+//
+//        return redisClusterConfiguration;
+//    }
 
     /**
      * 实例化 RedisTemplate 对象

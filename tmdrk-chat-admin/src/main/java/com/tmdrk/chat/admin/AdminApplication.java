@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @ComponentScan("com.tmdrk.chat")
-@SpringBootApplication
+@SpringBootApplication()
 public class AdminApplication {
 
     public static void main(String[] args) {

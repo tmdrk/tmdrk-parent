@@ -7,8 +7,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @ClassName ElasticsearchTest
@@ -30,12 +32,17 @@ public class ElasticsearchTest {
     private ElasticSearchServiceImpl elasticSearchServiceImpl;
 
     @Test
-    public void createChatIndex() {
+    public void test() {
+        logger.info("test...");
+    }
+
+    @Test
+    public void searchById() {
         try {
-            String indexName = "test_product";
+            String indexName = "test_product_2";
             String type =  "doc";
-            boolean createIndex = elasticSearchServiceImpl.createIndex(indexName,type, TestProduct.class);
-            logger.info("createIndex:"+createIndex);
+            Map map = elasticSearchServiceImpl.searchById(indexName, type, "10389036289");
+            logger.info("map:"+map);
         } catch (Exception e) {
             e.printStackTrace();
         }

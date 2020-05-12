@@ -93,7 +93,6 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 
     public void register(ChannelHandlerContext channelHandlerContext, Map<String, Object> msg) {
         logger.info("register开始...");
-//        CacheLoader.channelMap.put(msg.get("from").toString(),channelHandlerContext.channel());
         logger.info("id:"+channelHandlerContext.channel().id()+" localAddress:"+channelHandlerContext.channel().localAddress());
         String bridge = CacheLoader.nettyIpAddr+":"+CacheLoader.nettyPort+"-"+channelHandlerContext.channel().id().toString();
         CacheLoader.channelMap.put(bridge,channelHandlerContext.channel());

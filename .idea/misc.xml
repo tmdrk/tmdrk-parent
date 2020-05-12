@@ -33,7 +33,17 @@
         <option value="$PROJECT_DIR$/tmdrk-springboot-parent/tmdrk-springboot-myboot/pom.xml" />
         <option value="$PROJECT_DIR$/tmdrk-springboot-parent/tmdrk-springboot-webwar/pom.xml" />
         <option value="$PROJECT_DIR$/tmdrk-springboot-parent/tmdrk-springboot-jpa/pom.xml" />
+        <option value="$PROJECT_DIR$/tmdrk-springboot-parent/tmdrk-spring-boot-starter-parent/my-spring-boot-autoconfigure/pom.xml" />
+        <option value="$PROJECT_DIR$/tmdrk-springboot-parent/tmdrk-springboot-amqp/pom.xml" />
+        <option value="$PROJECT_DIR$/tmdrk-springboot-parent/tmdrk-springboot-task/pom.xml" />
+        <option value="$PROJECT_DIR$/tmdrk-springboot-parent/tmdrk-springboot-security/pom.xml" />
+        <option value="$PROJECT_DIR$/tmdrk-springboot-parent/tmdrk-springboot-actuator/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/tmdrk-springboot-parent/tmdrk-springboot-start-parent/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK" />

@@ -37,13 +37,13 @@ public class ChatServiceImplTest {
         }
     }
 
-    @Test
-    public void deleteChatIndex() {
-        try {
-            boolean b = chatService.deleteChatIndex("");
-            logger.info("deleteChatIndex:"+b);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    @Test
+//    public void deleteChatIndex() {
+//        try {
+//            boolean b = chatService.deleteChatIndex("");
+//            logger.info("deleteChatIndex:"+b);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

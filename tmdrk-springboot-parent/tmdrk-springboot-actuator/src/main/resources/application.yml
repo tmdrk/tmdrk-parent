@@ -1,0 +1,14 @@
+server:
+  port: 8082
+# 开启后访问 http://localhost:8082/actuator
+management:
+  health:
+    mail:
+#      enabled: true #关闭mail健康检查
+#  endpoints:
+#    enabled-by-default: true
+#    web:
+#      exposure:
+#        include: * #启动所有端点 Spring Boot 2.X 中，Actuator 默认只开放 health 和 info 两个端点。
+  server:
+    port: 8083 #定制管理端口

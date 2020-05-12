@@ -1,10 +1,12 @@
 package com.tmdrk.myboot.controller;
 
+import com.tmdrk.my.autoconfigure.MyService;
 import com.tmdrk.myboot.entity.Home;
 import com.tmdrk.myboot.entity.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -24,6 +26,9 @@ public class HelloWorldController {
     @Autowired
     ApplicationContext context; //注入ioc容器
 
+    @Autowired
+    MyService myService;
+
     @GetMapping("/hello")
     public Map hello(){
         System.out.println("HelloWorld.hello...");
@@ -39,5 +44,11 @@ public class HelloWorldController {
     }
     public String getString(Person person){
         return person.getEmail();
+    }
+
+    @RequestMapping("say/hello")
+    public String sayHello(String name){
+        System.out.println("=================");
+        return myService.sayHello(name);
     }
 }

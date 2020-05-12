@@ -1,7 +1,7 @@
 <component name="ArtifactManager">
   <artifact type="war" name="tmdrk-web:war">
     <output-path>$PROJECT_DIR$/tmdrk-web/target</output-path>
-    <root id="archive" name="tmdrk-web-0.0.1-SNAPSHOT-2020-05-09T05:16:28Z.war">
+    <root id="archive" name="tmdrk-web-0.0.1-SNAPSHOT-2020-05-11T18:36:34Z.war">
       <element id="artifact" artifact-name="tmdrk-web:war exploded" />
     </root>
   </artifact>

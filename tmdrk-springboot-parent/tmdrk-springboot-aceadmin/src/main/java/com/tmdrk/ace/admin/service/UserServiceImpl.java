@@ -3,6 +3,7 @@ package com.tmdrk.ace.admin.service;
 import com.tmdrk.ace.admin.entity.AceUser;
 import com.tmdrk.ace.admin.mapper.AceUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService{
     @Autowired
     AceUserMapper aceUserMapper;
+
+//    @Cacheable
     @Override
     public AceUser getUser(int id) {
         AceUser aceUser = aceUserMapper.selectByPrimaryKey(id);

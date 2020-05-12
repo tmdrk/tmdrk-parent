@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.tmdrk.chat</groupId>
-    <artifactId>common</artifactId>
+    <artifactId>tmdrk-chat-common</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>common</name>
+    <name>tmdrk-chat-common</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -104,10 +104,10 @@
         </dependency>
 
         <!-- freemarker -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-freemarker</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-starter-freemarker</artifactId>-->
+        <!--</dependency>-->
 
         <!--用于编译jsp-->
         <dependency>
@@ -187,10 +187,10 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
+            <!--<plugin>-->
+                <!--<groupId>org.springframework.boot</groupId>-->
+                <!--<artifactId>spring-boot-maven-plugin</artifactId>-->
+            <!--</plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -206,6 +206,8 @@
                 <!--<version>1.5.3.RELEASE</version>-->
                 <configuration>
                     <mainClass>com.tmdrk.chat.common.entity.es.TestProduct</mainClass>
+                    <!--新增 处理引用该程序包com.tmdrk.chat.common.entity不存在问题 https://blog.csdn.net/weixin_42683134/article/details/103294834 -->
+                    <classifier>exec</classifier>
                 </configuration>
                 <executions>
                     <execution>

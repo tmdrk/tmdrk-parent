@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.tmdrk.chat</groupId>
-    <artifactId>front</artifactId>
+    <artifactId>tmdrk-chat-front</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>front</name>
@@ -22,7 +22,7 @@
     <dependencies>
         <dependency>
             <groupId>com.tmdrk.chat</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>tmdrk-chat-elasticsearch</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 

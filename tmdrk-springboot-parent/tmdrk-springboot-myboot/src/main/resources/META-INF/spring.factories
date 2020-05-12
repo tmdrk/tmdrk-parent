@@ -1,0 +1,8 @@
+# Application Context Initializers
+org.springframework.context.ApplicationContextInitializer=\
+com.tmdrk.myboot.listener.HelloApplicationContextInitializer
+
+# Run Listeners
+org.springframework.boot.SpringApplicationRunListener=\
+com.tmdrk.myboot.listener.HelloSpringApplicationRunListener
+

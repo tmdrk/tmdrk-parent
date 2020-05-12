@@ -16,6 +16,7 @@
         <module>tmdrk-springboot-myboot</module>
         <module>tmdrk-springboot-webboot</module>
         <module>tmdrk-springboot-aceadmin</module>
+        <module>tmdrk-spring-boot-starter-parent</module>
     </modules>
 
 
