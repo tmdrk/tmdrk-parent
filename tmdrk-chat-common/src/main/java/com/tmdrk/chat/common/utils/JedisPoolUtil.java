@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
+import java.util.Random;
 
 /**
  * @ClassName JedisPoolUtil
@@ -141,5 +142,25 @@ public class JedisPoolUtil {
 
     public static String trim(String obj){
         return obj==null?obj:obj.trim();
+    }
+
+    public static void main(String[] args) {
+        System.out.println("开始...");
+        Jedis jedis = JedisPoolUtil.getJedis();
+        String keyPreifx = "import:test:";
+//        String keyExpirePreifx = "import:expire:test:";
+//        for(int i=0;i<20;i++){
+//            System.out.println("第"+i+"次插入");
+//            jedis.set(keyPreifx+i,""+i);
+//            jedis.setex(keyExpirePreifx+i,20*(i+1),""+i);
+//        }
+        Random random = new Random();
+        for(int i=0;i<1000;i++){
+            int index = random.nextInt(100);
+            jedis.get(keyPreifx+index);
+//            System.out.println("keyPreifx"+index+"="+jedis.get(keyPreifx+index));
+        }
+        jedis.close();
+        System.out.println("结束...");
     }
 }

@@ -41,6 +41,18 @@ public class RedisTest {
     }
 
     @Test
+    public void importTest() {
+        String keyPreifx = "import:test:";
+        for(int i=0;i<20;i++){
+            redisUtil.set(keyPreifx+i,i);
+        }
+        for(int i=0;i<20;i++){
+            redisUtil.set(keyPreifx+i,i,20*(i+1));
+        }
+
+    }
+
+    @Test
     public void simpleTest() {
         init(Thread.currentThread().getStackTrace()[1]);
         redisUtil.set("my:name",111);
@@ -64,7 +76,7 @@ public class RedisTest {
         List<Object> users = new ArrayList<>();
         for(int i=0;i<20;i++){
             User user = new User();
-            user.setId(i);
+//            user.setId(i);
             user.setName("name_"+i);
             users.add(user);
         }

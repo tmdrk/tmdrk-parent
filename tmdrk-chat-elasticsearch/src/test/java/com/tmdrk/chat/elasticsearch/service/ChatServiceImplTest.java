@@ -1,13 +1,13 @@
 package com.tmdrk.chat.elasticsearch.service;
 
 import com.tmdrk.chat.elasticsearch.ElasticsearchApplication;
-import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import java.io.IOException;
 
 /**
  * @ClassName ChatServiceImplTest
@@ -22,7 +22,7 @@ import java.io.IOException;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = ElasticsearchApplication.class)
 public class ChatServiceImplTest {
-    private static Logger logger = Logger.getLogger(ChatServiceImplTest.class);
+    Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private IChatService chatService;
 

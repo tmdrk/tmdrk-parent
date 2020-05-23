@@ -1,8 +1,10 @@
 package com.tmdrk.chat.common.utils;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -12,7 +14,7 @@ import java.util.Enumeration;
  * Created by cuishuaiming on 2017/11/14.
  */
 public class IpUtils {
-    private static Logger logger = Logger.getLogger(IpUtils.class);
+    static Logger logger = LoggerFactory.getLogger(IpUtils.class);
 
     /**
      * 获取客户端的IP地址
@@ -104,7 +106,33 @@ public class IpUtils {
         return clientIP;
     }
 
+
+    public static String getIpAddress() {
+        try {
+            Enumeration<NetworkInterface> allNetInterfaces = NetworkInterface.getNetworkInterfaces();
+            InetAddress ip = null;
+            while (allNetInterfaces.hasMoreElements()) {
+                NetworkInterface netInterface = (NetworkInterface) allNetInterfaces.nextElement();
+                if (netInterface.isLoopback() || netInterface.isVirtual() || !netInterface.isUp()) {
+                    continue;
+                } else {
+                    Enumeration<InetAddress> addresses = netInterface.getInetAddresses();
+                    while (addresses.hasMoreElements()) {
+                        ip = addresses.nextElement();
+                        if (ip != null && ip instanceof Inet4Address) {
+                            return ip.getHostAddress();
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("IP地址获取失败:" + e.toString());
+        }
+        return "";
+    }
+
 //    public static void main(String[] args) {
 //        logger.info(getLocalIpAddr());
+//        logger.info(getIpAddress());
 //    }
 }

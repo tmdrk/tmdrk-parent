@@ -5,8 +5,6 @@ import com.tmdrk.chat.common.entity.es.Settings;
 import com.tmdrk.chat.common.utils.ElasticsearchUtil;
 import com.tmdrk.chat.common.utils.StringUtil;
 import org.apache.commons.beanutils.BeanMap;
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.log4j.Logger;
 import org.elasticsearch.action.DocWriteResponse;
 import org.elasticsearch.action.admin.indices.alias.Alias;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
@@ -24,6 +22,8 @@ import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.IndicesClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +40,7 @@ import java.util.Map;
  **/
 @Service("elasticSearchServiceImpl")
 public class ElasticSearchServiceImpl<T>{
-    private static Logger logger = Logger.getLogger(ElasticSearchServiceImpl.class);
+    Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     RestHighLevelClient client;

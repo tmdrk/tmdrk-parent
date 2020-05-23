@@ -13,6 +13,13 @@ public class Message {
     private String message;
     private String type;
 
+    public Message(Integer from, Integer to, String message, String type) {
+        this.from = from;
+        this.to = to;
+        this.message = message;
+        this.type = type;
+    }
+
     public Integer getFrom() {
         return from;
     }

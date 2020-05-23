@@ -1,0 +1,3 @@
+org.springframework.context.ApplicationListener=\
+com.tmdrk.chat.server.listener.NettyApplicatonStartEventListener,\
+com.tmdrk.chat.server.listener.RabbitMqListener

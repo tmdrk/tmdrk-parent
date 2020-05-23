@@ -31,7 +31,7 @@ public class WebSocketChatServiceImpl implements WebSocketChatService {
             ServerBootstrap b = new ServerBootstrap(); // (2)
             b.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class) // (3)
-                    .childHandler(new ChatServerInitializer(CacheLoader.channelGroup))  //(4)
+                    .childHandler(new ChatServerInitializer())  //(4)
                     .option(ChannelOption.SO_BACKLOG, 128)          // (5)
                     .childOption(ChannelOption.SO_KEEPALIVE, true); // (6)
 

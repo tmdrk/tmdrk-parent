@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String basePath = request.getContextPath();
+    String wsUrl = (String) request.getAttribute("wsUrl");
 %>
 <html>
 <head>
@@ -11,6 +12,7 @@
     <link href="../static/css/mychat.css" rel="stylesheet" type="text/css" />
     <script>
         var basePath = '<%=basePath%>';
+        var wsUrl = '<%=wsUrl%>';
     </script>
     <style>
     </style>
@@ -21,7 +23,8 @@
         }
         if(window.WebSocket){
             console.log("您的浏览器支持WebSocket协议！ socket="+socket);
-            socket = new WebSocket("ws://localhost:8888/ws");
+            // var url = "ws://localhost:8888/ws";
+            socket = new WebSocket("ws://"+wsUrl);
             console.log("socket="+socket);
             socket.onmessage = function(event){
                 // var ta = document.getElementById('responseText');
@@ -54,7 +57,7 @@
                     "from" : userId,
                     "to" : toUserId,
                     "message": message,
-                    "type" : "SINGLE_SENDING"
+                    "type" : "1"
                 };
                 console.log("发送消息message："+message)
                 send(JSON.stringify(data));
@@ -74,7 +77,7 @@
         function register(userId){
             var data = {
                 "from" : userId,
-                "type" : "REGISTER"
+                "type" : "0"
             };
             send(JSON.stringify(data));
         }
@@ -124,7 +127,7 @@
       <form id="loginForm">
           <span style="width:100px;display:inline-block;">用户名</span><input type="text" id="userId" name="userId" placeholder="请输入用户名" /> <br /><br />
           <span style="width:100px;display:inline-block;">用户密码</span><input type="text" id="password" name="password" placeholder="请输入用户密码" /> <br /><br />
-          <a href="javascript:void(0);" class="login_btn" onclick="user_login()">登录</a>
+          <a id="doLogin" href="javascript:void(0);" class="login_btn" onclick="user_login()">登录</a>
       </form>
   </div>
   <div id="main" class="main" style="display: none">
@@ -197,7 +200,7 @@
               </div>
           </div>
           <div class="ng-scope" id="msg_navigation">
-              <div class="box chat ng-scope no-choose msg_tab" id="msg_tab_1">
+              <div class="box chat ng-scope no-choose msg_tab" id="msg_tab_0">
                   <div class="box_hd">
                       <div class="title_wrap">
                           <div class="title poi">

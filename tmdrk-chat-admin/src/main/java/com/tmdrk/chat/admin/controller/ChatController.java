@@ -3,12 +3,11 @@ package com.tmdrk.chat.admin.controller;
 import com.tmdrk.chat.common.entity.MessageInfo;
 import com.tmdrk.chat.common.entity.Result;
 import com.tmdrk.chat.common.utils.ResultUtil;
-import com.tmdrk.chat.elasticsearch.service.ChatServiceImpl;
 import com.tmdrk.chat.elasticsearch.service.IChatService;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +23,7 @@ import java.util.Map;
  **/
 @Controller
 public class ChatController {
-    private Logger logger = Logger.getLogger(IndexController.class);
+    Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private IChatService chatServiceImpl;

@@ -1,0 +1,64 @@
+spring:
+  application:
+    name: tmdrk-chat-elasticsearch
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      url: jdbc:mysql://192.168.1.11:3306/tmdrk-chat
+      username: root
+      password: 123456
+      # 下面为连接池的补充设置，应用到上面所有数据源中
+      # 初始化大小，最小，最大
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      # 配置获取连接等待超时的时间
+      max-wait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      time-between-eviction-runs-millis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      # 打开PSCache，并且指定每个连接上PSCache的大小
+      pool-prepared-statements: true
+      #   配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+      max-pool-prepared-statement-per-connection-size: 20
+#      filters: stat,wall,log4j2
+      filters: stat,wall,log4j2
+      use-global-data-source-stat: true
+      # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      connect-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+
+# mybatis
+# 在spring的配置文件config-location指定了mybatis的配置文件 就不能在spring的配置里面写入mybatis的配置，否则报错。
+mybatis:
+  #mybatis.xml配置文件路径
+#  config-location: classpath:mybatis.config.xml
+  #注意：一定要对应mapper映射xml文件的所在路径
+  mapper-locations: classpath*:com/tmdrk/chat/dao/mapper/*.xml
+  #注意：对应实体类的路径
+  type-aliases-package: com.tmdrk.chat.dao.entity
+  configuration:
+    #控制台打印sql语句方便调试sql语句执行错误
+    #org.apache.ibatis.logging.stdout.StdOutImpl
+    #这个不在控制台打印查询结果,但是在log4j中打印
+    #org.apache.ibatis.logging.log4j2.Log4j2Impl
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    #开启驼峰命名转换法
+    mapUnderscoreToCamelCase: true
+
+logging:
+  config: classpath:log4j2-spring.xml
+  level:
+    #这个指定日志打印会扫描的包
+    com.tmdrk.chat: DEBUG
+
+server:
+  port: ${port:40100}
+
+xc:
+  elasticsearch:
+    hostlist: ${eshostlist:192.168.1.73:9200,192.168.1.74:9200} #多个结点中间用逗号分隔

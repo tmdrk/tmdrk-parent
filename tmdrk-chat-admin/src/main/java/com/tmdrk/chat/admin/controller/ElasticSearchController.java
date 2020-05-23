@@ -1,13 +1,13 @@
 package com.tmdrk.chat.admin.controller;
 
-import com.tmdrk.chat.common.entity.MessageInfo;
 import com.tmdrk.chat.common.entity.Result;
 import com.tmdrk.chat.common.entity.es.TestProduct;
 import com.tmdrk.chat.common.utils.ResultUtil;
 import com.tmdrk.chat.common.utils.reptile.JDProductDetial;
 import com.tmdrk.chat.elasticsearch.service.ElasticSearchServiceImpl;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,14 +21,14 @@ import java.util.Map;
 
 /**
  * @ClassName SearchController
- * @Description TODO
+ * @Description
  * @Author zhoujie
  * @Date 2019/12/19 17:07
  * @Version 1.0
  **/
 @Controller
 public class ElasticSearchController {
-    private Logger logger = Logger.getLogger(ElasticSearchController.class);
+    Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private ElasticSearchServiceImpl elasticSearchServiceImpl;
 

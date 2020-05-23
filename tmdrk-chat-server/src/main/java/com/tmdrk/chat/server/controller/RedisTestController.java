@@ -1,12 +1,12 @@
 package com.tmdrk.chat.server.controller;
 
-import com.tmdrk.chat.common.cache.CacheLoader;
 import com.tmdrk.chat.common.entity.User;
 import com.tmdrk.chat.common.utils.GsonUtils;
 import com.tmdrk.chat.common.utils.IpUtils;
 import com.tmdrk.chat.common.utils.JedisUtil;
 import com.tmdrk.chat.common.utils.RedisUtil;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
@@ -28,7 +28,7 @@ import java.util.Map;
  **/
 @Controller
 public class RedisTestController {
-    private static Logger logger = Logger.getLogger(IndexController.class);
+    Logger logger = LoggerFactory.getLogger(IndexController.class);
     @Autowired
     private RedisUtil redisUtil;
     @Autowired
@@ -43,16 +43,16 @@ public class RedisTestController {
         User user = new User();
         User user1 = new User();
         List<User> friends = new ArrayList<>();
-        user1.setId(456456447);
+//        user1.setId(456456447);
         friends.add(user1);
-        user.setId(23423);
+//        user.setId(23423);
         user.setFriends(friends);
         JedisUtil.set("test:name",user);
         System.out.println("test:name="+JedisUtil.get("test:name",User.class).getId());
         User user2 = JedisUtil.get("test:name",User.class);
         List<User> friends2 = user2.getFriends();
 
-        user.setId(346346);
+//        user.setId(346346);
         redisUtil.set("test:name",user);
         user = (User)redisUtil.get("test:name");
         System.out.println("test:name="+user.getId());
@@ -65,7 +65,7 @@ public class RedisTestController {
         JedisUtil.set("10001",maps);
         maps = JedisUtil.get("10001",HashMap.class);
 
-        Long lo = JedisUtil.incr(CacheLoader.CHAT_NETTY_SERVER_INCR);
+//        Long lo = JedisUtil.incr(CacheLoader.CHAT_NETTY_SERVER_INCR);
 
         logger.info(IpUtils.getLocalIpAddr());
         return retMap;

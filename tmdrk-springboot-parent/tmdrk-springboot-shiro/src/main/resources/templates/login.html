@@ -1,0 +1,11 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<h1>欢迎来到武林秘籍管理系统</h1>
+<p th:text="${msg}" style="color: red"></p>
+<form th:action="@{/doLogin}">
+    <p>用户名：<input id="userName" name="userName" th:value="${userName}" /></p>
+    <p>密码：<input type="password" id="password" name="password" th:value="${password}" /></p>
+    <p><input type="submit" /></p>
+</form>
+</body>
+</html>

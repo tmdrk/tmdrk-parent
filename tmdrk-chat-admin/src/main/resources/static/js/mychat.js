@@ -10,11 +10,11 @@ function user_login() {
             if(data.code==1){
                 $('#login').hide();
                 $('#main').show();
-                $('#selfImg').attr('src',data.list.img);
-                $('#nickName').html(data.list.name);
-                myUserId = data.list.id;
-                localStorage.setItem(data.list.id, JSON.stringify(data.list));
-                var html = create_navigation(data.list.friends);
+                $('#selfImg').attr('src',data.data.img);
+                $('#nickName').html(data.data.name);
+                myUserId = data.data.id;
+                localStorage.setItem(data.data.id, JSON.stringify(data.data));
+                var html = create_navigation(data.data.friends);
                 $('#navigation').empty();
                 $('#navigation').append(html);
                 register(myUserId);
@@ -84,10 +84,16 @@ function create_tab(userId,name,img) {
         '                      </div>\n' +
         '                      <div class="action">\n' +
         '                          <span class="desc ng-scope">按下Ctrl+Enter换行</span>\n' +
-        '                          <a class="btn btn_send" href="javascript:;" onclick="sendMessage('+myUserId+','+userId+')">发送</a>\n' +
+        '                          <a id="sendButton" class="btn btn_send" href="javascript:;" onclick="sendMessage('+myUserId+','+userId+')">发送</a>\n' +
         '                      </div>\n' +
         '                  </div>\n' +
         '              </div>';
     return html;
 
 }
+
+$(document).keyup(function(event){
+    if(event.keyCode ==13){
+        $("#doLogin").trigger("click");
+    }
+});

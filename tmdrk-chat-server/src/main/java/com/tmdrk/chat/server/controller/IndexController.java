@@ -1,23 +1,12 @@
 package com.tmdrk.chat.server.controller;
 
-import com.tmdrk.chat.common.cache.CacheLoader;
-import com.tmdrk.chat.common.entity.User;
-import com.tmdrk.chat.common.utils.GsonUtils;
-import com.tmdrk.chat.common.utils.IpUtils;
-import com.tmdrk.chat.common.utils.JedisUtil;
-import com.tmdrk.chat.common.utils.RedisUtil;
-import com.tmdrk.chat.server.handler.websocket.TextWebSocketFrameHandler;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,7 +18,15 @@ import java.util.Map;
  **/
 @Controller
 public class IndexController {
-    private static Logger logger = Logger.getLogger(IndexController.class);
+    Logger logger = LoggerFactory.getLogger(IndexController.class);
+    @ResponseBody
+    @RequestMapping("/")
+    public Map index(@RequestParam Map<String,Object> requestMap){
+        Map<String,Object> retMap = new HashMap<>();
+        retMap.put("msg","欢迎光临");
+        return retMap;
+    }
+
     @ResponseBody
     @RequestMapping("/login")
     public Map login(@RequestParam Map<String,Object> requestMap){

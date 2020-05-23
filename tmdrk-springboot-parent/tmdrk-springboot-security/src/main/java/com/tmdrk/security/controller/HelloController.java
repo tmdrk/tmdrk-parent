@@ -24,7 +24,7 @@ public class HelloController {
         return "hello";
     }
 
-    @RequestMapping("/")
+    @RequestMapping("welcome")
     public String welcome(){
         logger.info("HelloController.welcome...");
         return "welcome";

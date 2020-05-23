@@ -1,9 +1,6 @@
 package org.tmdrk.toturial;
 
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * @ClassName Test1
@@ -37,6 +34,19 @@ public class Test1 {
         HashMap hashMap = new HashMap(cap);
         for(int i=0;i<SIZE_TABLE.length;i++){
             System.out.println(i+":"+SIZE_TABLE[i]);
+        }
+
+        List<String> list = Arrays.asList("aa", "bb", "cc", "dd", "ee","ff","gg","hh","ii");
+        Random random = new Random();
+        int ranInt = random.nextInt(list.size());
+        for(int i=0;i<list.size();i++){
+            String s = list.get(ranInt);
+            System.out.println(s);
+//            if(s.equals("cc")){
+//                System.out.println("跳出");
+//                break;
+//            }
+            ranInt = (ranInt+1)%list.size();
         }
     }
 }

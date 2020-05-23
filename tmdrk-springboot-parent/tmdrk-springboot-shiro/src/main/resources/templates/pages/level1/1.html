@@ -1,0 +1,11 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<body>
+<div>level1->1.html</div>
+<ul>
+    <li shiro:hasPermission="user:add"><a th:href="@{/level1/1/add}">新增</a></li>
+    <li shiro:hasPermission="user:update"><a th:href="@{/level1/1/update}">修改</a></li>
+    <li shiro:hasPermission="user:delete"><a th:href="@{/level1/1/delete}">删除</a></li>
+</ul>
+</body>
+</html>

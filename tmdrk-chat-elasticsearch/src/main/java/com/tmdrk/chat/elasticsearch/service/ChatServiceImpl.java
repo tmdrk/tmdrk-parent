@@ -1,11 +1,8 @@
 package com.tmdrk.chat.elasticsearch.service;
 
-//import org.apache.log4j.Logger;
 import com.tmdrk.chat.common.entity.MessageInfo;
 import com.tmdrk.chat.common.utils.DateUtils;
 import com.tmdrk.chat.common.utils.StringUtil;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 import org.elasticsearch.action.DocWriteResponse;
 import org.elasticsearch.action.admin.indices.alias.Alias;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
@@ -24,6 +21,8 @@ import org.elasticsearch.client.IndicesClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +40,7 @@ import java.util.Random;
  **/
 @Service("chatServiceImpl")
 public class ChatServiceImpl implements IChatService{
-    private static Logger logger = Logger.getLogger(ChatServiceImpl.class);
+    Logger logger = LoggerFactory.getLogger(getClass());
     static Random random = new Random();
 
     @Autowired
