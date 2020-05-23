@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="tmdrk-springmvc:war">
-    <output-path>$PROJECT_DIR$/tmdrk-springmvc/target</output-path>
-    <root id="archive" name="tmdrk-springmvc.war">
-      <element id="artifact" artifact-name="tmdrk-springmvc:war exploded" />
-    </root>
-  </artifact>
-</component>
