@@ -34,7 +34,7 @@ public class ClassReaderTest extends ClassLoader{
      **/
     public static void doClassPointer() throws IOException {
         ClassPointer cp = new ClassPointer(262144);//继承Classvisitor可以重写解析过程
-        ClassReader cr = new ClassReader("java.lang.Runnable");
+        ClassReader cr = new ClassReader("java.java.lang.Runnable");
         cr.accept(cp,0);
 
         // 使用全限定名，创建一个ClassReader对象

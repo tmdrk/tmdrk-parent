@@ -43,7 +43,7 @@ public class SmsAspect {
 
     @Around(value="pointCut()")
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable{
-        System.out.println(joinPoint.getSignature().getName()+"运行logAround...");
+        System.out.println(joinPoint.getSignature().getName()+"sms运行logAround...");
         //获取方法参数值数组
         Object[] args = joinPoint.getArgs();
         //得到其方法签名
@@ -51,11 +51,11 @@ public class SmsAspect {
         //获取方法参数类型数组
         Class[] paramTypeArray = methodSignature.getParameterTypes();
 
-        System.out.println("logAround请求参数为:"+Arrays.asList(args));
+        System.out.println("sms logAround请求参数为:"+Arrays.asList(args));
         //动态修改其参数
         //注意，如果调用joinPoint.proceed()方法，则修改的参数值不会生效，必须调用joinPoint.proceed(Object[] args)
         Object result = joinPoint.proceed(args);
-        System.out.println("logAround响应结果为:"+result);
+        System.out.println("sms logAround响应结果为:"+result);
         //如果这里不返回result，则目标对象实际返回值会被置为null
         return result;
     }

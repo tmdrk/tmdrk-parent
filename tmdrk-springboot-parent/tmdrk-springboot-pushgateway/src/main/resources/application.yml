@@ -1,0 +1,15 @@
+management:
+  port: 8088
+  security:
+    enabled: false
+  health:
+    defaults:
+      enabled: false
+endpoints:
+  enabled: false
+  prometheus:
+    enabled: true
+    path: /prometheus
+  health:
+    enabled: true
+    path: /health

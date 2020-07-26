@@ -12,9 +12,16 @@ import java.lang.reflect.Field;
  * @Version 1.0
  **/
 public class Person {
+    Cat cat = new Cat(2);
+    int a = 0;
+    public Person(){
+    }
+    public Person(int a){
+        this.a = a;
+    }
     public int sayHello(){
 //        System.color.println("hello world！");
-        System.out.println("we are the loser");
+        System.out.println(Thread.currentThread()+"we are the loser");
         return 0;
     }
 
@@ -28,4 +35,15 @@ public class Person {
         }
     }
 
+    public Cat getCat() {
+        System.out.println("==================="+cat.getClass().getClassLoader());
+        return cat;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "a=" + a +
+                '}';
+    }
 }

@@ -130,7 +130,7 @@ public class TestProduct {
      * @Description //处理所有声明Properties注解的字段
      * @Date 13:04 2019/12/19
      * @Param [declaredFields]
-     * @return java.lang.String
+     * @return java.java.lang.String
      **/
 //    public static String dealWithProperties(Field[] declaredFields) throws Exception {
 //        StringBuilder propertiesJson = new StringBuilder();
@@ -155,7 +155,7 @@ public class TestProduct {
      * @Description //单独处理声明了注解属性值
      * @Date 13:04 2019/12/19
      * @Param [properties, declaredMethods]
-     * @return java.lang.String
+     * @return java.java.lang.String
      **/
 //    public static String dealWith(Object properties,Method[] declaredMethods) throws Exception {
 //        StringBuilder fieldJson = new StringBuilder();

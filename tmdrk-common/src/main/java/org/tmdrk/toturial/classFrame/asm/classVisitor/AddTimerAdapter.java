@@ -56,14 +56,14 @@ public class AddTimerAdapter extends ClassVisitor {
 //        @Override public void visitCode() {
 //            mv.visitCode();
 //            mv.visitFieldInsn(GETSTATIC, owner, "timer", "J");
-//            mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J");
+//            mv.visitMethodInsn(INVOKESTATIC, "java/java.lang/System", "currentTimeMillis", "()J");
 //            mv.visitInsn(LSUB);
 //            mv.visitFieldInsn(PUTSTATIC, owner, "timer", "J");
 //        }
 //        @Override public void visitInsn(int opcode) {
 //            if ((opcode >= IRETURN && opcode <= RETURN) || opcode == ATHROW) {
 //                mv.visitFieldInsn(GETSTATIC, owner, "timer", "J");
-//                mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J");
+//                mv.visitMethodInsn(INVOKESTATIC, "java/java.lang/System", "currentTimeMillis", "()J");
 //                mv.visitInsn(LADD);
 //                mv.visitFieldInsn(PUTSTATIC, owner, "timer", "J");
 //            }

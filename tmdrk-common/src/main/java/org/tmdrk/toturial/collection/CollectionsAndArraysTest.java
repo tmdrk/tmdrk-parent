@@ -18,12 +18,12 @@ public class CollectionsAndArraysTest {
 
         //创建不可变的空集合
         Map<Object, Object> emptyMap = Collections.emptyMap();
-//        emptyMap.put("name","zhoujie"); //Exception in thread "main" java.lang.UnsupportedOperationException
+//        emptyMap.put("name","zhoujie"); //Exception in thread "main" java.java.lang.UnsupportedOperationException
         System.out.println(emptyMap.getClass()+"|"+emptyMap.get("name"));
 
         //创建不可变的含一个元素的集合
         Map<String, String> singletonMap = Collections.singletonMap("name", "zhangsan");
-//        singletonMap.put("name","wangwu");//Exception in thread "main" java.lang.UnsupportedOperationException
+//        singletonMap.put("name","wangwu");//Exception in thread "main" java.java.lang.UnsupportedOperationException
         System.out.println(emptyMap.getClass()+"|"+singletonMap.get("name"));
 
         Map<Object, Object> map = new HashMap<>();

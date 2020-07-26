@@ -15,7 +15,7 @@ public class ClientTask implements Runnable {
 	}
 
 	/* (non-Javadoc)
-	 * @see java.lang.Runnable#run()
+	 * @see java.java.lang.Runnable#run()
 	 */
 	@Override
 	public void run() {

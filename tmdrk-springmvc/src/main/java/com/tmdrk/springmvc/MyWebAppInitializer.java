@@ -10,7 +10,7 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
  * AbstractAnnotationConfigDispatcherServletInitializer会触发servletContext.addServlet(servletName, dispatcherServlet);注册dispatcherServlet
  *
  * 继承结构
- * Object (java.lang)
+ * Object (java.java.lang)
  *      AbstractContextLoaderInitializer (org.springframework.web.context)
  *          AbstractDispatcherServletInitializer (org.springframework.web.servlet.support)
  *              AbstractAnnotationConfigDispatcherServletInitializer (org.springframework.web.servlet.support)

@@ -34,7 +34,7 @@ public class ElasticsearchUtil {
      * @Description //处理所有声明Properties注解的字段
      * @Date 13:04 2019/12/19
      * @Param [declaredFields]
-     * @return java.lang.String
+     * @return java.java.lang.String
      **/
     public static String dealWithFields(Field[] declaredFields) throws Exception {
         StringBuilder fieldsJson = new StringBuilder();
@@ -59,7 +59,7 @@ public class ElasticsearchUtil {
      * @Description //处理单个声明了注解属性值
      * @Date 13:04 2019/12/19
      * @Param [properties, declaredMethods]
-     * @return java.lang.String
+     * @return java.java.lang.String
      **/
     public static String dealWithProperties(Object properties,Method[] declaredMethods) throws Exception {
         StringBuilder fieldJson = new StringBuilder();

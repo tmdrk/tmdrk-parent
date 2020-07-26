@@ -28,7 +28,7 @@ public class HelloAsyncController {
      * 2SpringMVC实现AsyncHandlerInterceptor
      * @Date 12:36 2020/1/14
      * @Param []
-     * @return java.util.concurrent.Callable<java.lang.String>
+     * @return java.util.concurrent.Callable<java.java.lang.String>
      **/
     @ResponseBody
     @RequestMapping("/asyn01")

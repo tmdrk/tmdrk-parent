@@ -380,7 +380,7 @@ public abstract class ReflectionUtils {
 	}
 
 	/**
-	 * 是否是Object(是java.lang.Object)对象中的方法
+	 * 是否是Object(是java.java.lang.Object)对象中的方法
 	 * 
 	 * @param method
 	 * @return

@@ -25,7 +25,12 @@ public class CountThread extends Thread{
                 System.out.println(Thread.currentThread()+" i="+i);
             }
         }
-        System.out.println(Thread.currentThread()+" 执行中断后任务");
+        //isInterrupted方法，可以用来检查中断状态
+        System.out.println(Thread.currentThread()+" isInterrupted:"+Thread.currentThread().isInterrupted()+" 执行中断后任务");
+        //Thread.interrupted方法，可以用来检查并清除中断状态。
+        System.out.println("Thread.interrupted():"+Thread.interrupted());
+        System.out.println("Thread.interrupted():"+Thread.interrupted());
+        System.out.println(Thread.currentThread()+" isInterrupted:"+Thread.currentThread().isInterrupted()+" 执行中断后任务");
         while(1==1){
 
         }

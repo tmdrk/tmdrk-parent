@@ -50,7 +50,7 @@ public class ProtocolEncoder extends MessageToByteEncoder<ProtocolMsg> {
 	}
 
 	/* (non-Javadoc)
-	 * @see io.netty.handler.codec.MessageToByteEncoder#encode(io.netty.channel.ChannelHandlerContext, java.lang.Object, io.netty.buffer.ByteBuf)
+	 * @see io.netty.handler.codec.MessageToByteEncoder#encode(io.netty.channel.ChannelHandlerContext, java.java.lang.Object, io.netty.buffer.ByteBuf)
 	 */
 	@Override
 	protected void encode(ChannelHandlerContext ctx, ProtocolMsg msg,

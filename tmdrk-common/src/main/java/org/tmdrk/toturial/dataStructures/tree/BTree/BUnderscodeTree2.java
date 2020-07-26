@@ -77,7 +77,7 @@ public class BUnderscodeTree2 {
 			this.children = children;
 		}
 		/* (non-Javadoc)
-		 * @see java.lang.Object#toString()
+		 * @see java.java.lang.Object#toString()
 		 */
 		@Override
 		public String toString() {

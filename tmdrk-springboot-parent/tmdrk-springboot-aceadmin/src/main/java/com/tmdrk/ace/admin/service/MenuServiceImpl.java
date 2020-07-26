@@ -49,7 +49,7 @@ public class MenuServiceImpl implements MenuService{
      * @Description 获取菜单树结构
      * @Date 13:46 2020/5/6
      * @Param []
-     * @return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
+     * @return java.util.List<java.util.Map<java.java.lang.String,java.java.lang.Object>>
      **/
     @Override
     public List<Map<String, Object>> getAllAceMenuTree() {

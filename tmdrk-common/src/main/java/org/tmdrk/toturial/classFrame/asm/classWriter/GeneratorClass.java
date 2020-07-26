@@ -61,13 +61,13 @@ public class GeneratorClass extends ClassLoader{
 
         //定义类的方法
         cw.visitMethod(Opcodes.ACC_PUBLIC+Opcodes.ACC_ABSTRACT, "helloWorld",
-                "(Ljava/lang/Object;)I", null, null).visitEnd();
+                "(Ljava/java.lang/Object;)I", null, null).visitEnd();
         cw.visitEnd(); //使cw类已经完成
         //生成main方法
 //        MethodVisitor mw = cw.visitMethod(Opcodes.ACC_PUBLIC, "<init>", "()V", null, null);
         mw = cw.visitMethod(Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC,
                 "main",
-                "([Ljava/lang/String;)V",
+                "([Ljava/java.lang/String;)V",
                 null,
                 null);
 
@@ -81,7 +81,7 @@ public class GeneratorClass extends ClassLoader{
         mw.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                 "java/io/PrintStream",
                 "println",
-                "(Ljava/lang/String;)V");
+                "(Ljava/java.lang/String;)V");
         mw.visitInsn(Opcodes.RETURN);
         mw.visitMaxs(2, 2);
         mw.visitEnd(); //使cw类已经完成
@@ -110,7 +110,7 @@ public class GeneratorClass extends ClassLoader{
 
         //定义类的方法
         cw.visitMethod(Opcodes.ACC_PUBLIC, "helloWorld",
-                "(Ljava/lang/Object;)I", null, null).visitEnd();
+                "(Ljava/java.lang/Object;)I", null, null).visitEnd();
 
         cw.visitEnd(); //使cw类已经完成
 
@@ -166,7 +166,7 @@ public class GeneratorClass extends ClassLoader{
 
         //定义类的String属性
         cw.visitField(Opcodes.ACC_PUBLIC+Opcodes.ACC_FINAL+Opcodes.ACC_STATIC,
-                "NAME", "Ljava/lang/String;", null, new String("zhoujie")).visitEnd();
+                "NAME", "Ljava/java.lang/String;", null, new String("zhoujie")).visitEnd();
 
         //定义类的int数组属性
         //最后一个参数字段为常量值，这个参数必须仅用于真正的常量字段，也就是final static字段。对于其他字段，他必须为null
@@ -180,7 +180,7 @@ public class GeneratorClass extends ClassLoader{
 
         //定义类的方法
         cw.visitMethod(0, "helloWorld",
-                "(ILjava/lang/String;)Ljava/lang/String;", null, null).visitEnd();
+                "(ILjava/java.lang/String;)Ljava/java.lang/String;", null, null).visitEnd();
 
         cw.visitEnd(); //使cw类已经完成
 
@@ -208,7 +208,7 @@ public class GeneratorClass extends ClassLoader{
 
         //定义类的String属性
         cw.visitField(Opcodes.ACC_PUBLIC+Opcodes.ACC_FINAL+Opcodes.ACC_STATIC,
-                "NAME", "Ljava/lang/String;", null, new String("zhoujie")).visitEnd();
+                "NAME", "Ljava/java.lang/String;", null, new String("zhoujie")).visitEnd();
 
         //初始化一个无参的构造函数
         MethodVisitor constructor = cw.visitMethod(Opcodes.ACC_PUBLIC, "<init>", "()V", null, null);
@@ -236,7 +236,7 @@ public class GeneratorClass extends ClassLoader{
         mw.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                 "java/io/PrintStream",
                 "println",
-                "(Ljava/lang/String;)V",false);
+                "(Ljava/java.lang/String;)V",false);
         mw.visitInsn(Opcodes.RETURN);
         mw.visitMaxs(2, 1);             //两个变量maxStack, maxLocals，设置操作数栈和局部变量表大小
         mw.visitEnd();
@@ -309,7 +309,7 @@ public class GeneratorClass extends ClassLoader{
 
         //定义类的String属性
         ca.visitField(Opcodes.ACC_PUBLIC+Opcodes.ACC_FINAL+Opcodes.ACC_STATIC,
-                "NAME", "Ljava/lang/String;", null, new String("zhoujie")).visitEnd();
+                "NAME", "Ljava/java.lang/String;", null, new String("zhoujie")).visitEnd();
 
 
         //初始化一个无参的构造函数
@@ -338,7 +338,7 @@ public class GeneratorClass extends ClassLoader{
         mw.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                 "java/io/PrintStream",
                 "println",
-                "(Ljava/lang/String;)V");
+                "(Ljava/java.lang/String;)V");
 
         mw.visitInsn(Opcodes.RETURN);
         mw.visitMaxs(1, 1);

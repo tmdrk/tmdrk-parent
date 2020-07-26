@@ -208,7 +208,7 @@
 //     * @Description 当xml json请求类型时，获取请求体
 //     * @Date 21:23 2020/5/5
 //     * @Param [request]
-//     * @return java.lang.String
+//     * @return java.java.lang.String
 //     **/
 //    private String getRequestBody(HttpServletRequest request) {
 //        int contentLength = request.getContentLength();
@@ -231,7 +231,7 @@
 //     * @Description 当multipart/form-data请求类型时，获取请求体
 //     * @Date 21:25 2020/5/5
 //     * @Param [request]
-//     * @return java.util.Map<java.lang.String,java.lang.Object>
+//     * @return java.util.Map<java.java.lang.String,java.java.lang.Object>
 //     **/
 //    private Map<String,Object> getFormParam(HttpServletRequest request) {
 //        MultipartResolver resolver = new StandardServletMultipartResolver();

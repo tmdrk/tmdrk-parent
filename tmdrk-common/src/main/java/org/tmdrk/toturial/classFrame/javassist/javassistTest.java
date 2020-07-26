@@ -47,7 +47,7 @@ public class javassistTest {
         stuClass.addField(idField);
 
         //name属性
-        CtField nameField = new CtField(pool.get("java.lang.String"), "name", stuClass);
+        CtField nameField = new CtField(pool.get("java.java.lang.String"), "name", stuClass);
         stuClass.addField(nameField);
 
         //age属性
