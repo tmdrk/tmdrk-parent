@@ -1,6 +1,6 @@
 package org.tmdrk.toturial.classloader;
 
-import com.baibo.web.util.TestPerson;
+//import com.baibo.web.util.TestPerson;
 
 import java.lang.reflect.Field;
 

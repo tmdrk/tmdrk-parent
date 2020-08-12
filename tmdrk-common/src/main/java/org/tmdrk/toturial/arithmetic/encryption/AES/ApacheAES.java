@@ -15,9 +15,10 @@ import javax.crypto.spec.SecretKeySpec;
  * @Version 1.0
  **/
 public class ApacheAES {
-    private static Logger logger = LoggerFactory.getLogger(ApacheAES.class);
+//    private static Logger logger = LoggerFactory.getLogger(ApacheAES.class);
 
-    private static final String KEY_AES = "AES";
+//    private static final String KEY_AES = "AES";
+    private static final String KEY_AES = "07cc694b9b3fc636";
 
     public static String encrypt(String src, String key) throws Exception {
         if (key == null || key.length() != 16) {
@@ -80,6 +81,12 @@ public class ApacheAES {
         String key = "1111222233334444";
         String ciphertext = encrypt(text,key);
         String plaintext = decrypt(ciphertext, key);
-        logger.info("ciphertext={},plaintext={}",ciphertext,plaintext);
+//        logger.info("ciphertext={},plaintext={}",ciphertext,plaintext);
+        System.out.println(ciphertext+"|"+plaintext);
+        text = "15605527959";
+        ciphertext = encrypt(text,KEY_AES);
+        plaintext = decrypt(ciphertext, key);
+//        logger.info("ciphertext={},plaintext={}",ciphertext,plaintext);
+        System.out.println(ciphertext+"|"+plaintext);
     }
 }

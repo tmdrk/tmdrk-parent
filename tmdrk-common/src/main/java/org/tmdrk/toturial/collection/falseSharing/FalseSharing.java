@@ -9,7 +9,7 @@ package org.tmdrk.toturial.collection.falseSharing;
  * @Version 1.0
  **/
 public class FalseSharing implements Runnable{
-    public static int NUM_THREADS = 4; // change
+    public static int NUM_THREADS = 8; // change
 
     public final static long ITERATIONS = 100L * 1000L * 1000L;
 
@@ -80,6 +80,7 @@ public class FalseSharing implements Runnable{
             t.join();
 
         }
+        System.out.println("main finished");
 
     }
 
@@ -94,7 +95,7 @@ public class FalseSharing implements Runnable{
             longs[arrayIndex].value = i;
 
         }
-
+        System.out.println(Thread.currentThread()+" 结束 arrayIndex="+arrayIndex +" value="+longs[arrayIndex].value);
     }
 
 
@@ -103,7 +104,11 @@ public class FalseSharing implements Runnable{
 
         public volatile long value = 0L;
 
-//        public long p1, p2, p3, p4, p5, p6; // 注释
+//        public long p1, p2, p3, p4, p5; // 注释
+//
+//        public void getLong(){
+//            long aa = p1+p2+p3+p4+p5;
+//        }
 
     }
 }

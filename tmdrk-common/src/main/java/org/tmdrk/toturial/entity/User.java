@@ -9,7 +9,7 @@ public class User {
 		
 	}
 	public User(long userId, String userName, String mobileNumber, String userType) {
-		super();
+//		super();
 		this.userId = userId;
 		this.userName = userName;
 		this.mobileNumber = mobileNumber;
