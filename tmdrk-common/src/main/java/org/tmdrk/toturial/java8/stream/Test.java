@@ -34,7 +34,7 @@ import java.util.stream.Stream;
  **/
 public class Test {
     public static void main(String[] args) {
-        filter();
+//        filter();
 //        System.out.println("================");
 //        distinct();
 //        System.out.println("================");
@@ -46,7 +46,7 @@ public class Test {
 //        System.out.println("================");
 //        peek();
 //        System.out.println("================");
-//        collect();
+        collect();
 //        System.out.println("================");
 //        reduce();
 //        System.out.println("================");
@@ -83,7 +83,7 @@ public class Test {
         //对给定单词列表 ["Hello","World"],你想返回列表["H","e","l","o","W","r","d"]
         String[] words = new String[]{"Hello","World"};
         Arrays.stream(words)
-                .map(word -> word.split(""))
+                .map(word -> word.split(","))
                 .flatMap(Arrays::stream)
                 .distinct().forEach(System.out::println);
     }

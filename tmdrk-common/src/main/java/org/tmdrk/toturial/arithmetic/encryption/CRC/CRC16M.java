@@ -26,6 +26,7 @@ public class CRC16M {
         System.out.println(Integer.toHexString(CRC16_CCITT(str16.getBytes())));
         System.out.println(Integer.toHexString(CRC16_CCITT_FALSE(str16.getBytes())));
         System.out.println(Integer.toHexString(CRC16_XMODEM(str16.getBytes())));     //redis使用
+        System.out.println("redis:"+CRC16_XMODEM(str16.getBytes()));
         System.out.println(Integer.toHexString(CRC16_X25(str16.getBytes())));
         System.out.println(Integer.toHexString(CRC16_MODBUS(str16.getBytes())));
         System.out.println(Integer.toHexString(CRC16_IBM(str16.getBytes())));

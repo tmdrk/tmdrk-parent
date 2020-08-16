@@ -38,13 +38,18 @@ public class JolTest {
         BigDecimal bigDec2 = new BigDecimal("22222222222222222222222222222");
         System.out.println(ClassLayout.parseInstance(bigDec2).toPrintable());
         int a1 = 2;
-        System.out.println(ClassLayout.parseInstance(a1).toPrintable());
+        System.out.println("int 占用的字节数:"+ClassLayout.parseInstance(a1).toPrintable());
         Integer a2 = new Integer(2);
         System.out.println(ClassLayout.parseInstance(a2).toPrintable());
 
         Dog dog = new Dog();
         System.out.println(ClassLayout.parseInstance(dog).toPrintable());
         System.out.println(ClassLayout.parseInstance(dog.aa).toPrintable());
+        Boolean b = false;
+        System.out.println(ClassLayout.parseInstance(b).toPrintable());
+
+        VolatileLong vo = new VolatileLong();
+        System.out.println(ClassLayout.parseInstance(vo).toPrintable());
     }
 
 }
@@ -67,4 +72,16 @@ class Cat {
 class Dog {
     int b = 23;
     int[] aa = new int[10];
+}
+
+class VolatileLong {
+
+    public volatile long value = 0L;
+
+    public long p1, p2, p3, p4, p5; // 注释
+
+    public void getLong(){
+        long aa = p1+p2+p3+p4+p5;
+    }
+
 }

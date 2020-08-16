@@ -14,5 +14,9 @@ public class MvelTest {
         paramMap.put("b", "3");
         Object object = MVEL.eval(expression, paramMap);
         System.out.println(object);
+
+
+        System.out.println(Integer.parseInt("101111"));
+        System.out.println(Integer.parseInt("101111",2));
     }
 }

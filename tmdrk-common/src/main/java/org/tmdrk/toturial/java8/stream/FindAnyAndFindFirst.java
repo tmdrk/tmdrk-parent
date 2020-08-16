@@ -25,13 +25,16 @@ public class FindAnyAndFindFirst {
         System.out.println("====================================================");
         System.out.println(start2-start);
         System.out.println(start3-start2);
+
+        test();
+        test1();
     }
     public static void test(){
         List<Integer> list = Arrays.asList(1, 2, 3, 6, 7, 47, 56, 444, 4, 23);
         Optional<Integer> any = list.parallelStream().filter(x -> x > 45).findAny();
         if(any.isPresent()){
             Integer res = any.get();
-            System.out.println(res);
+            System.out.println("res:"+res);
         }
     }
     public static void test1(){
@@ -39,7 +42,7 @@ public class FindAnyAndFindFirst {
         Optional<Integer> first = list.parallelStream().filter(x -> x > 45).findFirst();
         if(first.isPresent()){
             Integer res = first.get();
-            System.out.println(res);
+            System.out.println("res:"+res);
         }
     }
 
