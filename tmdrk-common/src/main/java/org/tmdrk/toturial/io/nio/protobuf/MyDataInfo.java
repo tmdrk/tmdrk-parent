@@ -195,7 +195,7 @@ public final class MyDataInfo {
     }
 
     /**
-     * Protobuf enum {@code org.tmdrk.protobuf.MyMessage.DataType}
+     * Protobuf enumst {@code org.tmdrk.protobuf.MyMessage.DataType}
      */
     public enum DataType
         implements com.google.protobuf.ProtocolMessageEnum {
@@ -231,7 +231,7 @@ public final class MyDataInfo {
       public final int getNumber() {
         if (this == UNRECOGNIZED) {
           throw new java.lang.IllegalArgumentException(
-              "Can't get the number of an unknown enum value.");
+              "Can't get the number of an unknown enumst value.");
         }
         return value;
       }
