@@ -1,10 +1,13 @@
 package org.tmdrk.toturial.entity;
 
+import java.math.BigDecimal;
+
 public class User {
 	long userId;
 	String userName;
 	String mobileNumber;
 	String userType;
+	private BigDecimal probability ;
 	public User(){
 		
 	}
@@ -39,6 +42,15 @@ public class User {
 	public void setUserType(String userType) {
 		this.userType = userType;
 	}
+
+	public BigDecimal getProbability() {
+		return probability;
+	}
+
+	public void setProbability(BigDecimal probability) {
+		this.probability = probability;
+	}
+
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", userName=" + userName + ", mobileNumber=" + mobileNumber + ", userType="

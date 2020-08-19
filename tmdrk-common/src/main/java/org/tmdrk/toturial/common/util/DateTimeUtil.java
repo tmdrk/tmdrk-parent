@@ -29,7 +29,7 @@ public class DateTimeUtil {
 
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         //now() 实例化
         LocalDateTime localDateTime = LocalDateTime.now();
@@ -156,6 +156,11 @@ public class DateTimeUtil {
         System.out.println(DateTimeUtil.timeStamp(DateTimeUtil.localDate(),DateTimeUtil.localTime()));
         System.out.println(DateTimeUtil.timeStamp(new Date()));
 
+        Date date1 = new Date();
+        Thread.sleep(2345);
+        Date date2 = new Date();
+        Long diff = (date2.getTime() - date1.getTime())/1000;
+        System.out.println("diff:"+diff.intValue());
     }
 
     public static LocalDateTime localDateTime(){

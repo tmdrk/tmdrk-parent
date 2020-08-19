@@ -197,7 +197,6 @@
     <orderEntry type="library" name="Maven: org.elasticsearch:elasticsearch-cli:7.6.0" level="project" />
     <orderEntry type="library" name="Maven: net.sf.jopt-simple:jopt-simple:5.0.2" level="project" />
     <orderEntry type="library" name="Maven: com.carrotsearch:hppc:0.8.1" level="project" />
-    <orderEntry type="library" name="Maven: joda-time:joda-time:2.10.4" level="project" />
     <orderEntry type="library" name="Maven: com.tdunning:t-digest:3.2" level="project" />
     <orderEntry type="library" name="Maven: org.hdrhistogram:HdrHistogram:2.1.9" level="project" />
     <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-api:2.11.1" level="project" />
