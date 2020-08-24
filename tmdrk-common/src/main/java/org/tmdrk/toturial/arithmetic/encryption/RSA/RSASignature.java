@@ -1,21 +1,28 @@
 package org.tmdrk.toturial.arithmetic.encryption.RSA;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.RandomUtil;
 import com.google.common.base.Joiner;
+import com.google.inject.internal.util.$SourceProvider;
 import org.apache.commons.beanutils.BeanMap;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.bouncycastle.util.encoders.UrlBase64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
+import org.tmdrk.toturial.common.util.StringUtil;
 import org.tmdrk.toturial.entity.User;
+
+import java.math.BigDecimal;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Signature;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * RSASignature 简便的加解密签名验签工具
@@ -52,9 +59,13 @@ public class RSASignature {
 
 
     public static void main(String[] args) throws Exception {
-        User User = new User(1L,"张三","12343234566","1");
-        String content = getContent(User); //消息摘要
-        System.out.println("content:"+content);
+        Map<String, Object> genKeyPair = RSAUtils.genKeyPair();
+        String privateKey = RSAUtils.getPrivateKey(genKeyPair);
+        String publicKey = RSAUtils.getPublicKey(genKeyPair);
+        User User = new User(1L,"张三","12343234566",null);
+        String content = getContent(User); //消息
+//        String content = getContentWithSha1(User); //消息摘要
+        System.out.println("cont:"+content);
         String sign = signByPrivateKey(content, privateKey);
         System.out.println("签名结果："+sign);
         boolean res = verifySignByPublicKey(content, sign, publicKey);
@@ -63,9 +74,6 @@ public class RSASignature {
 
         /**************** com.town.icbc.commons:1.1.0  RSAUtils ****************/
 
-        Map<String, Object> genKeyPair = RSAUtils.genKeyPair();
-        String privateKey = RSAUtils.getPrivateKey(genKeyPair);
-        String publicKey = RSAUtils.getPublicKey(genKeyPair);
 //        System.out.println("privateKey:"+privateKey);
 //        System.out.println("publicKey:"+publicKey);
         String ciphertext = RSAUtils.encodeByPublicKeyFormat(content, publicKey);
@@ -78,6 +86,30 @@ public class RSASignature {
         boolean verify = RSAUtils.verify(content.getBytes(), publicKey, sig);
         System.out.println("验签结果："+verify);
 
+        List<User> list = new ArrayList();
+        User user1 = new User(1L,"张三","12343234566",null);
+        user1.setProbability(new BigDecimal("0.2"));
+        User user2 = new User(2L,"历史","12343234566",null);
+        user2.setProbability(new BigDecimal("0.3"));
+        User user3 = new User(3L,"王二毛","12343234566",null);
+        user3.setProbability(new BigDecimal("0.5"));
+        list.add(user1); list.add(user2); list.add(user3);
+        Map<Long,Integer> map = new HashMap();
+        map.put(1L,0);map.put(2L,0);map.put(3L,0);
+        for(int i=0;i<10000;i++){
+            BigDecimal random = RandomUtil.randomBigDecimal();
+            BigDecimal decimal = new BigDecimal(0);
+            for (User user : list) {
+                decimal = decimal.add(user.getProbability());
+                if (random.compareTo(decimal) < 0) {
+                    map.put(user.getUserId(),map.get(user.getUserId())+1);
+                    break;
+                }
+            }
+        }
+        System.out.println("user1中奖率："+map.get(1L)+"%");
+        System.out.println("user2中奖率："+map.get(2L)+"%");
+        System.out.println("user3中奖率："+map.get(3L)+"%");
     }
 
     /**
@@ -200,15 +232,14 @@ public class RSASignature {
     }
 
     /**
-     * @Description:获取消息摘要
+     * @Description:按字典升序组装消息内容
+     * 例：name1=value1&name2=value2......
      * @param bean:签名对象
      * @return: java.lang.String
      **/
     public static String getContent(Object bean){
-        TreeMap params = new TreeMap<>(new BeanMap(bean));
-        params.remove("class");
-        String join = Joiner.on("&").withKeyValueSeparator("=").join(params);
-//        System.out.println(join);
-        return DigestUtils.sha256Hex(join);
+        TreeMap<String,Object> params = new TreeMap<>();
+        BeanUtil.beanToMap(bean,params,false,true);
+        return Joiner.on("&").withKeyValueSeparator("=").join(params);
     }
 }

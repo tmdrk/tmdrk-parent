@@ -1,15 +1,13 @@
-package org.tmdrk.toturial.design.pay.service.impl;
+package com.tmdrk.myboot.pay.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.tmdrk.myboot.pay.dto.*;
+import com.tmdrk.myboot.pay.service.IOutOrderHandler;
+import com.tmdrk.myboot.pay.service.IOutOrderService;
+import com.tmdrk.myboot.pay.service.IOutRefundHandler;
+import com.tmdrk.myboot.pay.service.IOutVerifyHander;
 import org.springframework.stereotype.Service;
-import org.tmdrk.toturial.design.pay.dto.*;
-import org.tmdrk.toturial.design.pay.service.IOutOrderHandler;
-import org.tmdrk.toturial.design.pay.service.IOutOrderService;
-import org.tmdrk.toturial.design.pay.service.IOutRefundHandler;
-import org.tmdrk.toturial.design.pay.service.IOutVerifyHander;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import javax.annotation.Resource;
 
 /**
  * @ClassName OutOrderElemeHandler
@@ -19,10 +17,10 @@ import java.lang.reflect.Type;
  * @Version 1.0
  **/
 @Service("outOrderElemeHandler")
-public class OutOrderElemeHandler implements IOutOrderHandler<OutOrderElemeAssistDto,String> , IOutRefundHandler<OutRefundDto,OutRefundElemeDto>, IOutVerifyHander {
+public class OutOrderElemeHandler implements IOutOrderHandler<OutOrderElemeAssistDto,String>, IOutRefundHandler<OutRefundDto,OutRefundElemeDto>, IOutVerifyHander {
 
-    @Autowired
-    private IOutOrderService IOutOrderService;
+    @Resource
+    private IOutOrderService outOrderService;
 
     //下单 order
 
@@ -92,14 +90,5 @@ public class OutOrderElemeHandler implements IOutOrderHandler<OutOrderElemeAssis
     public OutRefundElemeDto RefundVerify(OutOrderDto outOrderDto) {
         System.out.println("饿了么退款查询");
         return new OutRefundElemeDto();
-    }
-
-    public static void main(String[] args) {
-        Type genericSuperclass = OutOrderElemeHandler.class.getGenericSuperclass();
-        ParameterizedType parameterizedType = (ParameterizedType) genericSuperclass;
-        Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
-        for (Type type:actualTypeArguments) {
-            System.out.println(type);
-        }
     }
 }

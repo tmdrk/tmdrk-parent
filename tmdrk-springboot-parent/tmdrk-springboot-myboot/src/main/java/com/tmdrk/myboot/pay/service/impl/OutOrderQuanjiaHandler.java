@@ -1,10 +1,13 @@
-package org.tmdrk.toturial.design.pay.service.impl;
+package com.tmdrk.myboot.pay.service.impl;
 
+import com.tmdrk.myboot.pay.dto.OutOrderDto;
+import com.tmdrk.myboot.pay.dto.OutOrderQuanjiaDto;
+import com.tmdrk.myboot.pay.dto.OutRefundDto;
+import com.tmdrk.myboot.pay.dto.OutRefundQuanjiaDto;
+import com.tmdrk.myboot.pay.service.IOutOrderHandler;
+import com.tmdrk.myboot.pay.service.IOutRefundHandler;
+import com.tmdrk.myboot.pay.service.IOutVerifyHander;
 import org.springframework.stereotype.Service;
-import org.tmdrk.toturial.design.pay.dto.*;
-import org.tmdrk.toturial.design.pay.service.IOutOrderHandler;
-import org.tmdrk.toturial.design.pay.service.IOutRefundHandler;
-import org.tmdrk.toturial.design.pay.service.IOutVerifyHander;
 
 /**
  * @ClassName OutOrderQuanjiaHandler
@@ -13,7 +16,7 @@ import org.tmdrk.toturial.design.pay.service.IOutVerifyHander;
  * @Date 2020/8/16 23:55
  * @Version 1.0
  **/
-@Service("outOrderElemeHandler")
+@Service("outOrderQuanjiaHandler")
 public class OutOrderQuanjiaHandler implements IOutOrderHandler, IOutRefundHandler<OutRefundDto, OutRefundQuanjiaDto>, IOutVerifyHander {
 
     @Override
