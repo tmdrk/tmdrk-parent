@@ -8,6 +8,9 @@ import org.tmdrk.toturial.design.pay.service.IOutOrderService;
 import org.tmdrk.toturial.design.pay.service.IOutRefundHandler;
 import org.tmdrk.toturial.design.pay.service.IOutVerifyHander;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+
 /**
  * @ClassName OutOrderElemeHandler
  * @Description TODO
@@ -89,5 +92,14 @@ public class OutOrderElemeHandler implements IOutOrderHandler<OutOrderElemeAssis
     public OutRefundElemeDto RefundVerify(OutOrderDto outOrderDto) {
         System.out.println("饿了么退款查询");
         return new OutRefundElemeDto();
+    }
+
+    public static void main(String[] args) {
+        Type genericSuperclass = OutOrderElemeHandler.class.getGenericSuperclass();
+        ParameterizedType parameterizedType = (ParameterizedType) genericSuperclass;
+        Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+        for (Type type:actualTypeArguments) {
+            System.out.println(type);
+        }
     }
 }
