@@ -7,6 +7,7 @@ import com.tmdrk.myboot.redis.Result;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.ReturnType;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,6 +17,7 @@ import java.util.Map;
 /**
  * The type Redis incr service.
  */
+@Service("redisIncrService")
 public class RedisIncrServiceImpl implements IRedisIncrService {
 
     private RedisConnectionFactory redisConnectionFactory;
