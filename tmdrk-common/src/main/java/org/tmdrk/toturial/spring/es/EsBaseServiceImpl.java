@@ -57,7 +57,7 @@ public abstract class EsBaseServiceImpl<T extends Entity<Long>, Q> implements IE
         clazz = (Class<T>) actualTypeArguments[0];
     }
 
-    /**
+    /**BeanUtils
      * Save long.
      * 增
      *
@@ -149,7 +149,7 @@ public abstract class EsBaseServiceImpl<T extends Entity<Long>, Q> implements IE
             responseBody = EntityUtils.toString(response.getEntity());
         } catch (IOException e) {
             String msg = "Es请求响应解析出错";
-            log.error(msg, e);
+//            log.error(msg, e);
             throw new BusinessException(5000, msg);
         }
         JSONObject json = JSON.parseObject(responseBody);

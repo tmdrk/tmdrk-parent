@@ -1,8 +1,12 @@
 package org.tmdrk.toturial.common.util;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 钱运算工具类
  * 
@@ -159,4 +163,22 @@ public class AmountUtil {
 		DecimalFormat df = new DecimalFormat(format);
 		return df.format(new BigDecimal(amountStr));
 	}
+
+
+	public static void main(String[] args) {
+        int var1 = Integer.parseInt("101011100010101110011",2);
+        System.out.println(var1);
+        //角色权限系统使用二进制控制权限0表示无权限
+        BigInteger bg1 = new BigInteger("101011100010101110011",2);
+        BigInteger bg2 = new BigInteger("10111100100111000011101011100110101010110",2);
+		System.out.println(bg1);
+        System.out.println(bg2);
+        System.out.println(bg1.or(bg2));
+
+        Map<String, Object> claim = new HashMap<>();
+        claim.put("name","zhoujie");
+        claim.put("age",13);
+//        claim.forEach();
+	}
+
 }
