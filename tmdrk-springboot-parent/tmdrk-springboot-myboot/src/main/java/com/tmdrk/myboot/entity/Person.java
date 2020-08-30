@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.Email;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ import java.util.Map;
 @Component
 @ConfigurationProperties(prefix="person")
 @Validated   //开启字段校验
-public class Person {
+public class Person implements Serializable {
     @Value("${person.lastName}")
     private String lastName;
     @Value("#{11*3}")       //spel表达式
