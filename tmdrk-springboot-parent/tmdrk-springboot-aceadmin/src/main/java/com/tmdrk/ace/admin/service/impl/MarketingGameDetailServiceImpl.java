@@ -122,9 +122,11 @@ public class MarketingGameDetailServiceImpl implements MarketingGameDetailServic
     public int updateBatch(MarketingGameDetail marketingGameDetail) {
         List<MarketingGameDetail> marketingGameDetails = marketingGameDetailMapper.selectList(marketingGameDetail);
         Random random = new Random();
+        int i = random.nextInt(10);
         marketingGameDetails.forEach(detail-> {
-            detail.setAttrValue(detail.getAttrValue() + random.nextInt(10));
+            detail.setAttrValue(detail.getAttrValue() + i);
         });
+        System.out.println("批量更新开始");
         return marketingGameDetailMapper.updateBatch(marketingGameDetails);
     }
 
