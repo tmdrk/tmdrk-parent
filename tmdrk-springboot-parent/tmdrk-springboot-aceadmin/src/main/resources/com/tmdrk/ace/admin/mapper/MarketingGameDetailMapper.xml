@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tmdrk.ace.admin.mapper.MarketingGameDetailMapper">
+    <!-- 结果集 -->
+    <resultMap type="com.tmdrk.ace.admin.entity.MarketingGameDetail" id="MarketingGameDetailMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="gameId" column="game_id" jdbcType="INTEGER"/>
+        <result property="attrName" column="attr_name" jdbcType="VARCHAR"/>
+        <result property="attrDesc" column="attr_desc" jdbcType="VARCHAR"/>
+        <result property="attrValue" column="attr_value" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="isDel" column="is_del" jdbcType="OTHER"/>
+    </resultMap>
+
+    <!-- 基本字段 -->
+    <sql id="Base_Column_List">
+        id, game_id, attr_name, attr_desc, attr_value, create_time, is_del    </sql>
+
+    <!-- 查询单个 -->
+    <select id="selectById" resultMap="MarketingGameDetailMap">
+        select
+        <include refid="Base_Column_List"/>
+        from marketing_game_detail
+        where id = #{id}
+    </select>
+
+    <!-- 分页查询 -->
+    <select id="selectPage" resultMap="MarketingGameDetailMap">
+        select
+        <include refid="Base_Column_List"/>
+        from marketing_game_detail
+        limit #{start},#{limit}
+    </select>
+
+    <!-- 查询全部 -->
+    <select id="selectAll" resultMap="MarketingGameDetailMap">
+        select
+        <include refid="Base_Column_List"/>
+        from marketing_game_detail
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="selectList" resultMap="MarketingGameDetailMap">
+        select
+        <include refid="Base_Column_List"/>
+        from marketing_game_detail
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="gameId != null">
+                and game_id = #{gameId}
+            </if>
+            <if test="attrName != null and attrName != ''">
+                and attr_name = #{attrName}
+            </if>
+            <if test="attrDesc != null and attrDesc != ''">
+                and attr_desc = #{attrDesc}
+            </if>
+            <if test="attrValue != null and attrValue != ''">
+                and attr_value = #{attrValue}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="isDel != null">
+                and is_del = #{isDel}
+            </if>
+        </where>
+    </select>
+
+    <!-- 新增所有列 -->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into marketing_game_detail(id, game_id, attr_name, attr_desc, attr_value, create_time, is_del)
+        values ( #{id}, #{gameId}, #{attrName}, #{attrDesc}, #{attrValue}, #{createTime}, #{isDel})
+    </insert>
+
+    <!-- 批量新增 -->
+    <insert id="batchInsert">
+        insert into marketing_game_detail(id, game_id, attr_name, attr_desc, attr_value, create_time, is_del)
+        values
+        <foreach collection="marketingGameDetails" item="item" index="index" separator=",">
+            (
+            #{item.id}, #{item.gameId}, #{item.attrName}, #{item.attrDesc}, #{item.attrValue}, #{item.createTime},
+            #{item.isDel} )
+        </foreach>
+    </insert>
+
+    <!-- 通过主键修改数据 -->
+    <update id="update">
+        update ace-admi.marketing_game_detail
+        <set>
+            <if test="gameId != null">
+                game_id = #{gameId},
+            </if>
+            <if test="attrName != null and attrName != ''">
+                attr_name = #{attrName},
+            </if>
+            <if test="attrDesc != null and attrDesc != ''">
+                attr_desc = #{attrDesc},
+            </if>
+            <if test="attrValue != null and attrValue != ''">
+                attr_value = #{attrValue},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="isDel != null">
+                is_del = #{isDel},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from marketing_game_detail where id = #{id}
+    </delete>
+
+    <!-- 总数 -->
+    <select id="count" resultType="int">
+        select count(*) from marketing_game_detail
+    </select>
+
+    <update id="updateBatch">
+        update marketing_game_detail a JOIN (
+        <foreach collection="list" item="item" index="index" separator=" UNION ">
+            SELECT #{item.gameId} AS game_id, #{item.attrName} AS attr_name, #{item.attrValue} AS attr_value
+        </foreach>
+        ) b USING(game_id, attr_name)
+        SET a.attr_value=b.attr_value;
+    </update>
+
+</mapper>

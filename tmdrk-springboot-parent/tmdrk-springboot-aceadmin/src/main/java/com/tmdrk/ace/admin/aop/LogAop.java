@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -80,12 +81,16 @@ public class LogAop {
         builder.append("; duration:").append(duration).append("ms");
         builder.append("; target:").append(target);
         builder.append("; methodName:").append(methodName).append(Arrays.asList(paramTypeArray));
-        builder.append("; return:\n").append(JSON.toJSONString(result, SerializerFeature.WriteMapNullValue));
+        builder.append("; outputParam:").append(JSON.toJSONString(result, SerializerFeature.WriteMapNullValue));
         logger.info("<<===== {}", builder.toString());
     }
 
-    private void logBeforeProceed(StringBuilder builder, Object target, String methodName, List<Object> argsList, Class[] paramTypeArray) throws UnknownHostException {
+    private void logBeforeProceed(StringBuilder builder, Object target, String methodName, List<Object> argsList, Class[] paramTypeArray) {
         //获取renquest对象
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        if(!(requestAttributes instanceof ServletRequestAttributes)){
+            return;
+        }
         ServletRequestAttributes attributes=(ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
         String contentType = request.getContentType();
@@ -96,14 +101,17 @@ public class LogAop {
                 multipart_form_data = true;
             }
         }
-
         String requestedSessionId = request.getRequestedSessionId();
         StringBuffer requestURL = request.getRequestURL();
         String queryString = request.getQueryString();//url后面的请求参数
         String sourceIpAddr = IpUtil.getIpAddr(request);
         String method = request.getMethod();
-        String hostIpAddr = InetAddress.getLocalHost().getHostAddress();
-
+        String hostIpAddr = null;
+        try {
+            hostIpAddr = InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
         builder.append(method).append(" ").append(requestURL);
         if(queryString!=null){
             builder.append("?").append(queryString);
@@ -115,7 +123,7 @@ public class LogAop {
         builder.append("; target:").append(target);
         builder.append("; methodName:").append(methodName).append(Arrays.asList(paramTypeArray));
         if(!multipart_form_data){
-            builder.append("; methodArgs:\n").append(JSON.toJSONString(argsList, SerializerFeature.WriteMapNullValue));
+            builder.append("; inputParam:").append(JSON.toJSONString(argsList, SerializerFeature.WriteMapNullValue));
         }
         logger.info("=====>> {}",builder.toString());
     }
