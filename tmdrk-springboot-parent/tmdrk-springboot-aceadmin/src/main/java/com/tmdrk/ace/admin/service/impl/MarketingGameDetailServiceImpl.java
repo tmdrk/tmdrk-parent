@@ -6,6 +6,7 @@ import com.tmdrk.ace.admin.service.MarketingGameDetailService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -121,6 +122,20 @@ public class MarketingGameDetailServiceImpl implements MarketingGameDetailServic
     @Override
     public int updateBatch(MarketingGameDetail marketingGameDetail) {
         List<MarketingGameDetail> marketingGameDetails = marketingGameDetailMapper.selectList(marketingGameDetail);
+        List<MarketingGameDetail> details = new ArrayList<>();
+        MarketingGameDetail det = new MarketingGameDetail();
+        det.setGameId(1L);
+        det.setAttrName("gameHaha");
+        det.setAttrValue("888");
+        details.add(det);
+        List<MarketingGameDetail> insertList = new ArrayList<>();
+        marketingGameDetails.forEach(d->{
+            if(!details.contains(d.getAttrName())){
+
+            }
+        });
+
+
         Random random = new Random();
         int i = random.nextInt(10);
         marketingGameDetails.forEach(detail-> {
