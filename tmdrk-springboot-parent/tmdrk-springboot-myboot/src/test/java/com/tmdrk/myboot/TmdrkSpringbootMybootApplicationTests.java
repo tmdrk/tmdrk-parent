@@ -27,16 +27,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.ReturnType;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @RunWith(SpringRunner.class)
@@ -54,6 +52,110 @@ public class TmdrkSpringbootMybootApplicationTests {
 
     @Autowired
     Redisson redisson;
+
+    String stockAdd = "local res = {0}\n" +
+            "      res[2] = redis.call('HINCRBY', KEYS[1],'Available',ARGV[1])\n" +
+            "      res[3] = redis.call('HINCRBY', KEYS[1],'Lock',ARGV[2])\n" +
+            "      if(res[2] < 0 or res[3] < 0)\n" +
+            "      then\n" +
+            "      local addNum = 0 - tonumber(ARGV[1])\n" +
+            "      local lockNum = 0 - tonumber(ARGV[2])\n" +
+            "      redis.call('HINCRBY', KEYS[1],'Available',addNum)\n" +
+            "      redis.call('HINCRBY', KEYS[1],'Lock',lockNum)\n" +
+            "      end\n" +
+            "      if(res[2] < 0)\n" +
+            "      then\n" +
+            "      res[1] = res[1]-1\n" +
+            "      end\n" +
+            "      if(res[3] < 0)\n" +
+            "      then\n" +
+            "      res[1] = res[1]-2\n" +
+            "      end\n" +
+            "      return res";
+
+    String stockBack = "local res = {0}\n" +
+            "      local addNum = 0 - tonumber(ARGV[1])\n" +
+            "      local lockNum = 0 - tonumber(ARGV[2])\n" +
+            "      res[2] = redis.call('HINCRBY', KEYS[1],'Available',addNum)\n" +
+            "      res[3] = redis.call('HINCRBY', KEYS[1],'Lock',lockNum)\n" +
+            "      return res";
+
+    String stockLock = "local res = {0,{-1,0},{-1,0},{-1,0},{-1,0}};\n" +
+            "      local restStore = redis.call('HINCRBY', KEYS[1], 'couponStore', -ARGV[1]);\n" +
+            "      res[2] = {restStore, -ARGV[1]};\n" +
+            "      if(tonumber(restStore) < 0) then\n" +
+            "        redis.call('HINCRBY', KEYS[1], 'couponStore', ARGV[1]);\n" +
+            "        res[1] = 1;\n" +
+            "        return res;\n" +
+            "      end;\n" +
+            "      local lockQuantity = redis.call('HINCRBY', KEYS[1], 'lockQuantity', ARGV[1]);\n" +
+            "      res[3] = {lockQuantity, tonumber(ARGV[1])};\n" +
+            "      return res;";
+
+    /**
+     * stockAdd 脚本执行 [0,0]
+     * 第一次 [2,3]，  Available=2   Lock=3 返回[0,2,3]
+     * 第二次 [2,3]，  Available=4   Lock=6 返回[0,4,6]
+     * 第三次 [-3,-3]，Available=1   Lock=3 返回[0,1,3]
+     * 第四次 [-3,-3]，Available=1   Lock=3 返回[-1,-2,0]
+     * 第五次 [-3,-3]，Available=1   Lock=3 返回[-1,-2,0]
+     * 第六次 [-1,-4]，Available=1   Lock=3 返回[-2,0,-1]
+     * 第六次 [-3,-4]，Available=1   Lock=3 返回[-3,-2,-1]
+     * 第七次 [-1,-3]，Available=0   Lock=0 返回[0,0,0]
+     *
+     * stockBack 脚本执行 [8,4]
+     * 第一次 [3,2]，  Available=5   Lock=2  返回[0,5,2]
+     * 第一次 [3,3]，  Available=2   Lock=-1 返回[0,2,-1]
+     * 第一次 [3,3]，  Available=-1  Lock=-4 返回[0,-1,-4]
+     */
+    @Test
+    public void redisStockAddTest() throws IOException, InterruptedException {
+//        redisTemplate.delete("bargain:item");
+        int addNum = 8;
+        int lockNum = 0;
+        byte[][] stockBytes = {
+                "bargain:item".getBytes(), String.valueOf(addNum).getBytes(), String.valueOf(lockNum).getBytes()
+        };
+        RedisConnection connection = redisConnectionFactory.getConnection();
+        // arg1:脚本; arg2:返回类型; arg3:key在入参中的长度; arg4:入参byte二维数组;
+        ArrayList<Long> res = connection.eval(stockAdd.getBytes(), ReturnType.MULTI, 1, stockBytes);
+        res.stream().forEach(System.out::println);
+    }
+
+    @Test
+    public void redisStockBackTest() throws IOException, InterruptedException {
+//        redisTemplate.delete("bargain:item");
+        int addNum = 3;
+        int lockNum = 3;
+        byte[][] stockBytes = {
+                "bargain:item".getBytes(), String.valueOf(addNum).getBytes(), String.valueOf(lockNum).getBytes()
+        };
+        RedisConnection connection = redisConnectionFactory.getConnection();
+//        ArrayList<Long> res = connection.eval(stockBack.getBytes(), ReturnType.MULTI, 1, stockBytes);
+        ArrayList<Long> res = connection.eval(stockBack.getBytes(), ReturnType.fromJavaType(List.class), 1, stockBytes);
+        res.stream().forEach(System.out::println);
+    }
+
+    @Test
+    public void redisStockLockTest() throws IOException, InterruptedException {
+        int addNum = 3;
+        byte[][] stockBytes = {
+                "bargain:item".getBytes(), String.valueOf(addNum).getBytes()
+        };
+        RedisConnection connection = redisConnectionFactory.getConnection();
+        ArrayList res = connection.eval(stockLock.getBytes(), ReturnType.fromJavaType(List.class), 1, stockBytes);
+        res.forEach(a->{
+            if(a instanceof Long){
+                System.out.println(a);
+            } else if(a instanceof List){
+                ((List)a).stream().forEach(System.out::println);
+            }else{
+                System.out.println("a:"+a);
+            }
+
+        });
+    }
+
 
     @Test
     public void contextLoads() {
@@ -128,6 +230,7 @@ public class TmdrkSpringbootMybootApplicationTests {
         conn.hSet(key.getBytes(),total.getBytes(),"10".getBytes());
         conn.hSet(key.getBytes(),surplus.getBytes(),"10".getBytes());
 
+
         //剩余库存(-)，已使用(+)
         Map<String, Long> incrMap = new HashMap<>();
         incrMap.put(use,2L);
@@ -161,6 +264,35 @@ public class TmdrkSpringbootMybootApplicationTests {
         redisTemplate.opsForValue().setBit("test:bitset:uv",1000000,true);
         System.out.println("test:bitset:uv->"+connection.bitCount("test:bitset:uv".getBytes()));
 //        System.out.println("test:bitset:uv->"+connection.bitPos("test:bitset:uv".getBytes()));
+
+//        String hscript = "local res = {0}\n" +
+//                "local breakIndex = 0\n" +
+//                "local argvLength = ARGV[1]\n" +
+//                "local expire = tonumber(ARGV[2])\n" +
+//                "for i = 1 , argvLength , 1 do\n" +
+//                "    res[1+i] = redis.call('HINCRBY', KEYS[1], ARGV[2 + i], ARGV[2 + argvLength + i])\n" +
+//                "    if res[1+i] < 0 then\n" +
+//                "        breakIndex = i\n" +
+//                "        break\n" +
+//                "    end\n" +
+//                "end\n" +
+//                "if breakIndex > 0 then\n" +
+//                "    res[1] = 0 - breakIndex\n" +
+//                "    for i = 1 , breakIndex , 1 do\n" +
+//                "        local addNum = 0 - tonumber(ARGV[2 + argvLength + i])\n" +
+//                "        redis.call('HINCRBY', KEYS[1], ARGV[2 + i], addNum)\n" +
+//                "    end\n" +
+//                "end\n" +
+//                "if res[1] == 0 then\n" +
+//                "    if expire < 0 then\n" +
+//                "        redis.call('PERSIST', KEYS[1])\n" +
+//                "    elseif expire > 0 then\n" +
+//                "        redis.call('EXPIRE', KEYS[1], expire)\n" +
+//                "    end\n" +
+//                "end\n" +
+//                "return res";
+//        connection.eval(hscript.getBytes(), ReturnType.fromJavaType(List.class), 1, null);
     }
+
 
 }

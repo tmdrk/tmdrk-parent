@@ -15,7 +15,7 @@ public class RealtimeComputation {
     public static void main(String[] args) {
         fixedComputation();
         System.out.println("=================");
-        for(int i=0;i<6;i++){
+        for(int i=0;i<10000;i++){
             randomComputation();
         }
     }
@@ -35,16 +35,20 @@ public class RealtimeComputation {
     }
 
     public static void randomComputation(){
-        int totalMoney = 500000;
+        int totalMoney = 1000;
         int money = totalMoney;
         int cnt = 10;
         int tmp = cnt;
         int total = 0;
         Random random = new Random();
         for(int i=0;i < tmp-1; i++){
+            double v = random.nextDouble();
+            while(v<0.1){
+                v = random.nextDouble();
+            }
             BigDecimal bargain = BigDecimal.valueOf(money).divide(BigDecimal.valueOf(cnt),0, RoundingMode.FLOOR);
-            bargain = bargain.multiply(BigDecimal.valueOf(1+random.nextDouble())).setScale(0, RoundingMode.FLOOR);
-            System.out.println(bargain.intValue());
+            bargain = bargain.multiply(BigDecimal.valueOf(1+v)).setScale(0, RoundingMode.FLOOR);
+//            System.out.println(bargain.intValue());
             money = money-bargain.intValue();
             cnt--;
             total+=bargain.intValue();
