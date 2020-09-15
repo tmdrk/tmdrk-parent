@@ -3,8 +3,10 @@ package com.tmdrk.amqp.service;
 import com.tmdrk.amqp.entity.Book;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,6 +18,9 @@ import org.springframework.stereotype.Service;
  **/
 @Service
 public class BookService {
+    @Autowired
+    private AmqpAdmin amqpAdmin;
+
     Logger logger = LoggerFactory.getLogger(getClass());
 
     @RabbitListener(queues="tmdrk.update")
@@ -52,4 +57,5 @@ public class BookService {
             e.printStackTrace();
         }
     }
+
 }

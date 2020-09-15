@@ -1,5 +1,6 @@
 package com.tmdrk.amqp;
 
+import com.alibaba.fastjson.JSON;
 import com.tmdrk.amqp.entity.Book;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,24 +10,38 @@ import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class TmdrkSpringbootAmqpApplicationTests {
+    @Value("${bargain.mq.queueBargainItemStore}")
+    public  String                 queueBargainItemStore;
+
     @Autowired
     RabbitTemplate rabbitTemplate;
     @Autowired
     AmqpAdmin amqpAdmin;
 
     @Test
+    public void bargainTest() {
+        for(int i=0;i<10;i++){
+            rabbitTemplate.convertAndSend(queueBargainItemStore, JSON.toJSONString(new Book(i, "钢铁是怎样炼成的")));
+        }
+        //默认java序列化
+        System.out.println("===========================================");
+    }
+
+    @Test
     public void convertAndSend() {
+        rabbitTemplate.convertAndSend("tmdrk.update",new Book(21, "钢铁是怎样炼成的"));
         System.out.println("===========================================");
         //默认java序列化
+        rabbitTemplate.convertAndSend("mydirect", "tmdrk.insert", new Book(22, "钢铁是怎样炼成的"));
         rabbitTemplate.convertAndSend("mydirect", "tmdrk.insert", new Book(23, "钢铁是怎样炼成的"));
-        rabbitTemplate.convertAndSend("mydirect", "tmdrk.insert", new Book(23, "钢铁是怎样炼成的"));
-        rabbitTemplate.convertAndSend("mydirect", "tmdrk.insert", new Book(23, "钢铁是怎样炼成的"));
+        rabbitTemplate.convertAndSend("mydirect", "tmdrk.insert", new Book(24, "钢铁是怎样炼成的"));
         System.out.println("===========================================");
     }
 
