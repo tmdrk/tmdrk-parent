@@ -107,7 +107,7 @@ public class TmdrkSpringbootMybootApplicationTests {
             "      res[6] = math.random(100);\n"+
             "      return res";
 
-    String bargain = "local res = {0}\n" +
+    String bargainRandom = "local res = {0}\n" +
             "      local total = redis.call('HGET', KEYS[1],'totalCnt');\n"+
             "      res[2] = redis.call('HINCRBY', KEYS[1], 'surplusCnt', ARGV[2]);\n" +
             "      if(tonumber(res[2]) < 0) then\n" +
@@ -124,7 +124,7 @@ public class TmdrkSpringbootMybootApplicationTests {
             "        return res;\n" +
             "      end;\n" +
             "      math.randomseed(ARGV[1]);\n"+
-            "      if(tonumber(samt) > 200 and (tonumber(res[2]) == (tonumber(total)-1) or tonumber(res[2]) == (tonumber(total)-2))) then\n" +
+            "      if(tonumber(samt) > 500 and (tonumber(res[2]) == (tonumber(total)-1) or tonumber(res[2]) == (tonumber(total)-2))) then\n" +
             "        local price = math.floor(samt*(50+math.random(20))/100);\n"+
             "        res[3] = price;\n"+
             "        res[4] = redis.call('HINCRBY', KEYS[1], 'surplusAmt', -price);\n" +
@@ -133,6 +133,28 @@ public class TmdrkSpringbootMybootApplicationTests {
             "      local sCnt = res[2]+1;\n"+
             "      local price = math.floor(samt/sCnt);\n"+
             "      price = math.floor(price*(1+math.random()));\n"+
+            "      res[3] = price;\n"+
+            "      res[4] = redis.call('HINCRBY', KEYS[1], 'surplusAmt', -price);\n" +
+            "      return res";
+
+    String bargainFix = "local res = {0}\n" +
+            "      local total = redis.call('HGET', KEYS[1],'totalCnt');\n"+
+            "      res[2] = redis.call('HINCRBY', KEYS[1], 'surplusCnt', ARGV[1]);\n" +
+            "      if(tonumber(res[2]) < 0) then\n" +
+            "        redis.call('HINCRBY', KEYS[1], 'surplusCnt', -ARGV[1]);\n" +
+            "        res[1] = res[1]-1;\n" +
+            "        return res;\n" +
+            "      end;\n" +
+            "      local samt = redis.call('HGET', KEYS[1],'surplusAmt');\n"+
+            "      if(tonumber(res[2]) == 0) then\n" +
+            "        res[3] = tonumber(samt);\n"+
+            "        local price = 0 - tonumber(samt);\n"+
+            "        res[4] = redis.call('HINCRBY', KEYS[1], 'surplusAmt',price);\n" +
+            "        res[1] = res[1]+1;\n" +
+            "        return res;\n" +
+            "      end;\n" +
+            "      local sCnt = res[2]+1;\n"+
+            "      local price = math.ceil(samt/sCnt);\n"+
             "      res[3] = price;\n"+
             "      res[4] = redis.call('HINCRBY', KEYS[1], 'surplusAmt', -price);\n" +
             "      return res";
@@ -169,6 +191,17 @@ public class TmdrkSpringbootMybootApplicationTests {
 
     @Test
     public void stockBackTest() throws IOException, InterruptedException {
+        redisTemplate.delete("bargain:limit:" + 3 + "_" + "100001");
+        Object giftcnt1 = redisTemplate.opsForHash().get("bargain:limit:" + 3 + "_" + "100001", "giftcnt");
+        System.out.println("giftcnt1:"+giftcnt1);               // null
+        Long cnt = redisTemplate.opsForHash().increment("bargain:limit:" + 3 + "_" + "100001", "20100914", 1);
+        System.out.println("cnt:"+cnt);                         // 1
+        Long giftcnt = redisTemplate.opsForHash().increment("bargain:limit:" + 3 + "_" + "100001", "giftcnt", 1);
+        System.out.println("giftcnt:"+giftcnt);                 // 1
+        Object giftcnt2 = redisTemplate.opsForHash().get("bargain:limit:" + 3 + "_" + "100001", "giftcnt");
+        System.out.println("giftcnt2:"+giftcnt2.getClass());    // 1
+
+
         for(int i=0;i<1;i++){
             redisTemplate.delete("bargain:user:");
             redisTemplate.delete("bargain:user:1002");
@@ -231,9 +264,9 @@ public class TmdrkSpringbootMybootApplicationTests {
 //            long total = 1L+r.nextInt(10);
 //            incrMap.put("surplusCnt",total-1);//剩余人数
 //            incrMap.put("totalCnt",total);//总人数
-            incrMap.put("surplusAmt",10L);//剩余金额
-            incrMap.put("surplusCnt",10L);//剩余人数
-            incrMap.put("totalCnt",10L);//总人数
+            incrMap.put("surplusAmt",7979L);//剩余金额
+            incrMap.put("surplusCnt",22L);//剩余人数
+            incrMap.put("totalCnt",22L);//总人数
             Result<Map<String, Long>> result = redisIncrService.hincr("bargain:record:", incrMap);
             System.out.println("successful:"+result.successful());
             Map<String, Long> data = result.getData();
@@ -249,11 +282,20 @@ public class TmdrkSpringbootMybootApplicationTests {
             // arg1:脚本; arg2:返回类型; arg3:key在入参中的长度,即前几个是入参; arg4:入参byte二维数组;
             Random random = new Random();
             for(int j=0;j<50;j++){
-                int seed = random.nextInt(1000000000);
-                byte[][] bargainBytes = {
-                        "bargain:record:".getBytes(), String.valueOf(seed).getBytes(),"-1".getBytes()
-                };
-                ArrayList<Long> res = connection.eval(bargain.getBytes(), ReturnType.MULTI, 1, bargainBytes);
+                ArrayList<Long> res;
+                boolean isRandom = true;
+                if(isRandom){
+                    int seed = random.nextInt(1000000000);
+                    byte[][] bargainBytes = {
+                            "bargain:record:".getBytes(), String.valueOf(seed).getBytes(),"-1".getBytes()
+                    };
+                    res = connection.eval(bargainRandom.getBytes(), ReturnType.MULTI, 1, bargainBytes);
+                }else{
+                    byte[][] bargainBytes = {
+                            "bargain:record:".getBytes() ,"-1".getBytes()
+                    };
+                    res = connection.eval(bargainFix.getBytes(), ReturnType.MULTI, 1, bargainBytes);
+                }
                 Long aLong = res.get(0);
                 res.stream().forEach(System.out::println);
                 if(aLong==1){
@@ -283,7 +325,7 @@ public class TmdrkSpringbootMybootApplicationTests {
     }
 
     @Test
-    public void redisStockBackTest() throws IOException, InterruptedException {
+    public void redisStockBackTest() throws IOException{
 //        redisTemplate.delete("bargain:item");
         int addNum = 3;
         int lockNum = 3;
