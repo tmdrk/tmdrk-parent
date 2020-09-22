@@ -159,6 +159,16 @@ public class TmdrkSpringbootMybootApplicationTests {
             "      res[4] = redis.call('HINCRBY', KEYS[1], 'surplusAmt', -price);\n" +
             "      return res";
 
+    String bargainRollback = "local res = {0}\n" +
+            "      local scnt = redis.call('HGET', KEYS[1],'surplusCnt');\n"+
+            "      if(tonumber(ARGV[1]) ~= 1 and tonumber(scnt) == 0 ) then\n" +
+            "        return res;\n" +
+            "      end;\n" +
+            "      res[2] = redis.call('HINCRBY', KEYS[1], 'surplusAmt', ARGV[2]);\n" +
+            "      res[3] = redis.call('HINCRBY', KEYS[1], 'surplusCnt', ARGV[3]);\n" +
+            "      res[1] = res[1]+1;\n" +
+            "      return res";
+
     String stockBack = "local res = {0}\n" +
             "      res[2] = redis.call('HINCRBY', KEYS[1],'restore');\n"+
             "      if(tonumber(restore) ~= 0) then\n" +
@@ -188,6 +198,78 @@ public class TmdrkSpringbootMybootApplicationTests {
      * 第一次 [3,3]，  Available=2   Lock=-1 返回[0,2,-1]
      * 第一次 [3,3]，  Available=-1  Lock=-4 返回[0,-1,-4]
      */
+
+    @Test
+    public void bargainRollbackTest() throws IOException, InterruptedException {
+        boolean shouldRollback = false;
+        Integer isLastOne = 0;
+        try{
+
+            for(int i=0;i<1;i++){
+                redisTemplate.delete("bargain:record:");
+                // 初始化数据
+                Map<String, Long> incrMap = new HashMap<>();
+                incrMap.put("surplusAmt",20L);//剩余金额
+                incrMap.put("surplusCnt",3L);//剩余人数
+                incrMap.put("totalCnt",3L);//总人数
+                Result<Map<String, Long>> result = redisIncrService.hincr("bargain:record:", incrMap);
+                System.out.println("successful:"+result.successful());
+                Map<String, Long> data = result.getData();
+                Optional.ofNullable(data).ifPresent((d)->d.forEach((k,v)-> System.out.println("k:"+k+" v:"+v)));
+
+                // 执行脚本
+                int addNum = 1;
+                int lockNum = 1;
+                byte[][] stockBytes = {
+                        "bargain:record:".getBytes(), String.valueOf(addNum).getBytes(), String.valueOf(lockNum).getBytes()
+                };
+                RedisConnection connection = redisConnectionFactory.getConnection();
+                // arg1:脚本; arg2:返回类型; arg3:key在入参中的长度,即前几个是入参; arg4:入参byte二维数组;
+                Random random = new Random();
+                for(int j=0;j<3;j++){
+                    ArrayList<Long> res;
+                    int seed = random.nextInt(1000000000);
+                    byte[][] bargainBytes = {
+                            "bargain:record:".getBytes(), String.valueOf(seed).getBytes(),"-1".getBytes()
+                    };
+                    res = connection.eval(bargainRandom.getBytes(), ReturnType.MULTI, 1, bargainBytes);
+
+                    Long aLong = res.get(0);
+                    if(aLong>=0){
+                        shouldRollback = true;
+                    }
+                    res.stream().forEach(System.out::println);
+                    if(aLong==1){
+                        isLastOne = 1;
+                        int test = 1/0;
+                        if(res.get(1)!=0||res.get(3)!=0||res.get(2)<=0){
+                            System.out.println("=========================");
+                        }
+                    }
+                    System.out.println("+++++++++++++++++++++++++++++++++");
+                }
+                System.out.println("--------------------------------------");
+
+
+            }
+        }catch (Exception e){
+            if(shouldRollback){
+                RedisConnection connection = redisConnectionFactory.getConnection();
+                // 回滚 参数1：key 参数2：是否是最后一个砍价者 参数3：回滚钱数 参数4：回滚人数
+                byte[][] stock = {
+                        "bargain:record:".getBytes(),isLastOne.toString().getBytes(), "30".getBytes(),"1".getBytes()
+                };
+                ArrayList<Long> res = connection.eval(bargainRollback.getBytes(), ReturnType.MULTI, 1, stock);
+                if(res.get(0)==1){
+                    System.out.println("回滚成功");
+                }else{
+                    System.out.println("不用回滚");
+                }
+                connection.close();
+            }
+        }
+
+    }
 
     @Test
     public void stockBackTest() throws IOException, InterruptedException {
@@ -264,7 +346,7 @@ public class TmdrkSpringbootMybootApplicationTests {
 //            long total = 1L+r.nextInt(10);
 //            incrMap.put("surplusCnt",total-1);//剩余人数
 //            incrMap.put("totalCnt",total);//总人数
-            incrMap.put("surplusAmt",7979L);//剩余金额
+            incrMap.put("surplusAmt",20L);//剩余金额
             incrMap.put("surplusCnt",22L);//剩余人数
             incrMap.put("totalCnt",22L);//总人数
             Result<Map<String, Long>> result = redisIncrService.hincr("bargain:record:", incrMap);
