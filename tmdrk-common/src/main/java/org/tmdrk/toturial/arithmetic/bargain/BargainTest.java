@@ -18,7 +18,13 @@ public class BargainTest {
         BigDecimal price = new BigDecimal(20);
         randomB(count,price);
         System.out.println("===============");
-        bargainList(6,2000);
+        bargainList(6,100);
+
+        Random random = new Random();
+        for(int i=0;i<100;i++){
+            System.out.println(random.nextInt());
+            System.out.println(random.nextDouble());
+        }
     }
     /**
      * 随机递减

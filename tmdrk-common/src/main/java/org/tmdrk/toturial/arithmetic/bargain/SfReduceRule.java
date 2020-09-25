@@ -1,4 +1,4 @@
-package org.tmdrk.toturial.arithmetic.bargain.BOCFCB;
+package org.tmdrk.toturial.arithmetic.bargain;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -15,7 +15,7 @@ import java.util.Random;
  * <p>
  * 本砍价规则将'每次砍价的最低砍价金额'默认为 := T / (K * 2)。
  */
-public class SfBargainRule implements BargainRule {
+public class SfReduceRule implements ReduceRule {
 
     @Override
     public List<Integer> getReduceList(BigDecimal totalReduce, int totalReduceTimes) {
@@ -23,7 +23,7 @@ public class SfBargainRule implements BargainRule {
             throw new IllegalArgumentException("total reduce times should gte 1");
         }
 
-        // 最低砍价金额默认为： 总砍价金额 / (砍价次数 * 2)
+        // 最低砍价金额默认为： 总砍价金额 / (砍价次数 * 2)       ROUND_HALF_EVEN 银行家舍入
         BigDecimal minReduce = totalReduce.divide(BigDecimal.valueOf(totalReduceTimes).multiply(BigDecimal.valueOf(2)), BigDecimal.ROUND_HALF_EVEN);
         return getReduceList(totalReduce, totalReduceTimes, minReduce);
     }
@@ -43,25 +43,39 @@ public class SfBargainRule implements BargainRule {
         BigDecimal t = BigDecimal.valueOf(0d);
         for (int i = 0; i < totalReduceTimes - 1; i++) {
             double vss = vs[i] / total * (totalReduce.doubleValue() - minReduceVal * totalReduceTimes) + minReduceVal;
-            BigDecimal reduce = BigDecimal.valueOf(vss).setScale(2, RoundingMode.HALF_EVEN);
+            BigDecimal reduce = BigDecimal.valueOf(vss).setScale(0, RoundingMode.HALF_EVEN);
             t = t.add(reduce);
-            ret.add(reduce.multiply(new BigDecimal("100")).intValue());
+            ret.add(reduce.intValue());
         }
-        ret.add((totalReduce.subtract(t).setScale(2, RoundingMode.HALF_EVEN)).multiply(new BigDecimal("100")).intValue());
+        ret.add(totalReduce.subtract(t).setScale(0, RoundingMode.HALF_EVEN).intValue());
         return ret;
     }
 
 
     public static void main(String[] args) {
-        int t = new Random().nextInt(20) + 1;
-        int i = 0;
-        BigDecimal tt = BigDecimal.valueOf(new Random().nextDouble() * 10000 + 1).setScale(2, RoundingMode.HALF_UP);
-        List<Integer> reduceList = new SfBargainRule().getReduceList(tt, t);
-        int total = 0;
-        for (Integer d : reduceList) {
-            total = total+d;
-            System.out.printf("第%d个人砍掉了%s\n", ++i, d);
+        for(int j=0;j<1;j++){
+            int t = new Random().nextInt(20) + 1;
+            int i = 0;
+//        BigDecimal tt = BigDecimal.valueOf(new Random().nextDouble() * 10000 + 1).setScale(2, RoundingMode.HALF_UP);
+            int amt = new Random().nextInt(10000)+1;
+            BigDecimal tt = new BigDecimal(amt);
+            List<Integer> reduceList = new SfReduceRule().getReduceList(tt, t);
+            int total = 0;
+            for (Integer d : reduceList) {
+                total = total+d;
+                System.out.printf("第%d个人砍掉了%s\n", ++i, d);
+            }
+            System.out.println("砍价总金额=" + tt + ",合计总金额=" + total+ ",砍价总次数="+t+",实际次数="+reduceList.size());
+            if(amt-total!=0||t!=reduceList.size()){
+                System.out.println("砍价失败");
+            }
         }
-        System.out.println("砍价总金额=" + tt.intValue() + "，合计总金额=" + total/100);
+
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        System.out.println(list);
+        list.add(0,3);
+        System.out.println(list);
     }
 }

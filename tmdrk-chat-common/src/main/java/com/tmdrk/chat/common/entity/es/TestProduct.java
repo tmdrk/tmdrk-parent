@@ -5,6 +5,7 @@ import com.tmdrk.chat.common.utils.ElasticsearchUtil;
 import com.tmdrk.chat.common.utils.StringUtil;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Date;
 
 /**
@@ -132,23 +133,23 @@ public class TestProduct {
      * @Param [declaredFields]
      * @return java.java.lang.String
      **/
-//    public static String dealWithProperties(Field[] declaredFields) throws Exception {
-//        StringBuilder propertiesJson = new StringBuilder();
-//        for(Field field:declaredFields){
-//            propertiesJson.append("\""+field.getName()+"\":{");
-//            if (field.isAnnotationPresent(Properties.class)) {
-//                Properties properties = field.getAnnotation(Properties.class);
-//                Method[] declaredMethods = properties.getClass().getDeclaredMethods();
-//                String pro = dealWith(properties, declaredMethods);
-//                propertiesJson.append(pro);
-//            }
-//            propertiesJson.append("},");
-//        }
-//        if(propertiesJson.length()>0){
-//            propertiesJson.delete(propertiesJson.length() - 1,propertiesJson.length());
-//        }
-//        return propertiesJson.toString();
-//    }
+    public static String dealWithProperties(Field[] declaredFields) throws Exception {
+        StringBuilder propertiesJson = new StringBuilder();
+        for(Field field:declaredFields){
+            propertiesJson.append("\""+field.getName()+"\":{");
+            if (field.isAnnotationPresent(Properties.class)) {
+                Properties properties = field.getAnnotation(Properties.class);
+                Method[] declaredMethods = properties.getClass().getDeclaredMethods();
+                String pro = dealWith(properties, declaredMethods);
+                propertiesJson.append(pro);
+            }
+            propertiesJson.append("},");
+        }
+        if(propertiesJson.length()>0){
+            propertiesJson.delete(propertiesJson.length() - 1,propertiesJson.length());
+        }
+        return propertiesJson.toString();
+    }
 
     /**
      * @Author zhoujie
@@ -157,56 +158,56 @@ public class TestProduct {
      * @Param [properties, declaredMethods]
      * @return java.java.lang.String
      **/
-//    public static String dealWith(Object properties,Method[] declaredMethods) throws Exception {
-//        StringBuilder fieldJson = new StringBuilder();
-//        //循环处理属性值所声明的注解内容
-//        for (Method method:declaredMethods){
-//            String methodName = method.getName();
-//            if(!(methodName.equals("equals")||methodName.equals("hashCode")||
-//                    methodName.equals("toString")||methodName.equals("annotationType"))){
-//                Object obj = method.invoke(properties);
-//                Method[] methods = obj.getClass().getDeclaredMethods();
-//                boolean use = false; //注解是否生效
-//                Object value = null; //注解vlaue
-//                Class cla = null; //注解vlaue明确为class
-//                //循环获取注解内use，和value值
-//                for (Method md:methods){
-//                    if(md.getName().equals("use")){
-//                        use = (Boolean) md.invoke(obj);
-//                        if(!use){
-//                            break;//如果注解不生效则直接中止本字段其他操作；
-//                        }
-//                    } else if(md.getName().equals("value")){
-//                        if(methodName.equals("fields")){
-//                            cla = (Class) md.invoke(obj);
-//                        }else{
-//                            value = md.invoke(obj);
-//                        }
-//                    }else{
-//                    }
-//                }
-//                //单独处理fields类型，因为Fields注解value返回值为Class
-//                if(methodName.equals("fields")){
-//                    if(use){
-//                        fieldJson.append("\""+methodName+"\":{");
-//                        Object object = cla.newInstance();
-//                        Field[] declaredFields1 = object.getClass().getDeclaredFields();
-//                        //递归dealWithProperties
-//                        fieldJson.append(dealWithProperties(declaredFields1));
-//                        fieldJson.append("},");
-//                    }
-//                }else{
-//                    if(use){
-//                        fieldJson.append("\""+methodName +"\":\"" + value +"\",");
-//                    }
-//                }
-//            }
-//        }
-//        if(fieldJson.length()>0){
-//            fieldJson.delete(fieldJson.length() - 1,fieldJson.length());
-//        }
-//        return fieldJson.toString();
-//    }
+    public static String dealWith(Object properties,Method[] declaredMethods) throws Exception {
+        StringBuilder fieldJson = new StringBuilder();
+        //循环处理属性值所声明的注解内容
+        for (Method method:declaredMethods){
+            String methodName = method.getName();
+            if(!(methodName.equals("equals")||methodName.equals("hashCode")||
+                    methodName.equals("toString")||methodName.equals("annotationType"))){
+                Object obj = method.invoke(properties);
+                Method[] methods = obj.getClass().getDeclaredMethods();
+                boolean use = false; //注解是否生效
+                Object value = null; //注解vlaue
+                Class cla = null; //注解vlaue明确为class
+                //循环获取注解内use，和value值
+                for (Method md:methods){
+                    if(md.getName().equals("use")){
+                        use = (Boolean) md.invoke(obj);
+                        if(!use){
+                            break;//如果注解不生效则直接中止本字段其他操作；
+                        }
+                    } else if(md.getName().equals("value")){
+                        if(methodName.equals("fields")){
+                            cla = (Class) md.invoke(obj);
+                        }else{
+                            value = md.invoke(obj);
+                        }
+                    }else{
+                    }
+                }
+                //单独处理fields类型，因为Fields注解value返回值为Class
+                if(methodName.equals("fields")){
+                    if(use){
+                        fieldJson.append("\""+methodName+"\":{");
+                        Object object = cla.newInstance();
+                        Field[] declaredFields1 = object.getClass().getDeclaredFields();
+                        //递归dealWithProperties
+                        fieldJson.append(dealWithProperties(declaredFields1));
+                        fieldJson.append("},");
+                    }
+                }else{
+                    if(use){
+                        fieldJson.append("\""+methodName +"\":\"" + value +"\",");
+                    }
+                }
+            }
+        }
+        if(fieldJson.length()>0){
+            fieldJson.delete(fieldJson.length() - 1,fieldJson.length());
+        }
+        return fieldJson.toString();
+    }
     /** 商品id **/
     @Properties(type = @Type(value="long"))
     public long id;

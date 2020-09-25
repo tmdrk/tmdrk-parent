@@ -1,5 +1,8 @@
 package org.tmdrk.toturial;
 
+import cn.hutool.core.bean.BeanUtil;
+import org.springframework.beans.BeanUtils;
+
 import java.util.*;
 
 /**
@@ -48,5 +51,9 @@ public class Test1 {
 //            }
             ranInt = (ranInt+1)%list.size();
         }
+        User user = new User("zhoujie",12);
+        Map map = new HashMap();
+        map = BeanUtil.beanToMap(user);
+        System.out.println(map);
     }
 }
