@@ -363,6 +363,7 @@ public abstract class EsBaseServiceImpl<T extends EsEntity<String>> implements I
         StringBuilder idOrCode = getStringBuilder(t);
         Script script = new Script(INLINE, Script.DEFAULT_SCRIPT_LANG, idOrCode.toString(), Collections.emptyMap());
         request.script(script);
+        request.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
         try {
             UpdateResponse response = restHighLevelClient.update(request, RequestOptions.DEFAULT);
             if(response.getResult().ordinal()==1){

@@ -1,20 +1,16 @@
 package org.tmdrk.toturial.spring.es.service;
 
 import com.alibaba.fastjson.JSON;
-import org.apache.hadoop.yarn.webapp.hamlet.Hamlet;
 import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.tmdrk.toturial.spring.app.MainConfigOfAutowired;
-import org.tmdrk.toturial.spring.app.MainConfigOfCircleDepdence;
+import org.tmdrk.toturial.spring.app.MainConfigOfEs;
 import org.tmdrk.toturial.spring.es.IPage;
 import org.tmdrk.toturial.spring.es.Page;
 import org.tmdrk.toturial.spring.es.dto.BargainQueryDTO;
 import org.tmdrk.toturial.spring.es.dto.Bargains;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 /**
  * IEsBargainServiceTest
@@ -46,7 +42,7 @@ public class IEsBargainServiceTest {
 
     @Test
     public void esTest() throws InterruptedException {
-        AnnotationConfigApplicationContext annocfgappctx = init(true, MainConfigOfAutowired.class);
+        AnnotationConfigApplicationContext annocfgappctx = init(true, MainConfigOfEs.class);
         IEsBargainService esBargainService = (IEsBargainService)annocfgappctx.getBean("esBargainService");
 
         System.out.println("根据索引id查询文档是否存在开始");
@@ -104,14 +100,14 @@ public class IEsBargainServiceTest {
 //        bargains = JSON.parseObject(bar,Bargains.class);
         System.out.println("全量更新开始");
         //实际是重新插入一条新纪录
-        bargains1.setIndexId("1");
-        bargains1.setStatus(3);
+        bargains1.setIndexId("3");
+        bargains1.setStatus(4);
         esBargainService.put(bargains1);
         System.out.println("全量更新结束");
 
         System.out.println("更新根据查询开始");
         Bargains bargainsUpdate = new Bargains();
-        bargainsUpdate.setIndexId("5");
+        bargainsUpdate.setIndexId("6");
         bargainsUpdate.setStatus(3);
         bargainsUpdate.setBargainedPrice(23);
         bargainsUpdate.setReceiverName("理想3");
@@ -122,7 +118,7 @@ public class IEsBargainServiceTest {
 
         System.out.println("更新开始");
         Bargains bar = new Bargains();
-        bar.setIndexId("6");
+        bar.setIndexId("7");
         bar.setStatus(3);
         bar.setBargainedPrice(23);
         bar.setReceiverName("理想3");
@@ -136,7 +132,6 @@ public class IEsBargainServiceTest {
         Bargains bargains2 = esBargainService.selectByIndexId("5");
         System.out.println(JSON.toJSONString(bargains2));
         System.out.println("根据索引id查询结束");
-
 
     }
 }
