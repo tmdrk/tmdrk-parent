@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.Map;
 
 /**
@@ -47,6 +50,15 @@ public class AnnotationAceUserController {
     @PostMapping("ace/user")
     public Object addAceUser(AceUser aceUser){
         logger.info("AnnotationAceUserController.aceUser()...");
+        aceUser.setUserName("\\xF0\\x9F\\x92\\xA6");
+        try {
+            String encode = URLEncoder.encode(aceUser.getUserName(), "utf-8");
+            System.out.println(encode);
+            String decode = URLDecoder.decode(encode, "utf-8");
+            System.out.println(decode);
+        } catch (UnsupportedEncodingException e) {
+
+        }
         int result = annotationAceUserMapper.insert(aceUser);
         if(result==0){
             return ResultUtil.fail("新增失败");

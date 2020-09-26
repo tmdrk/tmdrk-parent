@@ -25,7 +25,8 @@ public class HelloController {
     @RequestMapping("/hello")
     @ResponseBody
     public String hello(Model model){
-
+        String aa = "\\xF0\\x9F\\x92\\xA6";
+        System.out.println(aa);
         return "success";
     }
 }

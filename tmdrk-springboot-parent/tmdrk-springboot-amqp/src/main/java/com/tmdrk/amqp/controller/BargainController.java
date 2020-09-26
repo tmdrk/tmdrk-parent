@@ -31,7 +31,7 @@ public class BargainController {
     RabbitTemplate rabbitTemplate;
 
 
-    @GetMapping("/test")
+    @GetMapping("/queue")
     public Map test(){
         for(int i=0;i<10;i++){
             //routingKey 代表队列

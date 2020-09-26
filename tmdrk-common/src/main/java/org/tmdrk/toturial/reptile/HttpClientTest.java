@@ -5,8 +5,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.util.EntityUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -123,6 +125,59 @@ public class HttpClientTest {
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         HttpGet httpGet = new HttpGet(url);
         httpGet.setHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.109 Safari/537.36");
+        CloseableHttpResponse response = null;
+        try {
+            System.out.println("请求开始...");
+            response = httpClient.execute(httpGet);
+            System.out.println("请求结束...");
+            System.out.println("响应状态为:" + response.getStatusLine());
+            HttpEntity responseEntity = response.getEntity();
+            System.out.println("响应内容长度为:" + responseEntity.getContentLength());
+            String html = EntityUtils.toString(responseEntity);//获得html源代码
+            if(!(StringUtils.isBlank(decode)||StringUtils.isBlank(encode))){
+                html = new String(html.getBytes(decode),encode);
+            }
+            return html;
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally{
+            try{
+                if(httpClient != null) {
+                    httpClient.close();
+                }
+                if(response != null) {
+                    response.close();
+                }
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return null;
+    }
+
+
+    public static CloseableHttpClient getHttpClients() {
+        BasicCookieStore cookieStore = new BasicCookieStore();
+        HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
+        BasicClientCookie cookie = new BasicClientCookie("JSESSIONID", "2B93643DAE55166F4A8269A0A67CFA9A");
+        cookie.setVersion(0);
+        cookieStore.addCookie(cookie);
+        //带有cookie的httpclient
+        return httpClientBuilder.setDefaultCookieStore(cookieStore).build();
+    }
+
+
+    public static String doGetTicket(String url,String decode,String encode){
+        CloseableHttpClient httpClient = getHttpClients();
+        HttpGet httpGet = new HttpGet(url);
+        httpGet.setHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.109 Safari/537.36");
+
+        BasicCookieStore cookieStore = new BasicCookieStore();
+        BasicClientCookie cookie = new BasicClientCookie("JSESSIONID", "2B93643DAE55166F4A8269A0A67CFA9A");
+        cookie.setVersion(0);
+        cookieStore.addCookie(cookie);
+
         CloseableHttpResponse response = null;
         try {
             System.out.println("请求开始...");

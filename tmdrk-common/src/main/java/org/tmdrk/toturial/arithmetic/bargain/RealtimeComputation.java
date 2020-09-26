@@ -15,9 +15,9 @@ public class RealtimeComputation {
     public static void main(String[] args) {
         fixedComputation();
         System.out.println("=================");
-        for(int i=0;i<4;i++){
-            randomComputation();
-        }
+//        for(int i=0;i<4;i++){
+//            randomComputation();
+//        }
     }
     public static void fixedComputation(){
         int money = 199;
