@@ -13,17 +13,11 @@ import java.util.Random;
  **/
 public class RealtimeComputation {
     public static void main(String[] args) {
-//        fixedComputation();
-//        System.out.println("=================");
-//        for(int i=0;i<4;i++){
-//            randomComputation();
-//        }
-        for(int i=0;i<100;i++){
-            int reducePrice = 100;
-            reducePrice = reducePrice*(50+new Random().nextInt(11))/100;
-            System.out.println(reducePrice);
+        fixedComputation();
+        System.out.println("=================");
+        for(int i=0;i<4;i++){
+            randomComputation();
         }
-
     }
     public static void fixedComputation(){
         int money = 199;
