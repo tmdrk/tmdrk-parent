@@ -93,9 +93,9 @@ public class TmdrkSpringbootMybootApplicationTests {
             "      return res;";
 
     String bargainTmp = "local res = {0}\n" +
-            "      local samt = redis.call('HGET', KEYS[1],'SurplusAmt');\n"+
-            "      local sCnt = redis.call('HGET', KEYS[1],'SurplusCnt');\n"+
-            "      local tmp = math.floor(samt/sCnt);\n"+
+            "      local samt = redis.call('HGET', KEYS[1],'surplusAmt');\n"+
+            "      local scnt = redis.call('HGET', KEYS[1],'surplusCnt');\n"+
+            "      local tmp = math.floor(samt/scnt);\n"+
             "      math.randomseed(ARGV[1]);\n"+
             "      res[2] = tmp;\n"+
             "      res[3] = tmp*(1+math.random());\n"+
@@ -105,6 +105,10 @@ public class TmdrkSpringbootMybootApplicationTests {
 //            "      res[5] = 100*math.random();\n"+
             "      res[5] = tmp*(100+math.random(100))/100;\n"+
             "      res[6] = math.random(100);\n"+
+            "      local total = redis.call('HGET', KEYS[1],'totalCnt')\n" +
+            "      res[7] = tonumber(total)*0.2;\n"+
+//            "      res[7] = redis.call('HINCRBY', KEYS[1], 'surplusCnt', ARGV[2])"+
+            "      res[8] = math.floor(tonumber(total) * 0.2+0.5)"+
             "      return res";
 
     String bargainRandom = "local res = {0}\n" +
@@ -198,6 +202,53 @@ public class TmdrkSpringbootMybootApplicationTests {
      * 第一次 [3,3]，  Available=2   Lock=-1 返回[0,2,-1]
      * 第一次 [3,3]，  Available=-1  Lock=-4 返回[0,-1,-4]
      */
+
+    @Test
+    public void bargainTmpTest() throws IOException, InterruptedException {
+        for(int i=0;i<1;i++){
+            redisTemplate.delete("bargain:test1");
+            // 初始化数据
+            Map<String, Long> incrMap = new HashMap<>();
+//            incrMap.put("surplusAmt",1L+r.nextInt(5000));//剩余金额
+//            long total = 1L+r.nextInt(10);
+//            incrMap.put("surplusCnt",total-1);//剩余人数
+//            incrMap.put("totalCnt",total);//总人数
+            incrMap.put("surplusAmt",100L);//剩余金额
+            incrMap.put("surplusCnt",4L);//剩余人数
+            incrMap.put("totalCnt",4L);//总人数
+            Result<Map<String, Long>> result = redisIncrService.hincr("bargain:test1", incrMap);
+            System.out.println("successful:"+result.successful());
+            Map<String, Long> data = result.getData();
+            Optional.ofNullable(data).ifPresent((d)->d.forEach((k,v)-> System.out.println("k:"+k+" v:"+v)));
+
+            // 执行脚本
+            int addNum = 1;
+            int lockNum = 1;
+            byte[][] stockBytes = {
+                    "bargain:test1".getBytes(), String.valueOf(addNum).getBytes(), String.valueOf(lockNum).getBytes()
+            };
+            RedisConnection connection = redisConnectionFactory.getConnection();
+            // arg1:脚本; arg2:返回类型; arg3:key在入参中的长度,即前几个是入参; arg4:入参byte二维数组;
+            Random random = new Random();
+            for(int j=0;j<5;j++){
+                ArrayList<Long> res;
+                int seed = random.nextInt(1000000000);
+                byte[][] bargainBytes = {
+                        "bargain:test1".getBytes(), String.valueOf(seed).getBytes(),"-1".getBytes()
+                };
+                res = connection.eval(bargainTmp.getBytes(), ReturnType.MULTI, 1, bargainBytes);
+                Long aLong = res.get(0);
+                res.stream().forEach(System.out::println);
+                if(aLong==1){
+                    if(res.get(1)!=0||res.get(3)!=0||res.get(2)<=0){
+                        System.out.println("=========================");
+                    }
+                }
+                System.out.println("+++++++++++++++++++++++++++++++++");
+            }
+            System.out.println("--------------------------------------");
+        }
+    }
 
     @Test
     public void bargainRollbackTest() throws IOException, InterruptedException {

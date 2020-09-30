@@ -34,7 +34,7 @@ public class FindAnyAndFindFirst {
         Optional<Integer> any = list.parallelStream().filter(x -> x > 45).findAny();
         if(any.isPresent()){
             Integer res = any.get();
-            System.out.println("res:"+res);
+            System.out.println("findAny res:"+res);
         }
     }
     public static void test1(){
@@ -42,7 +42,7 @@ public class FindAnyAndFindFirst {
         Optional<Integer> first = list.parallelStream().filter(x -> x > 45).findFirst();
         if(first.isPresent()){
             Integer res = first.get();
-            System.out.println("res:"+res);
+            System.out.println("findFirst res:"+res);
         }
     }
 

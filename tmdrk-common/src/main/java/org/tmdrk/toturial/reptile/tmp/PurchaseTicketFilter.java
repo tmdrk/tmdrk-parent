@@ -1,10 +1,13 @@
-package org.tmdrk.toturial.reptile;
+package org.tmdrk.toturial.reptile.tmp;
 
 import com.alibaba.fastjson.JSON;
 import lombok.Data;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.util.CollectionUtils;
 import org.tmdrk.toturial.common.util.SendEamilUtil;
+import org.tmdrk.toturial.reptile.DateUtil;
+import org.tmdrk.toturial.reptile.HttpClientTest;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -22,11 +25,11 @@ public class PurchaseTicketFilter {
     static String cookies="_uab_collina=160117018426887962014074; JSESSIONID=7B160D418AA043DF6A6ED82529B2A061; RAIL_EXPIRATION=1601567725285; RAIL_DEVICEID=rpOFkE--DmqHgM63Onf-RCluFbLYzVFVIS5BGJcPulfKgD7YvLh3oBOgs8Bz_vnRrRRQpphruX31I6UBi61zJuFuyQ7hK-iu_Xpxip0_iFZwqktq_qGRoPhjKNfrfsy7sWr4aown2wMzts6_HFzzx8gxzei3Vu14; BIGipServerotn=871367178.50210.0000; BIGipServerpassport=870842634.50215.0000; route=6f50b51faa11b987e576cdb301e545c4; _jc_save_toStation=%u868C%u57E0%2CBBH; _jc_save_wfdc_flag=dc; _jc_save_toDate=2020-09-28; _jc_save_fromDate=2020-10-01; _jc_save_fromStation=%u4E0A%u6D77%2CSHH";
     /****** 去程 ******/
     // 购票日期
-    static String date = "2020-10-01";
+    static String date = "2020-09-30";
     // 理想票开始时间
-    static String startTime = "07:00";
+    static String startTime = "19:00";
     // 理想票结束时间
-    static String endTime = "11:00";
+    static String endTime = "23:00";
     // 购票url
     static List<String> urls = Arrays.asList(
             //上海-蚌埠
@@ -82,7 +85,7 @@ public class PurchaseTicketFilter {
     private static void printTicket(List<String> tickets) {
         //        List<String> tickets = toArrayByFileReader("D://tmp//file//ticket.txt");
         StringBuilder sb = new StringBuilder();
-        sb.append("车次   |").append("起始   |").append("结束  |").append("耗时  |").append("余票|").append("到目的地时间|").append("当前车次起始站").append("\n");
+        sb.append("车次 |").append("起始  |").append("结束  |").append("耗时  |").append("余票|").append("到目的地时间|").append("当前车次起始站").append("\n");
         List<String> list = new ArrayList();
         StringBuilder perfectSb = new StringBuilder();
         List<String> perfectList = new ArrayList();
@@ -106,7 +109,7 @@ public class PurchaseTicketFilter {
                         String[] split = info.split("\\|");
                         if(split[3].startsWith("G")||split[3].startsWith("D")){
                             map.put(split[3],split);
-                            if(!Objects.equals(split[30],"无") || !(Objects.equals(split[26],"无")||Objects.equals(split[26],""))){
+                            if(!Objects.equals(split[30],"无")){
                                 addList(sb, list, ticketInfo, split, map.get(split[3]));
                                 if(endTime.compareToIgnoreCase(split[8]) > 0 && startTime.compareToIgnoreCase(split[8]) < 0){
                                     addList(perfectSb, perfectList, ticketInfo, split, map.get(split[3]));
@@ -154,7 +157,7 @@ public class PurchaseTicketFilter {
                 perfectList.forEach(per->{
                     sbd.append(per).append("\n");
                 });
-                SendEamilUtil.sentSimpleMail("抢票汇报 "+date,sbd.toString(),"1308398245@qq.com");
+                SendEamilUtil.sentSimpleMail("抢票汇报 "+ date,sbd.toString(),"1308398245@qq.com");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -167,7 +170,6 @@ public class PurchaseTicketFilter {
                 .append(split[9]).append("|")
                 .append(split[10]).append("|")
                 .append(split[30]).append("|")
-                .append(split[26]).append("|")
                 .append("到蚌埠:" + strings[9]).append("|  ")
                 .append(fillingStr(ticketInfo.map.get(split[6]), 2)).append("-")
                 .append(fillingStr(ticketInfo.map.get(split[7]), 2));

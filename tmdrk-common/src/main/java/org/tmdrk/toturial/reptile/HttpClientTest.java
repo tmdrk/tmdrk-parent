@@ -3,6 +3,7 @@ package org.tmdrk.toturial.reptile;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpEntity;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicCookieStore;
@@ -129,12 +130,14 @@ public class HttpClientTest {
     public static String doGet(String url,String decode,String encode,String cookies){
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         HttpGet httpGet = new HttpGet(url);
-        httpGet.setHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.109 Safari/537.36");
+//        httpGet.setHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.109 Safari/537.36");
         if(StringUtils.isNotBlank(cookies)){
 //            httpGet.setHeader("Cookies",cookies);
             httpGet.addHeader(new BasicHeader("Cookie", cookies));
 
         }
+        RequestConfig requestConfig =  RequestConfig.custom().setSocketTimeout(10000).setConnectTimeout(10000).build();
+        httpGet.setConfig(requestConfig);
         CloseableHttpResponse response = null;
         try {
             System.out.println("请求开始...");
@@ -142,7 +145,7 @@ public class HttpClientTest {
             System.out.println("请求结束...");
             System.out.println("响应状态为:" + response.getStatusLine());
             HttpEntity responseEntity = response.getEntity();
-//            System.out.println("响应内容长度为:" + responseEntity.getContentLength());
+            System.out.println("响应内容长度为:" + responseEntity.getContentLength());
             String html = EntityUtils.toString(responseEntity);//获得html源代码
             if(!(StringUtils.isBlank(decode)||StringUtils.isBlank(encode))){
                 html = new String(html.getBytes(decode),encode);
