@@ -148,7 +148,7 @@ public class TmdrkSpringbootMybootApplicationTests {
             "      end;\n"+
             "      return res";
 
-    String bargainFix = "local res = {0}\n" +
+    String bargainAvg = "local res = {0}\n" +
 //            "      local total = redis.call('HGET', KEYS[1],'totalCnt');\n"+
 //            "      local oldCnt = redis.call('HGET', KEYS[1],'surplusCnt');\n"+
             "      local reduceCnt = -ARGV[1];\n" +
@@ -170,9 +170,27 @@ public class TmdrkSpringbootMybootApplicationTests {
             "      res[3] = 0;\n"+
             "      for i = 1 , reduceCnt , 1 do \n"+
             "        local price = math.ceil(sAmt/res[2]);\n"+
+            "        res[2] = res[2] - 1;\n"+
             "        res[3] = res[3] + price;\n"+
             "        res[4] = redis.call('HINCRBY', KEYS[1], 'surplusAmt', -price);\n" +
+            "        sAmt = res[4];\n"+
             "      end;\n"+
+            "      return res";
+
+    String bargainFixed = "local res = {0}\n" +
+            "      res[2] = 0;\n"+
+            "      local sAmt = redis.call('HGET', KEYS[1],'surplusAmt');\n"+
+            "      if(tonumber(sAmt) <= 0) then\n" +
+            "        res[1] = res[1]-1;\n" +
+            "        return res;\n" +
+            "      end;\n" +
+            "      res[3] = tonumber(ARGV[1]);\n" +
+            "      res[4] = redis.call('HINCRBY', KEYS[1], 'surplusAmt', -ARGV[1]);\n" +
+            "      if(tonumber(res[4]) <= 0 ) then\n" +
+            "        res[1] = res[1]+1;\n" +
+            "        res[3] = tonumber(sAmt);\n" +
+            "        res[4] = 0;\n" +
+            "      end;\n" +
             "      return res";
 
     String bargainRollback = "local res = {0}\n" +
@@ -400,18 +418,18 @@ public class TmdrkSpringbootMybootApplicationTests {
 
     @Test
     public void redisBargainTest() throws IOException, InterruptedException {
-        for(int i=0;i<100;i++){
+        for(int i=0;i<3;i++){
             redisTemplate.delete("bargain:record:");
             // 初始化数据
             Random r = new Random();
             Map<String, Long> incrMap = new HashMap<>();
-            incrMap.put("surplusAmt",10L+r.nextInt(100));//剩余金额
-            long total = 1L+r.nextInt(10);
-            incrMap.put("surplusCnt",total);//剩余人数
-            incrMap.put("totalCnt",total);//总人数
-//            incrMap.put("surplusAmt",6L);//剩余金额
-//            incrMap.put("surplusCnt",6L);//剩余人数
-//            incrMap.put("totalCnt",6L);//总人数
+//            incrMap.put("surplusAmt",10L+r.nextInt(100));//剩余金额
+//            long total = 1L+r.nextInt(10);
+//            incrMap.put("surplusCnt",total);//剩余人数
+//            incrMap.put("totalCnt",total);//总人数
+            incrMap.put("surplusAmt",32L);//剩余金额
+            incrMap.put("surplusCnt",3L);//剩余人数
+            incrMap.put("totalCnt",3L);//总人数
             Result<Map<String, Long>> result = redisIncrService.hincr("bargain:record:", incrMap);
             System.out.println("successful:"+result.successful());
             Map<String, Long> data = result.getData();
@@ -426,9 +444,9 @@ public class TmdrkSpringbootMybootApplicationTests {
             RedisConnection connection = redisConnectionFactory.getConnection();
             // arg1:脚本; arg2:返回类型; arg3:key在入参中的长度,即前几个是入参; arg4:入参byte二维数组;
             Random random = new Random();
-            for(int j=0;j<50;j++){
+            for(int j=0;j<10;j++){
                 ArrayList<Long> res;
-                boolean isRandom = true;
+                boolean isRandom = false;
                 Random rd = new Random();
                 if(isRandom){
                     int seed = random.nextInt(1000000000);
@@ -439,12 +457,13 @@ public class TmdrkSpringbootMybootApplicationTests {
                     };
                     res = connection.eval(bargainRandom.getBytes(), ReturnType.MULTI, 1, bargainBytes);
                 }else{
-                    String count = String.valueOf(-(rd.nextInt(3) + 1));
+                    String count = String.valueOf(-(rd.nextInt(2) + 1));
+                    count = String.valueOf((rd.nextInt(2) + 1)*5);
                     System.out.println("count:"+count);
                     byte[][] bargainBytes = {
                             "bargain:record:".getBytes() ,count.getBytes()
                     };
-                    res = connection.eval(bargainFix.getBytes(), ReturnType.MULTI, 1, bargainBytes);
+                    res = connection.eval(bargainFixed.getBytes(), ReturnType.MULTI, 1, bargainBytes);
                 }
                 Long aLong = res.get(0);
                 if(aLong==1){
@@ -453,7 +472,7 @@ public class TmdrkSpringbootMybootApplicationTests {
                         System.out.println("=========================");
                     }
                 }else{
-//                res.stream().forEach(System.out::println);
+                    res.stream().forEach(System.out::println);
                 }
                 System.out.println("+++++++++++++++++++++++++++++++++");
             }
