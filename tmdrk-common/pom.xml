@@ -76,7 +76,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13</version>
+      <version>4.13.1</version>
       <scope>test</scope>
     </dependency>
     <!-- https://mvnrepository.com/artifact/commons-lang/commons-lang -->
@@ -306,13 +306,13 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>RELEASE</version>
+      <version>4.13.1</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>RELEASE</version>
+      <version>4.13.1</version>
       <scope>test</scope>
     </dependency>
     <!-- asm end -->
