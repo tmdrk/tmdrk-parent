@@ -12,11 +12,9 @@ package com.tmdrk.myboot;
 //
 //}
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tmdrk.myboot.entity.Person;
 import com.tmdrk.myboot.redis.Result;
 import com.tmdrk.myboot.redis.service.IRedisIncrService;
-import org.assertj.core.util.Maps;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.redisson.Redisson;
@@ -143,7 +141,7 @@ public class TmdrkSpringbootMybootApplicationTests {
             "        res[2] = res[2] - 1;\n"+
             "        price = math.floor(price*(1+math.random()));\n"+
             "        res[3] = res[3] + price;\n"+
-            "        res[4] = redis.call('HINCRBY', KEYS[1], 'surplusAmt', -price);\n" +
+            "        res[4] = redis.call('HINCRBY', KEYS[1], 'surplusAmt', 0 - tonumber(price));\n" +
             "        sAmt = res[4];\n"+
             "      end;\n"+
             "      return res";
@@ -418,18 +416,18 @@ public class TmdrkSpringbootMybootApplicationTests {
 
     @Test
     public void redisBargainTest() throws IOException, InterruptedException {
-        for(int i=0;i<3;i++){
+        for(int i=0;i<100;i++){
             redisTemplate.delete("bargain:record:");
             // 初始化数据
             Random r = new Random();
             Map<String, Long> incrMap = new HashMap<>();
-//            incrMap.put("surplusAmt",10L+r.nextInt(100));//剩余金额
-//            long total = 1L+r.nextInt(10);
-//            incrMap.put("surplusCnt",total);//剩余人数
-//            incrMap.put("totalCnt",total);//总人数
-            incrMap.put("surplusAmt",32L);//剩余金额
-            incrMap.put("surplusCnt",3L);//剩余人数
-            incrMap.put("totalCnt",3L);//总人数
+            incrMap.put("surplusAmt",1L+r.nextInt(100));//剩余金额
+            long total = 1L+r.nextInt(10);
+            incrMap.put("surplusCnt",total);//剩余人数
+            incrMap.put("totalCnt",total);//总人数
+//            incrMap.put("surplusAmt",2L);//剩余金额
+//            incrMap.put("surplusCnt",3L);//剩余人数
+//            incrMap.put("totalCnt",3L);//总人数
             Result<Map<String, Long>> result = redisIncrService.hincr("bargain:record:", incrMap);
             System.out.println("successful:"+result.successful());
             Map<String, Long> data = result.getData();
@@ -446,7 +444,7 @@ public class TmdrkSpringbootMybootApplicationTests {
             Random random = new Random();
             for(int j=0;j<10;j++){
                 ArrayList<Long> res;
-                boolean isRandom = false;
+                boolean isRandom = true;
                 Random rd = new Random();
                 if(isRandom){
                     int seed = random.nextInt(1000000000);
