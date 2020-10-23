@@ -1,5 +1,7 @@
 package org.tmdrk.toturial.arithmetic.encryption.MD5;
 
+import cn.hutool.crypto.SecureUtil;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.math.BigInteger;
@@ -18,6 +20,10 @@ public class MD5 {
         String str = "kjdhfskjdhDFDFfskdjf";
         System.out.println(encodeMD5Hex(str));
         System.out.println(encodeMD5ByJDK(str));
+        System.out.println(SecureUtil.md5(str));
+
+        System.out.println(Base64.encodeBase64URLSafeString(str.getBytes()));
+        System.out.println(Base64.encodeBase64(str.getBytes()));
     }
 
 

@@ -1,5 +1,8 @@
 package org.tmdrk.toturial.arithmetic.bargain;
 
+import com.alibaba.fastjson.JSON;
+import org.tmdrk.toturial.entity.User;
+
 import java.util.Random;
 
 /**
@@ -10,6 +13,10 @@ import java.util.Random;
  */
 public class Test {
     public static void main(String[] args) {
+        User user = new User();
+        user.setUserId(1002);
+        user.setUserName("张三");
+        System.out.println(JSON.toJSONString(user));
         double amt = 100;
         int cnt = 10;
         for(int i=0;i<10;i++){

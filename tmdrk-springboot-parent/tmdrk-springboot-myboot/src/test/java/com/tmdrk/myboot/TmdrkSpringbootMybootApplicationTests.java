@@ -22,6 +22,7 @@ import org.redisson.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -38,6 +39,18 @@ import java.util.concurrent.TimeUnit;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class TmdrkSpringbootMybootApplicationTests {
+    @Value("${bargain.script.bargainRandom}")
+    private String bargainRandom;
+
+    @Value("${bargain.script.bargainFixed}")
+    private String bargainFixed;
+
+    @Value("${bargain.script.bargainAvg}")
+    private String bargainAvg;
+
+    @Value("${bargain.script.bargainRollback}")
+    private String bargainRollback;
+
     @Autowired
     RedisTemplate redisTemplate;
     @Autowired
@@ -109,97 +122,97 @@ public class TmdrkSpringbootMybootApplicationTests {
             "      res[8] = math.floor(tonumber(total) * 0.2+0.5)"+
             "      return res";
 
-    String bargainRandom = "local res = {0}\n" +
-            "      local reduceCnt = -ARGV[2];\n" +
-            "      local total = redis.call('HGET', KEYS[1],'totalCnt');\n"+
-            "      res[2] = redis.call('HINCRBY', KEYS[1], 'surplusCnt', ARGV[2]);\n" +
-            "      if(tonumber(res[2]) < 0 and tonumber(res[2]+reduceCnt) <= 0) then\n" +
-            "        redis.call('HINCRBY', KEYS[1], 'surplusCnt', -ARGV[2]);\n" +
-            "        res[1] = res[1]-1;\n" +
-            "        return res;\n" +
-            "      end;\n" +
-            "      local sAmt = redis.call('HGET', KEYS[1],'surplusAmt');\n"+
-            "      if(tonumber(res[2]) <= 0) then\n" +
-            "        res[2] = 0;\n"+
-            "        res[3] = tonumber(sAmt);\n"+
-            "        local price = 0 - tonumber(sAmt);\n"+
-            "        res[4] = redis.call('HINCRBY', KEYS[1], 'surplusAmt',price);\n" +
-            "        res[1] = res[1]+1;\n" +
-            "        return res;\n" +
-            "      end;\n" +
-            "      math.randomseed(ARGV[1]);\n"+
-//            "      if(tonumber(samt) > 500 and (tonumber(res[2]) == (tonumber(total)-1) or tonumber(res[2]) == (tonumber(total)-2))) then\n" +
-//            "        local price = math.floor(samt*(50+math.random(20))/100);\n"+
-//            "        res[3] = price;\n"+
-//            "        res[4] = redis.call('HINCRBY', KEYS[1], 'surplusAmt', -price);\n" +
+//    String bargainRandom = "local res = {0}\n" +
+//            "      local reduceCnt = -ARGV[2];\n" +
+//            "      local total = redis.call('HGET', KEYS[1],'totalCnt');\n"+
+//            "      res[2] = redis.call('HINCRBY', KEYS[1], 'surplusCnt', ARGV[2]);\n" +
+//            "      if(tonumber(res[2]) < 0 and tonumber(res[2]+reduceCnt) <= 0) then\n" +
+//            "        redis.call('HINCRBY', KEYS[1], 'surplusCnt', -ARGV[2]);\n" +
+//            "        res[1] = res[1]-1;\n" +
 //            "        return res;\n" +
 //            "      end;\n" +
-            "      res[2] = res[2] + reduceCnt;\n"+
-            "      res[3] = 0;\n"+
-            "      for i = 1 , reduceCnt , 1 do \n"+
-            "        local price = math.floor(sAmt/res[2]);\n"+
-            "        res[2] = res[2] - 1;\n"+
-            "        price = math.floor(price*(1+math.random()));\n"+
-            "        res[3] = res[3] + price;\n"+
-            "        res[4] = redis.call('HINCRBY', KEYS[1], 'surplusAmt', 0 - tonumber(price));\n" +
-            "        sAmt = res[4];\n"+
-            "      end;\n"+
-            "      return res";
-
-    String bargainAvg = "local res = {0}\n" +
-//            "      local total = redis.call('HGET', KEYS[1],'totalCnt');\n"+
-//            "      local oldCnt = redis.call('HGET', KEYS[1],'surplusCnt');\n"+
-            "      local reduceCnt = -ARGV[1];\n" +
-            "      res[2] = redis.call('HINCRBY', KEYS[1], 'surplusCnt', ARGV[1]);\n" +
-            "      if(tonumber(res[2]) < 0 and tonumber(res[2]+reduceCnt) <= 0) then\n" +
-            "        redis.call('HINCRBY', KEYS[1], 'surplusCnt', -ARGV[1]);\n" +
-            "        res[1] = res[1]-1;\n" +
-            "        return res;\n" +
-            "      end;\n" +
-            "      local sAmt = redis.call('HGET', KEYS[1],'surplusAmt');\n"+
-            "      if(tonumber(res[2]) <= 0 ) then\n" +
-            "        res[3] = tonumber(sAmt);\n"+
-            "        local price = 0 - tonumber(sAmt);\n"+
-            "        res[4] = redis.call('HINCRBY', KEYS[1], 'surplusAmt',price);\n" +
-            "        res[1] = res[1]+1;\n" +
-            "        return res;\n" +
-            "      end;\n" +
-            "      res[2] = res[2] + reduceCnt;\n"+
-            "      res[3] = 0;\n"+
-            "      for i = 1 , reduceCnt , 1 do \n"+
-            "        local price = math.ceil(sAmt/res[2]);\n"+
-            "        res[2] = res[2] - 1;\n"+
-            "        res[3] = res[3] + price;\n"+
-            "        res[4] = redis.call('HINCRBY', KEYS[1], 'surplusAmt', -price);\n" +
-            "        sAmt = res[4];\n"+
-            "      end;\n"+
-            "      return res";
-
-    String bargainFixed = "local res = {0}\n" +
-            "      res[2] = 0;\n"+
-            "      local sAmt = redis.call('HGET', KEYS[1],'surplusAmt');\n"+
-            "      if(tonumber(sAmt) <= 0) then\n" +
-            "        res[1] = res[1]-1;\n" +
-            "        return res;\n" +
-            "      end;\n" +
-            "      res[3] = tonumber(ARGV[1]);\n" +
-            "      res[4] = redis.call('HINCRBY', KEYS[1], 'surplusAmt', -ARGV[1]);\n" +
-            "      if(tonumber(res[4]) <= 0 ) then\n" +
-            "        res[1] = res[1]+1;\n" +
-            "        res[3] = tonumber(sAmt);\n" +
-            "        res[4] = 0;\n" +
-            "      end;\n" +
-            "      return res";
-
-    String bargainRollback = "local res = {0}\n" +
-            "      local scnt = redis.call('HGET', KEYS[1],'surplusCnt');\n"+
-            "      if(tonumber(ARGV[1]) ~= 1 and tonumber(scnt) == 0 ) then\n" +
-            "        return res;\n" +
-            "      end;\n" +
-            "      res[2] = redis.call('HINCRBY', KEYS[1], 'surplusAmt', ARGV[2]);\n" +
-            "      res[3] = redis.call('HINCRBY', KEYS[1], 'surplusCnt', ARGV[3]);\n" +
-            "      res[1] = res[1]+1;\n" +
-            "      return res";
+//            "      local sAmt = redis.call('HGET', KEYS[1],'surplusAmt');\n"+
+//            "      if(tonumber(res[2]) <= 0) then\n" +
+//            "        res[2] = 0;\n"+
+//            "        res[3] = tonumber(sAmt);\n"+
+//            "        local price = 0 - tonumber(sAmt);\n"+
+//            "        res[4] = redis.call('HINCRBY', KEYS[1], 'surplusAmt',price);\n" +
+//            "        res[1] = res[1]+1;\n" +
+//            "        return res;\n" +
+//            "      end;\n" +
+//            "      math.randomseed(ARGV[1]);\n"+
+////            "      if(tonumber(samt) > 500 and (tonumber(res[2]) == (tonumber(total)-1) or tonumber(res[2]) == (tonumber(total)-2))) then\n" +
+////            "        local price = math.floor(samt*(50+math.random(20))/100);\n"+
+////            "        res[3] = price;\n"+
+////            "        res[4] = redis.call('HINCRBY', KEYS[1], 'surplusAmt', -price);\n" +
+////            "        return res;\n" +
+////            "      end;\n" +
+//            "      res[2] = res[2] + reduceCnt;\n"+
+//            "      res[3] = 0;\n"+
+//            "      for i = 1 , reduceCnt , 1 do \n"+
+//            "        local price = math.floor(sAmt/res[2]);\n"+
+//            "        res[2] = res[2] - 1;\n"+
+//            "        price = math.floor(price*(1+math.random()));\n"+
+//            "        res[3] = res[3] + price;\n"+
+//            "        res[4] = redis.call('HINCRBY', KEYS[1], 'surplusAmt', 0 - tonumber(price));\n" +
+//            "        sAmt = res[4];\n"+
+//            "      end;\n"+
+//            "      return res";
+//
+//    String bargainAvg = "local res = {0}\n" +
+////            "      local total = redis.call('HGET', KEYS[1],'totalCnt');\n"+
+////            "      local oldCnt = redis.call('HGET', KEYS[1],'surplusCnt');\n"+
+//            "      local reduceCnt = -ARGV[1];\n" +
+//            "      res[2] = redis.call('HINCRBY', KEYS[1], 'surplusCnt', ARGV[1]);\n" +
+//            "      if(tonumber(res[2]) < 0 and tonumber(res[2]+reduceCnt) <= 0) then\n" +
+//            "        redis.call('HINCRBY', KEYS[1], 'surplusCnt', -ARGV[1]);\n" +
+//            "        res[1] = res[1]-1;\n" +
+//            "        return res;\n" +
+//            "      end;\n" +
+//            "      local sAmt = redis.call('HGET', KEYS[1],'surplusAmt');\n"+
+//            "      if(tonumber(res[2]) <= 0 ) then\n" +
+//            "        res[3] = tonumber(sAmt);\n"+
+//            "        local price = 0 - tonumber(sAmt);\n"+
+//            "        res[4] = redis.call('HINCRBY', KEYS[1], 'surplusAmt',price);\n" +
+//            "        res[1] = res[1]+1;\n" +
+//            "        return res;\n" +
+//            "      end;\n" +
+//            "      res[2] = res[2] + reduceCnt;\n"+
+//            "      res[3] = 0;\n"+
+//            "      for i = 1 , reduceCnt , 1 do \n"+
+//            "        local price = math.ceil(sAmt/res[2]);\n"+
+//            "        res[2] = res[2] - 1;\n"+
+//            "        res[3] = res[3] + price;\n"+
+//            "        res[4] = redis.call('HINCRBY', KEYS[1], 'surplusAmt', -price);\n" +
+//            "        sAmt = res[4];\n"+
+//            "      end;\n"+
+//            "      return res";
+//
+//    String bargainFixed = "local res = {0}\n" +
+//            "      res[2] = 0;\n"+
+//            "      local sAmt = redis.call('HGET', KEYS[1],'surplusAmt');\n"+
+//            "      if(tonumber(sAmt) <= 0) then\n" +
+//            "        res[1] = res[1]-1;\n" +
+//            "        return res;\n" +
+//            "      end;\n" +
+//            "      res[3] = tonumber(ARGV[1]);\n" +
+//            "      res[4] = redis.call('HINCRBY', KEYS[1], 'surplusAmt', -ARGV[1]);\n" +
+//            "      if(tonumber(res[4]) <= 0 ) then\n" +
+//            "        res[1] = res[1]+1;\n" +
+//            "        res[3] = tonumber(sAmt);\n" +
+//            "        res[4] = 0;\n" +
+//            "      end;\n" +
+//            "      return res";
+//
+//    String bargainRollback = "local res = {0}\n" +
+//            "      local scnt = redis.call('HGET', KEYS[1],'surplusCnt');\n"+
+//            "      if(tonumber(ARGV[1]) ~= 1 and tonumber(scnt) == 0 ) then\n" +
+//            "        return res;\n" +
+//            "      end;\n" +
+//            "      res[2] = redis.call('HINCRBY', KEYS[1], 'surplusAmt', ARGV[2]);\n" +
+//            "      res[3] = redis.call('HINCRBY', KEYS[1], 'surplusCnt', ARGV[3]);\n" +
+//            "      res[1] = res[1]+1;\n" +
+//            "      return res";
 
     String stockBack = "local res = {0}\n" +
             "      res[2] = redis.call('HINCRBY', KEYS[1],'restore');\n"+
@@ -288,7 +301,7 @@ public class TmdrkSpringbootMybootApplicationTests {
                 redisTemplate.delete("bargain:record:");
                 // 初始化数据
                 Map<String, Long> incrMap = new HashMap<>();
-                incrMap.put("surplusAmt",20L);//剩余金额
+                incrMap.put("surplusAmt",8L);//剩余金额
                 incrMap.put("surplusCnt",3L);//剩余人数
                 incrMap.put("totalCnt",3L);//总人数
                 Result<Map<String, Long>> result = redisIncrService.hincr("bargain:record:", incrMap);
@@ -305,7 +318,7 @@ public class TmdrkSpringbootMybootApplicationTests {
                 RedisConnection connection = redisConnectionFactory.getConnection();
                 // arg1:脚本; arg2:返回类型; arg3:key在入参中的长度,即前几个是入参; arg4:入参byte二维数组;
                 Random random = new Random();
-                for(int j=0;j<3;j++){
+                for(int j=0;j<4;j++){
                     ArrayList<Long> res;
                     int seed = random.nextInt(1000000000);
                     byte[][] bargainBytes = {
@@ -318,9 +331,11 @@ public class TmdrkSpringbootMybootApplicationTests {
                         shouldRollback = true;
                     }
                     res.stream().forEach(System.out::println);
+                    if(j ==1){
+                        int test = 1/0;
+                    }
                     if(aLong==1){
                         isLastOne = 1;
-                        int test = 1/0;
                         if(res.get(1)!=0||res.get(3)!=0||res.get(2)<=0){
                             System.out.println("=========================");
                         }
@@ -416,8 +431,8 @@ public class TmdrkSpringbootMybootApplicationTests {
 
     @Test
     public void redisBargainTest() throws IOException, InterruptedException {
-        for(int i=0;i<100;i++){
-            redisTemplate.delete("bargain:record:");
+        for(int i=0;i<10;i++){
+            redisTemplate.delete("bargain:record:1");
             // 初始化数据
             Random r = new Random();
             Map<String, Long> incrMap = new HashMap<>();
@@ -428,7 +443,7 @@ public class TmdrkSpringbootMybootApplicationTests {
 //            incrMap.put("surplusAmt",2L);//剩余金额
 //            incrMap.put("surplusCnt",3L);//剩余人数
 //            incrMap.put("totalCnt",3L);//总人数
-            Result<Map<String, Long>> result = redisIncrService.hincr("bargain:record:", incrMap);
+            Result<Map<String, Long>> result = redisIncrService.hincr("bargain:record:1", incrMap);
             System.out.println("successful:"+result.successful());
             Map<String, Long> data = result.getData();
             Optional.ofNullable(data).ifPresent((d)->d.forEach((k,v)-> System.out.println("k:"+k+" v:"+v)));
@@ -437,31 +452,37 @@ public class TmdrkSpringbootMybootApplicationTests {
             int addNum = 1;
             int lockNum = 1;
             byte[][] stockBytes = {
-                    "bargain:record:".getBytes(), String.valueOf(addNum).getBytes(), String.valueOf(lockNum).getBytes()
+                    "bargain:record:1".getBytes(), String.valueOf(addNum).getBytes(), String.valueOf(lockNum).getBytes()
             };
             RedisConnection connection = redisConnectionFactory.getConnection();
             // arg1:脚本; arg2:返回类型; arg3:key在入参中的长度,即前几个是入参; arg4:入参byte二维数组;
             Random random = new Random();
             for(int j=0;j<10;j++){
                 ArrayList<Long> res;
-                boolean isRandom = true;
+                int type = 1; // 1 随机金额 2 固定金额 3 平均金额
                 Random rd = new Random();
-                if(isRandom){
+                if(type == 1){
                     int seed = random.nextInt(1000000000);
                     String count = String.valueOf(-(rd.nextInt(2) + 1));
                     System.out.println("count:"+count);
                     byte[][] bargainBytes = {
-                            "bargain:record:".getBytes(), String.valueOf(seed).getBytes(),count.getBytes()
+                            "bargain:record:1".getBytes(), String.valueOf(seed).getBytes(),count.getBytes()
                     };
                     res = connection.eval(bargainRandom.getBytes(), ReturnType.MULTI, 1, bargainBytes);
-                }else{
-                    String count = String.valueOf(-(rd.nextInt(2) + 1));
-                    count = String.valueOf((rd.nextInt(2) + 1)*5);
+                }else if(type == 2){
+                    String count = String.valueOf((rd.nextInt(2) + 1)*5);
                     System.out.println("count:"+count);
                     byte[][] bargainBytes = {
-                            "bargain:record:".getBytes() ,count.getBytes()
+                            "bargain:record:1".getBytes() ,count.getBytes()
                     };
                     res = connection.eval(bargainFixed.getBytes(), ReturnType.MULTI, 1, bargainBytes);
+                }else{
+                    String count = String.valueOf(-(rd.nextInt(2) + 1));
+                    System.out.println("count:"+count);
+                    byte[][] bargainBytes = {
+                            "bargain:record:1".getBytes() ,count.getBytes()
+                    };
+                    res = connection.eval(bargainAvg.getBytes(), ReturnType.MULTI, 1, bargainBytes);
                 }
                 Long aLong = res.get(0);
                 if(aLong==1){
