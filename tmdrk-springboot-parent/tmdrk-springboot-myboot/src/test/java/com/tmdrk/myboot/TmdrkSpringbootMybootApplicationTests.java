@@ -39,16 +39,28 @@ import java.util.concurrent.TimeUnit;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class TmdrkSpringbootMybootApplicationTests {
-    @Value("${bargain.script.bargainRandom}")
+//    @Value("${bargain.script.bargainRandom}")
+//    private String bargainRandom;
+//
+//    @Value("${bargain.script.bargainFixed}")
+//    private String bargainFixed;
+//
+//    @Value("${bargain.script.bargainAvg}")
+//    private String bargainAvg;
+//
+//    @Value("${bargain.script.bargainRollback}")
+//    private String bargainRollback;
+
+    @Value("${bargain-bocf.script.bargainRandom}")
     private String bargainRandom;
 
-    @Value("${bargain.script.bargainFixed}")
+    @Value("${bargain-bocf.script.bargainFixed}")
     private String bargainFixed;
 
-    @Value("${bargain.script.bargainAvg}")
+    @Value("${bargain-bocf.script.bargainAvg}")
     private String bargainAvg;
 
-    @Value("${bargain.script.bargainRollback}")
+    @Value("${bargain-bocf.script.bargainRollback}")
     private String bargainRollback;
 
     @Autowired
@@ -431,18 +443,28 @@ public class TmdrkSpringbootMybootApplicationTests {
 
     @Test
     public void redisBargainTest() throws IOException, InterruptedException {
-        for(int i=0;i<10;i++){
+        for(int i=0;i<1000;i++){
             redisTemplate.delete("bargain:record:1");
             // 初始化数据
             Random r = new Random();
             Map<String, Long> incrMap = new HashMap<>();
-            incrMap.put("surplusAmt",1L+r.nextInt(100));//剩余金额
-            long total = 1L+r.nextInt(10);
-            incrMap.put("surplusCnt",total);//剩余人数
-            incrMap.put("totalCnt",total);//总人数
+
+            incrMap.put("surplusAmt",1000L+r.nextInt(3000));//剩余金额
+            incrMap.put("newCnt",0L);//剩余金额
+//            long total = 1L+r.nextInt(10);
+//            incrMap.put("surplusCnt",total);//剩余人数
+//            incrMap.put("totalCnt",total);//总人数
+
 //            incrMap.put("surplusAmt",2L);//剩余金额
 //            incrMap.put("surplusCnt",3L);//剩余人数
 //            incrMap.put("totalCnt",3L);//总人数
+
+//            incrMap.put("surplusAmt",4000L);//剩余金额
+//            incrMap.put("newCnt",0L);//新会员帮砍人数
+//            incrMap.put("newCustomerCnt",0L);//新客户帮砍人数
+//            incrMap.put("oldCustomerCnt",0L);//老客户帮砍人数
+
+
             Result<Map<String, Long>> result = redisIncrService.hincr("bargain:record:1", incrMap);
             System.out.println("successful:"+result.successful());
             Map<String, Long> data = result.getData();
@@ -459,7 +481,7 @@ public class TmdrkSpringbootMybootApplicationTests {
             Random random = new Random();
             for(int j=0;j<10;j++){
                 ArrayList<Long> res;
-                int type = 1; // 1 随机金额 2 固定金额 3 平均金额
+                int type = 2; // 1 随机金额 2 固定金额 3 平均金额
                 Random rd = new Random();
                 if(type == 1){
                     int seed = random.nextInt(1000000000);
@@ -470,10 +492,19 @@ public class TmdrkSpringbootMybootApplicationTests {
                     };
                     res = connection.eval(bargainRandom.getBytes(), ReturnType.MULTI, 1, bargainBytes);
                 }else if(type == 2){
-                    String count = String.valueOf((rd.nextInt(2) + 1)*5);
-                    System.out.println("count:"+count);
+//                    String count = String.valueOf((rd.nextInt(2) + 1)*5);
+                    boolean newMem = isNewMem();
+                    int amt;
+                    int newMemCnt = 0;
+                    if(newMem){
+                        amt = getRandom(10,10);
+                        newMemCnt++;
+                    }else{
+                        amt = getRandom(1,5);
+                    }
+                    System.out.println("count:"+amt);
                     byte[][] bargainBytes = {
-                            "bargain:record:1".getBytes() ,count.getBytes()
+                            "bargain:record:1".getBytes() ,String.valueOf(amt).getBytes(),String.valueOf(newMemCnt).getBytes()
                     };
                     res = connection.eval(bargainFixed.getBytes(), ReturnType.MULTI, 1, bargainBytes);
                 }else{
@@ -487,7 +518,8 @@ public class TmdrkSpringbootMybootApplicationTests {
                 Long aLong = res.get(0);
                 if(aLong==1){
                     res.stream().forEach(System.out::println);
-                    if(res.get(1)!=0||res.get(3)!=0||res.get(2)<=0){
+//                    if(res.get(1)!=0||res.get(3)!=0||res.get(2)<=0){
+                    if(res.get(3)!=0||res.get(2)<=0){
                         System.out.println("=========================");
                     }
                 }else{
@@ -498,6 +530,21 @@ public class TmdrkSpringbootMybootApplicationTests {
             System.out.println("--------------------------------------");
         }
 
+    }
+
+    private static int getRandom(int start, int end) {
+        if(start>end){
+            throw new RuntimeException();
+        }
+        if(end==start){
+            return end*100;
+        }
+        Random random = new Random();
+        return random.nextInt((end-start)*100)+start*100;
+    }
+    private boolean isNewMem(){
+        Random random = new Random();
+        return random.nextInt()>7?true:false;
     }
 
     @Test

@@ -5,6 +5,7 @@ import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 
 import java.util.Date;
+import java.util.Random;
 
 /**
  * CycleUtil
@@ -27,6 +28,29 @@ public class CycleUtil {
         System.out.println("indexMonth:"+indexMonth);
 
         System.out.println(DateUtil.offset(new Date(), DateField.HOUR,-24*14));
+
+
+        int start = 1; int end = 5;
+//        Random random = new Random();
+//        for(int i=0;i<10000;i++){
+//            int i1 = random.nextInt((end-start)*100);
+//            System.out.println(i1+start*100);
+//        }
+        for(int i=0;i<100;i++){
+            int random = getRandom(start, end);
+            System.out.println(random);
+        }
+    }
+
+    private static int getRandom(int start, int end) {
+        if(start>end){
+            throw new RuntimeException();
+        }
+        if(end==start){
+            return end*100;
+        }
+        Random random = new Random();
+        return random.nextInt((end-start)*100)+start*100;
     }
 
     /**

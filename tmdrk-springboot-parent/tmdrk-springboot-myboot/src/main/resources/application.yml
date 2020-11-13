@@ -126,3 +126,100 @@ bargain:
       res[3] = redis.call('HINCRBY', KEYS[1], 'surplusCnt', ARGV[3])
       res[1] = res[1]+1
       return res
+
+bargain-bocf:
+  script:
+    bargainRandom: |
+      local res = {0}
+      local reduceCnt = -ARGV[2]
+      local total = redis.call('HGET', KEYS[1],'totalCnt')
+      res[2] = redis.call('HINCRBY', KEYS[1], 'surplusCnt', ARGV[2])
+      if(tonumber(res[2]) < 0 and tonumber(res[2]+reduceCnt) <= 0) then
+        redis.call('HINCRBY', KEYS[1], 'surplusCnt', -ARGV[2])
+        res[1] = res[1]-1
+        return res
+      end
+      local sAmt = redis.call('HGET', KEYS[1],'surplusAmt')
+      if(tonumber(res[2]) <= 0) then
+        res[2] = 0
+        res[3] = tonumber(sAmt)
+        local price = 0 - tonumber(sAmt)
+        res[4] = redis.call('HINCRBY', KEYS[1], 'surplusAmt',price)
+        res[1] = res[1]+1
+        return res
+      end
+      math.randomseed(ARGV[1])
+      res[2] = res[2] + reduceCnt
+      res[3] = 0
+      for i = 1 , reduceCnt , 1 do
+        local price = math.floor(sAmt/res[2])
+        res[2] = res[2] - 1
+        price = math.floor(price*(1+math.random()))
+        res[3] = res[3] + price
+        res[4] = redis.call('HINCRBY', KEYS[1], 'surplusAmt', 0 - tonumber(price))
+        sAmt = res[4]
+      end
+      return res
+    bargainFixed: |
+      local res = {0}
+      local sAmt = redis.call('HGET', KEYS[1],'surplusAmt')
+      res[2] = tonumber(redis.call('HGET', KEYS[1], 'newCnt'))
+      if(tonumber(sAmt) <= 0) then
+        res[1] = res[1]-1
+        return res
+      end
+      res[3] = tonumber(ARGV[1])
+      res[4] = redis.call('HINCRBY', KEYS[1], 'surplusAmt', -ARGV[1])
+      if(tonumber(res[4]) <= 0) then
+        if(tonumber(ARGV[2]) == 1 or res[2] > 0) then
+          redis.call('HSET', KEYS[1], 'surplusAmt', 0)
+          res[1] = res[1]+1
+          res[3] = tonumber(sAmt)
+          res[4] = 0
+        else
+          res[1] = res[1]-2
+          res[3] = redis.call('HINCRBY', KEYS[1], 'surplusAmt', ARGV[1])
+          res[4] = 0
+        end
+      end
+      if(tonumber(ARGV[2]) == 1) then
+        res[2] = redis.call('HINCRBY', KEYS[1], 'newCnt', ARGV[2])
+      end
+      return res
+    bargainAvg: |
+      local res = {0}
+      local reduceCnt = -ARGV[1]
+      res[2] = redis.call('HINCRBY', KEYS[1], 'surplusCnt', ARGV[1])
+      if(tonumber(res[2]) < 0 and tonumber(res[2]+reduceCnt) <= 0) then
+        redis.call('HINCRBY', KEYS[1], 'surplusCnt', -ARGV[1])
+        res[1] = res[1]-1
+        return res
+      end
+      local sAmt = redis.call('HGET', KEYS[1],'surplusAmt')
+      if(tonumber(res[2]) <= 0 ) then
+        res[3] = tonumber(sAmt)
+        local price = 0 - tonumber(sAmt)
+        res[4] = redis.call('HINCRBY', KEYS[1], 'surplusAmt',price)
+        res[1] = res[1]+1
+        return res
+      end
+      res[2] = res[2] + reduceCnt
+      res[3] = 0
+      for i = 1 , reduceCnt , 1 do
+        local price = math.ceil(sAmt/res[2])
+        res[2] = res[2] - 1
+        res[3] = res[3] + price
+        res[4] = redis.call('HINCRBY', KEYS[1], 'surplusAmt', -price)
+        sAmt = res[4]
+      end
+      return res
+    bargainRollback: |
+      local res = {0}
+      local sCnt = redis.call('HGET', KEYS[1],'surplusCnt')
+      if(tonumber(ARGV[1]) ~= 1 and tonumber(sCnt) == 0 ) then
+        return res
+      end
+      res[2] = redis.call('HINCRBY', KEYS[1], 'surplusAmt', ARGV[2])
+      res[3] = redis.call('HINCRBY', KEYS[1], 'surplusCnt', ARGV[3])
+      res[1] = res[1]+1
+      return res
