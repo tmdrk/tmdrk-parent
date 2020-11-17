@@ -171,13 +171,13 @@ bargain-bocf:
       res[3] = tonumber(ARGV[1])
       res[4] = redis.call('HINCRBY', KEYS[1], 'surplusAmt', -ARGV[1])
       if(tonumber(res[4]) <= 0) then
-        if(tonumber(ARGV[2]) == 1 or res[2] > 0) then
+        res[5] = tonumber(redis.call('HGET', KEYS[1], 'newChangeCnt'))
+        if(res[2] > 0 and res[5] > 0) then
           redis.call('HSET', KEYS[1], 'surplusAmt', 0)
           res[1] = res[1]+1
           res[3] = tonumber(sAmt)
           res[4] = 0
         else
-          res[1] = res[1]-2
           res[3] = redis.call('HINCRBY', KEYS[1], 'surplusAmt', ARGV[1])
           res[4] = 0
         end

@@ -443,7 +443,7 @@ public class TmdrkSpringbootMybootApplicationTests {
 
     @Test
     public void redisBargainTest() throws IOException, InterruptedException {
-        for(int i=0;i<1000;i++){
+        for(int i=0;i<10;i++){
             redisTemplate.delete("bargain:record:1");
             // 初始化数据
             Random r = new Random();
@@ -451,6 +451,7 @@ public class TmdrkSpringbootMybootApplicationTests {
 
             incrMap.put("surplusAmt",1000L+r.nextInt(3000));//剩余金额
             incrMap.put("newCnt",0L);//剩余金额
+            incrMap.put("newChangeCnt", (long) r.nextInt(2));//剩余金额
 //            long total = 1L+r.nextInt(10);
 //            incrMap.put("surplusCnt",total);//剩余人数
 //            incrMap.put("totalCnt",total);//总人数
