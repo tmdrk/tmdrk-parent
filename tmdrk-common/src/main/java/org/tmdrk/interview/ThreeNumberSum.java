@@ -35,36 +35,66 @@ public class ThreeNumberSum {
         long start = System.currentTimeMillis();
         long count = 0;
         for(int i=0;i<nums.length;i++){
-//            if(map.containsKey(nums[i])){
-//                continue;
-//            }
-            if(list.size()==2 && res.containsKey(list.get(0)+"|"+list.get(1))){
-                sum -= nums[i-1];
-                list.removeLast();
-                ids.removeLast();
+
+            Integer first = list.peekFirst();
+            if(first != null && first>0){
+                System.out.println("i========="+i);
+                break;
+            }
+
+            if(map.containsKey(first)){
+                sum = 0;
+                list.clear();
+                ids.clear();
                 i--;
                 continue;
             }
+
+//            if(list.size()==2 && res.containsKey(list.get(0)+"|"+list.get(1))){
+//                Integer re = list.removeLast();
+//                ids.removeLast();
+//                sum -= re;
+//                i=i-2;
+//                continue;
+//            }
             count++;
             sum += nums[i];
             list.add(nums[i]);
             ids.add(i);
+
+            if(sum >0){
+                //一旦大于，后面全没有必要比较了
+                while(list.size()>1) {
+                    Integer idx = ids.getLast();
+                    if (idx != null) {
+                        i = idx;
+                        sum -= nums[i];
+                        list.removeLast();
+                        ids.removeLast();
+                    }
+                }
+                if(i != nums.length - 1){
+                    continue;
+                }
+            }
+
             if(list.size()==3){
-                if(sum ==0){
-//                System.out.println(list);
-                    List<Integer> integers = new ArrayList<>(list);
-                    res.put(integers.get(0)+"|"+integers.get(1),integers);
+                if(sum >=0){
+                    if(sum==0){
+                        List<Integer> integers = new ArrayList<>(list);
+                        res.put(integers.toString(),integers);
+                    }
                     //一旦匹配，后面全没有必要比较了
-//                    while(list.size()>1) {
-//                        Integer idx = ids.getLast();
-//                        if (idx != null) {
-//                            i = idx;
-//                            sum -= nums[i];
-//                            list.removeLast();
-//                            ids.removeLast();
-//                        }
-//                    }
-//                    continue;
+                    while(list.size()>1) {
+                        Integer idx = ids.getLast();
+                        if (idx != null) {
+                            i = idx;
+                            sum -= nums[i];
+                            list.removeLast();
+                            ids.removeLast();
+                        }
+                    }
+                    continue;
                 }
                 sum -= nums[i];
                 list.removeLast();
@@ -77,9 +107,9 @@ public class ThreeNumberSum {
                     sum -= nums[i];
                     list.removeLast();
                     ids.removeLast();
-//                    if(list.size()==0){
-//                        map.put(nums[i],"");
-//                    }
+                    if(list.size()==0){
+                        map.put(nums[i],"");
+                    }
                 }
             }
         }
