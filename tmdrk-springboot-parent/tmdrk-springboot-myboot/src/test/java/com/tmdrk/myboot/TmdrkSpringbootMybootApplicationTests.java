@@ -257,6 +257,19 @@ public class TmdrkSpringbootMybootApplicationTests {
      */
 
     @Test
+    public void putIfAbsentTest() throws IOException, InterruptedException {
+        redisTemplate.delete("bargain:test");
+        Boolean res = redisTemplate.opsForHash().putIfAbsent("bargain:test","10001",1);
+        System.out.println(res);
+        res = redisTemplate.opsForHash().putIfAbsent("bargain:test","10001",2);
+        System.out.println(res);
+        res = redisTemplate.opsForHash().putIfAbsent("bargain:test","10001",1);
+        System.out.println(res);
+        res = redisTemplate.opsForHash().putIfAbsent("bargain:test","10002",1);
+        System.out.println(res);
+    }
+
+    @Test
     public void bargainTmpTest() throws IOException, InterruptedException {
         for(int i=0;i<1;i++){
             redisTemplate.delete("bargain:test1");
@@ -451,7 +464,10 @@ public class TmdrkSpringbootMybootApplicationTests {
 
             incrMap.put("surplusAmt",1000L+r.nextInt(3000));//剩余金额
             incrMap.put("newCnt",0L);//剩余金额
-            incrMap.put("newChangeCnt", (long) r.nextInt(2));//剩余金额
+            incrMap.put("newCardCnt", (long) r.nextInt(2));//剩余金额
+            incrMap.put("bargainPrice",0L);//剩余金额
+            incrMap.put("bargainedPrice",0L);//已砍金额
+            incrMap.put("status",0L);//砍价状态
 //            long total = 1L+r.nextInt(10);
 //            incrMap.put("surplusCnt",total);//剩余人数
 //            incrMap.put("totalCnt",total);//总人数
@@ -505,7 +521,7 @@ public class TmdrkSpringbootMybootApplicationTests {
                     }
                     System.out.println("count:"+amt);
                     byte[][] bargainBytes = {
-                            "bargain:record:1".getBytes() ,String.valueOf(amt).getBytes(),String.valueOf(newMemCnt).getBytes()
+                            "bargain:record:1".getBytes() ,String.valueOf(amt).getBytes(),String.valueOf(newMemCnt).getBytes(),String.valueOf(1).getBytes()
                     };
                     res = connection.eval(bargainFixed.getBytes(), ReturnType.MULTI, 1, bargainBytes);
                 }else{
