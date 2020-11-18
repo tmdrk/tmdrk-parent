@@ -5,10 +5,12 @@ import com.tmdrk.myboot.entity.Home;
 import com.tmdrk.myboot.entity.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,7 +51,7 @@ public class HelloWorldController {
     }
 
     @RequestMapping("say/hello")
-    public String sayHello(String name){
+    public String sayHello(@Validated String name){
         System.out.println("=================");
         return myService.sayHello(name);
     }
