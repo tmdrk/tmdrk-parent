@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
+import java.math.BigDecimal;
 
 /**
  * @ClassName Test
@@ -30,5 +31,11 @@ public class Test {
                 "</Message>";
         Message message = (Message)SocketClient.xmlToBean(xml,Message.class);
         System.out.println(JSON.toJSONString(message));
+
+        BigDecimal bg = new BigDecimal("1.00");
+        System.out.println(bg);
+        System.out.println(bg==BigDecimal.ONE);
+        System.out.println(bg.equals(BigDecimal.ONE));
+        System.out.println(bg.compareTo(BigDecimal.ONE)==0);
     }
 }

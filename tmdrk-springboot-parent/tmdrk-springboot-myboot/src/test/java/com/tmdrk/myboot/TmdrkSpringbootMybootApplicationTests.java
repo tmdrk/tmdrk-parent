@@ -521,7 +521,10 @@ public class TmdrkSpringbootMybootApplicationTests {
                     }
                     System.out.println("count:"+amt);
                     byte[][] bargainBytes = {
-                            "bargain:record:1".getBytes() ,String.valueOf(amt).getBytes(),String.valueOf(newMemCnt).getBytes(),String.valueOf(1).getBytes()
+                            "bargain:record:1".getBytes() ,
+                            String.valueOf(amt).getBytes(),
+                            String.valueOf(newMemCnt).getBytes(),
+                            String.valueOf(1).getBytes()
                     };
                     res = connection.eval(bargainFixed.getBytes(), ReturnType.MULTI, 1, bargainBytes);
                 }else{
