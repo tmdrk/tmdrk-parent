@@ -258,15 +258,55 @@ public class TmdrkSpringbootMybootApplicationTests {
 
     @Test
     public void putIfAbsentTest() throws IOException, InterruptedException {
-        redisTemplate.delete("bargain:test");
-        Boolean res = redisTemplate.opsForHash().putIfAbsent("bargain:test","10001",1);
+        String keyTest = "test:bargain:gift:";
+        Boolean aBoolean = redisTemplate.opsForValue().setIfAbsent(keyTest + 101, 0, 5L, TimeUnit.MINUTES);
+        System.out.println("aBoolean:"+aBoolean);
+        aBoolean = redisTemplate.opsForValue().setIfAbsent(keyTest + 101, 0, 5L, TimeUnit.MINUTES);
+        System.out.println("aBoolean:"+aBoolean);
+
+        redisTemplate.opsForValue().set(keyTest+12,"123");
+        redisTemplate.opsForValue().set(keyTest+"aa","222");
+        redisTemplate.opsForValue().set(keyTest+"test","3333");
+        redisTemplate.delete(keyTest+"**");
+        System.out.println(redisTemplate.opsForValue().get(keyTest+12));
+        System.out.println(redisTemplate.opsForValue().get(keyTest+"aa"));
+        System.out.println(redisTemplate.opsForValue().get(keyTest+"test"));
+        Set keys = redisTemplate.keys(keyTest + "*");
+        redisTemplate.delete(keys);
+        System.out.println(redisTemplate.opsForValue().get(keyTest+12));
+        System.out.println(redisTemplate.opsForValue().get(keyTest+"aa"));
+        System.out.println(redisTemplate.opsForValue().get(keyTest+"test"));
+
+        System.out.println(new Date().getTime());
+        String key = "bargain:test";
+        redisTemplate.delete(key);
+        redisTemplate.delete(key+":1");
+        Boolean res = redisTemplate.opsForHash().putIfAbsent(key,"10001",1);
         System.out.println(res);
-        res = redisTemplate.opsForHash().putIfAbsent("bargain:test","10001",2);
+        res = redisTemplate.opsForHash().putIfAbsent(key,"10001",2);
         System.out.println(res);
-        res = redisTemplate.opsForHash().putIfAbsent("bargain:test","10001",1);
+        res = redisTemplate.opsForHash().putIfAbsent(key,"10001",1);
         System.out.println(res);
-        res = redisTemplate.opsForHash().putIfAbsent("bargain:test","10002",1);
+        res = redisTemplate.opsForHash().putIfAbsent(key,"10002",1);
         System.out.println(res);
+
+        Map<String,Object> para = new HashMap<>();
+//        para.put("status",0);
+//        para.put("surplusAmt",321);
+//        para.put("isNeedNewCard",true);
+        redisTemplate.opsForHash().putAll(key+":1",para);
+        List<Object> list = Arrays.asList("status","surplusAmt","isNeedNewCard");
+        List<Object> list1 = redisTemplate.opsForHash().multiGet(key+":1", list);
+        if(list1.get(0) != null && Integer.parseInt(list1.get(0).toString()) == 0){
+            System.out.println("status:"+list1.get(0));
+        }
+        if(list1.get(1) != null && Integer.parseInt(list1.get(1).toString()) > 0){
+            System.out.println("surplusAmt:"+list1.get(1));
+        }
+        if(list1.get(2) != null && Boolean.parseBoolean(list1.get(2).toString()) == true){
+            System.out.println("isNeedNewCard:"+list1.get(2));
+        }
+
     }
 
     @Test
@@ -464,7 +504,7 @@ public class TmdrkSpringbootMybootApplicationTests {
 
             incrMap.put("surplusAmt",1000L+r.nextInt(3000));//剩余金额
             incrMap.put("newCnt",0L);//剩余金额
-            incrMap.put("newCardCnt", (long) r.nextInt(2));//剩余金额
+            incrMap.put("newCardCnt", 0L);//剩余金额
             incrMap.put("bargainPrice",0L);//剩余金额
             incrMap.put("bargainedPrice",0L);//已砍金额
             incrMap.put("status",0L);//砍价状态
@@ -511,6 +551,8 @@ public class TmdrkSpringbootMybootApplicationTests {
                 }else if(type == 2){
 //                    String count = String.valueOf((rd.nextInt(2) + 1)*5);
                     boolean newMem = isNewMem();
+                    Random rand = new Random();
+                    int firstType = rand.nextInt(3);
                     int amt;
                     int newMemCnt = 0;
                     if(newMem){
@@ -521,7 +563,7 @@ public class TmdrkSpringbootMybootApplicationTests {
                     }
                     System.out.println("count:"+amt);
                     byte[][] bargainBytes = {
-                            "bargain:record:1".getBytes() ,String.valueOf(amt).getBytes(),String.valueOf(newMemCnt).getBytes(),String.valueOf(1).getBytes()
+                            "bargain:record:1".getBytes() ,String.valueOf(amt).getBytes(),String.valueOf(firstType).getBytes(),String.valueOf(0).getBytes()
                     };
                     res = connection.eval(bargainFixed.getBytes(), ReturnType.MULTI, 1, bargainBytes);
                 }else{
@@ -532,6 +574,7 @@ public class TmdrkSpringbootMybootApplicationTests {
                     };
                     res = connection.eval(bargainAvg.getBytes(), ReturnType.MULTI, 1, bargainBytes);
                 }
+                System.out.println(res==null?"":res);
                 Long aLong = res.get(0);
                 if(aLong==1){
                     res.stream().forEach(System.out::println);

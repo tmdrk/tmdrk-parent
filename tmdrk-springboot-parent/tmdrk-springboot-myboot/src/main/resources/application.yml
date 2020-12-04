@@ -41,6 +41,61 @@ spring:
 
 bargain:
   script:
+    stockUpdateScript: |
+      local res = {0}
+      local rollBackIndex = 0
+      local itemCount = ARGV[1]
+      for i = 1 , itemCount , 1 do
+        local id = tonumber(ARGV[1 + i])
+        local newTotal = tonumber(ARGV[1 + itemCount + i])
+        local totalKey = string.format("%d-total", id)
+        local usedKey = string.format("%d-used", id)
+        local lockKey = string.format("%d-lock", id)
+        local used = redis.call('HGET', KEYS[1], usedKey) or 0
+        local lock = redis.call('HGET', KEYS[1], lockKey) or 0
+        if newTotal >= tonumber(used)+tonumber(lock) then
+          local nowTotal = redis.call('HGET', KEYS[1], totalKey)
+          local addNum = newTotal - tonumber(nowTotal)
+          res[1 + i] = addNum
+          if addNum ~= 0 then
+            redis.call('HINCRBY', KEYS[1], id, addNum)
+            redis.call('HINCRBY', KEYS[1], totalKey, addNum)
+          end
+        end
+        if newTotal < tonumber(used)+tonumber(lock) then
+          rollBackIndex = i - 1
+          res[1] = -1 - rollBackIndex
+          break
+        end
+      end
+      if rollBackIndex > 0 then
+        for i = 1 , rollBackIndex , 1 do
+          local id = tonumber(ARGV[1 + i])
+          local totalKey = string.format("%d-total", id)
+          local usedKey = string.format("%d-used", id)
+          local rollBackNum = 0 - res[1 + i]
+          if rollBackNum ~= 0 then
+            redis.call('HINCRBY', KEYS[1], id, rollBackNum)
+            redis.call('HINCRBY', KEYS[1], totalKey, rollBackNum)
+          end
+        end
+      end
+      return res
+    stockUpdateRollback: |
+      local res = {0}
+      local rollBackIndex = tonumber(ARGV[1])
+      if rollBackIndex > 0 then
+        for i = 1 , rollBackIndex , 1 do
+          local id = tonumber(ARGV[1 + i])
+          local totalKey = string.format("%d-total", id)
+          local rollBackNum = 0 - tonumber(ARGV[1 + rollBackIndex + i])
+          if rollBackNum ~= 0 then
+            redis.call('HINCRBY', KEYS[1], id, rollBackNum)
+            redis.call('HINCRBY', KEYS[1], totalKey, rollBackNum)
+          end
+        end
+      end
+      return res
     bargainRandom: |
       local res = {0}
       local reduceCnt = -ARGV[2]
@@ -168,11 +223,17 @@ bargain-bocf:
         res[1] = res[1]-1
         return res
       end
+      if(tonumber(ARGV[2]) == 0) then
+        res[2] = redis.call('HINCRBY', KEYS[1], 'newCnt', 1)
+      end
       res[3] = tonumber(ARGV[1])
-      res[4] = redis.call('HINCRBY', KEYS[1], 'surplusAmt', -ARGV[1])
+      res[4] = redis.call('HINCRBY', KEYS[1], 'surplusAmt', 0 - ARGV[1])
+      res[5] = tonumber(redis.call('HGET', KEYS[1], 'newCardCnt'))
+      if(tonumber(ARGV[2]) == 1) then
+        res[5] = tonumber(redis.call('HINCRBY', KEYS[1], 'newCardCnt', 1))
+      end
       if(tonumber(res[4]) <= 0) then
-        res[5] = tonumber(redis.call('HGET', KEYS[1], 'newCardCnt'))
-        if(res[2] > 0 and (ARGV[3] == 0 or res[5] > 0)) then
+        if(res[5] > 0 or (tonumber(ARGV[3]) == 0 and res[2] > 0)) then
           redis.call('HSET', KEYS[1], 'surplusAmt', 0)
           res[1] = res[1]+1
           res[3] = tonumber(sAmt)
@@ -186,10 +247,10 @@ bargain-bocf:
         else
           res[3] = 0
           res[4] = redis.call('HINCRBY', KEYS[1], 'surplusAmt', ARGV[1])
+          if(tonumber(ARGV[2]) == 0) then
+            res[2] = redis.call('HINCRBY', KEYS[1], 'newCnt', -1)
+          end
         end
-      end
-      if(tonumber(ARGV[2]) == 1) then
-        res[2] = redis.call('HINCRBY', KEYS[1], 'newCnt', ARGV[2])
       end
       redis.call('HINCRBY', KEYS[1], 'bargainedPrice', res[3])
       return res

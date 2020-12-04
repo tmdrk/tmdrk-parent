@@ -398,6 +398,13 @@
       <version>1.6.2</version>
     </dependency>
 
+    <!-- 海牙湾工具类 -->
+    <dependency>
+      <groupId>com.gtown.cloud</groupId>
+      <artifactId>gtown-utils</artifactId>
+      <version>1.2-SNAPSHOT</version>
+    </dependency>
+
   </dependencies>
 
 
