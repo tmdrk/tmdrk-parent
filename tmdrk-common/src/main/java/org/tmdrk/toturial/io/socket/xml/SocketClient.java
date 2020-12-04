@@ -81,7 +81,7 @@ public class SocketClient {
         logger.info("客户端关闭");
     }
 
-    public static Object xmlToBean(String xmlPath,Class<?> load) throws JAXBException, IOException{
+    public static Object xmlToBean(String xmlPath,Class<?> load) throws JAXBException{
         JAXBContext context = JAXBContext.newInstance(load);
         Unmarshaller unmarshaller = context.createUnmarshaller();
         Object object = unmarshaller.unmarshal(new StringReader(xmlPath));
