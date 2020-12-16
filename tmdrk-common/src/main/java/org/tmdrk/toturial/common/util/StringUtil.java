@@ -498,6 +498,18 @@ public class StringUtil {
     }
     
     public static void main(String[] args) {
+		String name1 = "jhf1uhfo1f";
+//		String name2 = "jhf1uhfo1fjhf1uhfo1fjhf1uhfo1fjhf1uhfo1fjhf1uhfo1f司法局";
+		String name2 = "司法局司法局司法局司法局司法局司法局司法局司法局司法局司法局司法局司法局";
+		System.out.println(name1.length());
+		System.out.println(name2.length());
+		System.out.println(name1.getBytes().length);
+		System.out.println(name2.getBytes().length);
+		if(name2.getBytes().length>100){
+			String substring = name2.substring(0,30);
+			System.out.println("substring:"+substring);
+		}
+
     	Map<String, Object> map = new HashMap<String, Object>();
     	
     	map.put("id", 12);
