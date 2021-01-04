@@ -55,13 +55,13 @@ public class HelloAsyncController {
     @RequestMapping("/createOrder")
     public DeferredResult<Object> createOrder(){
         DeferredResult deferredResult = new DeferredResult(5000L,"order create fail");
-        deferredResult.onCompletion(()->{
-            Object result = deferredResult.getResult();
-            if(result.toString().equals("order create fail")){
-                DeferredResultQueue.get();
-            }
-            System.out.println(deferredResult+" onCompletion "+deferredResult.getResult());
-        });
+//        deferredResult.onCompletion(()->{
+//            Object result = deferredResult.getResult();
+//            if(result.toString().equals("order create fail")){
+//                DeferredResultQueue.get();
+//            }
+//            System.out.println(deferredResult+" onCompletion "+deferredResult.getResult());
+//        });
         System.out.println(deferredResult);
         DeferredResultQueue.save(deferredResult);
         return deferredResult;
