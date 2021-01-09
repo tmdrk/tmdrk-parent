@@ -1,5 +1,22 @@
 spring:
   rabbitmq:
+    host: 192.168.1.198
+    port: 5672
+    virtual-host: bocfullerton
+    username: root
+    password: 123456
+    publisher-confirms: true
     listener:
+      type: simple
       simple:
+        default-requeue-rejected: false
         acknowledge-mode: manual
+        prefetch: 50
+        concurrency: 4
+        max-concurrency: 4
+
+bargain:
+  mq:
+    queueBargainItemStore: queue-bargain-item-stock
+    testExpireQueue: test-expire-queue
+    testDeadLetterQueue: test-dead-letter-queue

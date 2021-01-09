@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * @ClassName BargainController
@@ -26,6 +27,9 @@ public class BargainController {
 
     @Value("${bargain.mq.queueBargainItemStore}")
     public String queueBargainItemStore;
+
+    @Value("${bargain.mq.testExpireQueue}")
+    public  String testExpireQueue;
 
     @Autowired
     RabbitTemplate rabbitTemplate;
@@ -63,6 +67,20 @@ public class BargainController {
         Map<String,Object> map = new HashMap();
         map.put("code",200);
         map.put("direct",200);
+        return map;
+    }
+
+    @GetMapping("/deadTest")
+    public Map deadTest(){
+        log.info("deadTest...");
+        rabbitTemplate.convertAndSend(
+                testExpireQueue,
+                JSON.toJSONString(new Book(new Random().nextInt(1000), "钢铁是怎样炼成的"))
+        );
+        //默认java序列化
+        log.info("===========================================");
+        Map<String,Object> map = new HashMap();
+        map.put("code",200);
         return map;
     }
 }
