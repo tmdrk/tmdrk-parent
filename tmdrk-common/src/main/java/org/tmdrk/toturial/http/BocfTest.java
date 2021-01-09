@@ -1,7 +1,6 @@
 package org.tmdrk.toturial.http;
 
 import com.alibaba.fastjson.JSON;
-import com.gtown.cloud.utils.http.HttpUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -52,7 +51,7 @@ public class BocfTest {
 
         //list里存放请求参数，以BasicNameValuePair类型存放，BasicNameValuePair里存放是键值对形式。
         List<BasicNameValuePair> list = new ArrayList<BasicNameValuePair>();
-        BasicNameValuePair basicNameValuePair = new BasicNameValuePair("MobilePhone", "13917466248");
+        BasicNameValuePair basicNameValuePair = new BasicNameValuePair("MobilePhone", "13125001228");
 //        BasicNameValuePair basicNameValuePair = new BasicNameValuePair("MobilePhone", "13917466248");
         list.add(basicNameValuePair);
         ((HttpPost) request).setEntity(new UrlEncodedFormEntity(list, UTF_8));
@@ -60,7 +59,7 @@ public class BocfTest {
         HttpResponse response = hc.execute(request);
         HttpEntity entity = response.getEntity();
         String msg = EntityUtils.toString(entity,"UTF-8");
-        System.out.println(msg);
+        System.out.println("查询成功 mobile="+"13125001228"+" "+msg);
 
 //        List<String> mobiles = Arrays.asList("18123198332",
 //                "13953011016",
@@ -309,17 +308,17 @@ public class BocfTest {
                 "13545697710",
                 "13545688740");
 
-        for(String mobile:mobiles){
-            Map<String,Object> para = new HashMap<>();
-            para.put("MobilePhone",mobile);
-            com.gtown.cloud.utils.http.HttpResponse resp = HttpUtils.post(url).form(para).call();
-            if (resp.status() == 200) {
-                CustomerAccountInfo customerAccountInfo = JSON.parseObject(resp.string(), CustomerAccountInfo.class);
-                System.out.println("查询成功 mobile="+mobile+" "+resp.string());
-            }else{
-                System.out.println("查询异常 mobile="+mobile);
-            }
-        }
+//        for(String mobile:mobiles){
+//            Map<String,Object> para = new HashMap<>();
+//            para.put("MobilePhone",mobile);
+//            com.gtown.cloud.utils.http.HttpResponse resp = HttpUtils.post(url).form(para).call();
+//            if (resp.status() == 200) {
+//                CustomerAccountInfo customerAccountInfo = JSON.parseObject(resp.string(), CustomerAccountInfo.class);
+//                System.out.println("查询成功 mobile="+mobile+" "+resp.string());
+//            }else{
+//                System.out.println("查询异常 mobile="+mobile);
+//            }
+//        }
 
 //        Map<String,Object> para = new HashMap<>();
 //        para.put("MobilePhone","13619920002");
