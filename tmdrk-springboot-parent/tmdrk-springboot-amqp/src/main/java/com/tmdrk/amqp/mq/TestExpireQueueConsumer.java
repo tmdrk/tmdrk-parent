@@ -3,10 +3,7 @@ package com.tmdrk.amqp.mq;
 import com.rabbitmq.client.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.QueueBuilder;
-import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -19,15 +16,16 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 
 /**
- * TestDeadLetterConsumer
+ * TestExpireQueueConsumer
  *
  * @author Jie.Zhou
- * @date 2021/1/4 18:25
+ * @date 2021/1/5 9:11
  */
 @Component
-public class TestDeadLetterConsumer implements InitializingBean {
+public class TestExpireQueueConsumer implements InitializingBean {
     Logger log = LoggerFactory.getLogger(getClass());
     @Autowired
     private RabbitAdmin rabbitAdmin;
@@ -37,34 +35,24 @@ public class TestDeadLetterConsumer implements InitializingBean {
     @Value("${bargain.mq.testExpireQueue}")
     public  String testExpireQueue;
 
-    @Value("${bargain.mq.testDeadLetterQueue}")
-    public  String testDeadLetterQueue;
-
-    @RabbitListener(queues = "${bargain.mq.testExpireQueue}", id = "qrcode-query")
+    @RabbitListener(queues = "${bargain.mq.testExpireQueue}", id = "expire-query")
     public void consumerOrder(@Payload String outTradeNo, Channel channel, @Header(AmqpHeaders.DELIVERY_TAG) Long deliveryTag,
-                              @Header(value = "X-Retry", required = false, defaultValue = "1") Integer retryCount) {
+                              @Header(value = "X-Retry", required = false, defaultValue = "1") Integer retryCount) throws IOException {
         log.info("outTradeNo:{} deliveryTag:{} retryCount:{}",outTradeNo,deliveryTag,retryCount);
-        try {
+        try{
+            if(retryCount < 10){
+                throw new RuntimeException("未达到次数异常");
+            }
+            log.info("任务完成");
             channel.basicAck(deliveryTag, false);
         }catch (Exception e){
-            log.info("确认消息异常");
+            log.error("任务失败，消息回队 retryCount:{}",retryCount);
+            channel.basicNack(deliveryTag,false,true);
         }
-        rabbitTemplate.convertAndSend(testDeadLetterQueue, outTradeNo, msg -> {
-            msg.getMessageProperties().setExpiration(String.valueOf((retryCount-1)*100 + 3000));
-            msg.getMessageProperties().setHeader("X-Retry", retryCount + 1);
-            return msg;
-        });
     }
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        Queue q = QueueBuilder.durable(testDeadLetterQueue)
-                .withArgument("x-dead-letter-exchange", "amq.topic")
-                .withArgument("x-dead-letter-routing-key", "qrcode").build();
-        rabbitAdmin.declareQueue(q);
-
-        Queue query = new Queue(testExpireQueue);
-        rabbitAdmin.declareQueue(query);
-        rabbitAdmin.declareBinding(BindingBuilder.bind(query).to(new TopicExchange("amq.topic")).with("qrcode"));
+        rabbitAdmin.declareQueue(new Queue(testExpireQueue));
     }
 }
