@@ -50,8 +50,8 @@ public class BocfTest {
         System.out.println("limitDate:"+limitDate.getTime());
         //url是访问服务器的url地址，http:// zyfdwbnkuat.bocfullertonbank.com/pwxweb/GetMessageForMobile.do
 //        String url = "http://zyfdwbnkuat.bocfullertonbank.com/pwxweb/GetMessageForMobile.do";
-        String url = "http://zyfdwbnksit.bocfullertonbank.com/pwxweb/GetMessageForMobile.do";
-//        String url = "https://ebank.bocfullertonbank.com/pwxweb/GetMessageForMobile.do";
+//        String url = "http://zyfdwbnksit.bocfullertonbank.com/pwxweb/GetMessageForMobile.do";
+        String url = "https://ebank.bocfullertonbank.com/pwxweb/GetMessageForMobile.do";
         HttpUriRequest request = new HttpPost(url);
 
         System.out.println("user="+JSON.toJSONString(null));
@@ -78,11 +78,9 @@ public class BocfTest {
         System.out.println(msg + " "+(System.currentTimeMillis()-start));
 
         List<String> mobiles = Arrays.asList(
-                "13619920002",
-                "13011231457",
-                "18228636473",
-                "13125001228",
-                "13225001227");
+                "13485583726",
+                "13956725500",
+                "18025427890");
 
         AtomicInteger realCnt = new AtomicInteger(0);
         System.out.println("cpuCores:" + Runtime.getRuntime().availableProcessors());

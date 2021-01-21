@@ -2,6 +2,7 @@ package com.tmdrk.ace.admin;
 
 import com.tmdrk.ace.admin.entity.MarketingGameDetail;
 import com.tmdrk.ace.admin.service.MarketingGameDetailService;
+import com.tmdrk.ace.admin.service.OmpAddressService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,11 +14,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = TmdrkSpringbootAceadminApplication.class)
 public class TmdrkSpringbootAceadminApplicationTests {
 	ExecutorService executorService = Executors.newFixedThreadPool(20);
 	@Resource
 	private MarketingGameDetailService marketingGameDetailService;
+	@Resource
+	private OmpAddressService ompAddressService;
 
 	@Test
 	public void contextLoads() {
@@ -36,4 +39,12 @@ public class TmdrkSpringbootAceadminApplicationTests {
 		}
 		System.out.println("==================================");
 	}
+
+	@Test
+	public void parseAddress() {
+		System.out.println("==================================");
+		ompAddressService.parseAddress();
+		System.out.println("==================================");
+	}
+
 }
