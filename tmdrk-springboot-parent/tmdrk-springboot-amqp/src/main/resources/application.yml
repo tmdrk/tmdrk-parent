@@ -12,8 +12,8 @@ spring:
         default-requeue-rejected: false
         acknowledge-mode: manual
         prefetch: 50
-        concurrency: 4
-        max-concurrency: 4
+        concurrency: 6
+        max-concurrency: 6
 
 bargain:
   mq:

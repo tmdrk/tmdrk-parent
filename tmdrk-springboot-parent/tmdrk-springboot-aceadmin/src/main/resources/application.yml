@@ -2,7 +2,10 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
-      url: jdbc:mysql://192.168.1.11:3306/ace-admin
+#      url: jdbc:mysql://192.168.1.11:3306/ace-admin
+#      username: root
+#      password: 123456
+      url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true&serverTimezone=Asia/Shanghai
       username: root
       password: 123456
       # 下面为连接池的补充设置，应用到上面所有数据源中
@@ -29,6 +32,17 @@ spring:
       use-global-data-source-stat: true
       # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
       connect-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+  redis:
+    cluster:
+      nodes: 192.168.1.236:7001,192.168.1.236:7002,192.168.1.237:7003,192.168.1.237:7004,192.168.1.238:7005,192.168.1.238:7006
+    password: Gtown123
+    database: 3
+    lettuce:
+      pool:
+        max-active: 1000
+        max-idle: 100
+#  main:
+#    allow-bean-definition-overriding: true #后定义的bean会覆盖之前定义的相同名称的bean
 
 # mybatis
 # 在spring的配置文件config-location指定了mybatis的配置文件 就不能在spring的配置里面写入mybatis的配置，否则报错。
