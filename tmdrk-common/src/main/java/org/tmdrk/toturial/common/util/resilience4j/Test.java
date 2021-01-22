@@ -2,6 +2,7 @@ package org.tmdrk.toturial.common.util.resilience4j;
 
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
+import io.github.resilience4j.circuitbreaker.CircuitBreakerOpenException;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
 import io.vavr.CheckedFunction0;
 import io.vavr.control.Try;
@@ -75,33 +76,25 @@ public class Test {
         CircuitBreakerConfig config = CircuitBreakerConfig.custom()
                 // 默认50 故障率阀值百分比 超过这个阀值 断路器就会打开
                 .failureRateThreshold(50)
-                // 断路器保持打开的时间 在到达设置的时间之后 断路器会进入到half open状态
-                .waitDurationInOpenState(Duration.ofMillis(8000))
-                // 当断路器处于half open状态时(环形缓冲区大小)
-                .ringBufferSizeInHalfOpenState(4)
                 // 熔断器在关闭状态时环状缓冲区的大小
                 .ringBufferSizeInClosedState(4)
+                // 断路器保持打开的时间 在到达设置的时间之后 断路器会进入到half open状态
+                .waitDurationInOpenState(Duration.ofMillis(5000))
+                // 当断路器处于half open状态时(环形缓冲区大小)
+                .ringBufferSizeInHalfOpenState(5)
                 .build();
 
         CircuitBreakerRegistry registry = CircuitBreakerRegistry.of(config);
         CircuitBreaker breaker = registry.circuitBreaker("learn");
         // 获取断路器的状态
         System.out.println(breaker.getState());
-        String result;
-        result = breaker.executeSupplier(() -> doSomethingWithArgs("world"));
-        System.out.println(result);
-        System.out.println(breaker.getState());
-        breaker.onError(0, new RuntimeException());
-        System.out.println(breaker.getState());
-        result = breaker.executeSupplier(() -> doSomethingWithArgs("world"));
-        System.out.println(result);
-        System.out.println(breaker.getState());
-        result = breaker.executeSupplier(() -> doSomethingWithArgs("world"));
-        System.out.println(result);
-        System.out.println(breaker.getState());
-        System.out.println(breaker.getState());
-        breaker.onError(0, new IllegalArgumentException());
-        System.out.println(breaker.getState());
+        doSomething(breaker);
+        doSomething(breaker,true);
+        doSomething(breaker);
+        doSomething(breaker);
+        doSomething(breaker);
+        doSomething(breaker);
+        doSomething(breaker,true);
 //        CheckedFunction0<String> supplier = CircuitBreaker.decorateCheckedSupplier(breaker, () -> doSomethingWithArgs("hello resilience4j"));
 //        Try<String> map = Try.of(supplier)
 //                .map(v -> v + " hello kitty");
@@ -110,27 +103,43 @@ public class Test {
 //        System.out.println("是否成功：" + map.isSuccess());
 //        System.out.println("获取值：" + map.get());
 //        System.out.println(breaker.getState());
-        result = breaker.executeSupplier(() -> doSomethingWithArgs("world"));
-        System.out.println(result);
-        System.out.println(breaker.getState());
-        result = breaker.executeSupplier(() -> doSomethingWithArgs("world"));
-        System.out.println(result);
-        System.out.println(breaker.getState());
-        breaker.onError(0, new RuntimeException());
-        System.out.println(breaker.getState());
-        result = breaker.executeSupplier(() -> doSomethingWithArgs("world"));
-        System.out.println(result);
-        System.out.println(breaker.getState());
-        result = breaker.executeSupplier(() -> doSomethingWithArgs("world"));
-        System.out.println(result);
-        System.out.println(breaker.getState());
-        result = breaker.executeSupplier(() -> doSomethingWithArgs("world"));
-        System.out.println(result);
-        System.out.println(breaker.getState());
+        doSomething(breaker);
+        doSomething(breaker);
+        doSomething(breaker,true);
+        doSomething(breaker);
+        doSomething(breaker,true);
+        doSomething(breaker);
+        doSomething(breaker,true);
+        doSomething(breaker);
+        doSomething(breaker);
+        doSomething(breaker,true);
+        doSomething(breaker,true);
     }
 
-    public static String doSomethingWithArgs(String word){
-        System.out.println("工作计划："+word);
+    public static String doSomething(CircuitBreaker breaker){
+        return doSomething(breaker,false);
+    }
+
+    public static String doSomething(CircuitBreaker breaker,boolean exception){
+        String result = null;
+        try{
+            result = breaker.executeSupplier(() -> doSomethingWithArgs("world",exception));
+        }catch (Exception e){
+            if(e instanceof CircuitBreakerOpenException){
+                System.out.println("方法已经熔断中 OPEN");
+            }else{
+                e.printStackTrace();
+            }
+        }
+        System.out.println("result="+result+" status="+breaker.getState());
+        return result;
+    }
+
+    public static String doSomethingWithArgs(String word,boolean exception){
+        System.out.println("执行工作计划："+word + " " + exception);
+        if(exception){
+            throw new RuntimeException();
+        }
         return word+" 001";
     }
 }
