@@ -108,12 +108,17 @@ public class Test {
         doSomething(breaker,true);
         doSomething(breaker);
         doSomething(breaker,true);
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         doSomething(breaker);
         doSomething(breaker,true);
         doSomething(breaker);
         doSomething(breaker);
         doSomething(breaker,true);
-        doSomething(breaker,true);
+        doSomething(breaker,false);
     }
 
     public static String doSomething(CircuitBreaker breaker){
@@ -128,7 +133,8 @@ public class Test {
             if(e instanceof CircuitBreakerOpenException){
                 System.out.println("方法已经熔断中 OPEN");
             }else{
-                e.printStackTrace();
+//                e.printStackTrace();
+                System.out.println("方法调用异常");
             }
         }
         System.out.println("result="+result+" status="+breaker.getState());
