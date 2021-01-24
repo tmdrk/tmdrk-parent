@@ -37,6 +37,11 @@ spring:
         max-idle: 100
   main:
     allow-bean-definition-overriding: true
+  # 手动配置HiddenHttpMethodFilter url?_method=PUT
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
 
 
 bargain:

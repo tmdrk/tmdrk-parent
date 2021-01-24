@@ -61,15 +61,30 @@ public class RedisConfig {
 //        return redisTemplate;
 //    }
 
+//    @Bean
+//    public RedisTemplate<Serializable, ?> redisTemplate() {
+//        RedisTemplate<Serializable, Object> redisTemplate = new RedisTemplate<>();
+//        redisTemplate.setConnectionFactory(connectionFactory);
+//        // 设置 value 的转化格式和 key 的转化格式
+//        redisTemplate.setValueSerializer(new GenericToStringSerializer(Object.class));
+//        redisTemplate.setHashValueSerializer(new GenericToStringSerializer(Object.class));
+//        redisTemplate.setKeySerializer(new StringRedisSerializer());
+//        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+//        return redisTemplate;
+//    }
+
     @Bean
-    public RedisTemplate<Serializable, ?> redisTemplate() {
-        RedisTemplate<Serializable, Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(connectionFactory);
-        // 设置 value 的转化格式和 key 的转化格式
-        redisTemplate.setValueSerializer(new GenericToStringSerializer(Object.class));
-        redisTemplate.setHashValueSerializer(new GenericToStringSerializer(Object.class));
+    public RedisTemplate<String, ?> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
+        GenericJackson2JsonRedisSerializerEx jackson2JsonRedisSerializer = new GenericJackson2JsonRedisSerializerEx();
+        // 设置值（value）的序列化采用FastJsonRedisSerializer。
+        redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
+        redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
+        // 设置键（key）的序列化采用StringRedisSerializer。
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+        redisTemplate.afterPropertiesSet();
         return redisTemplate;
     }
 }
