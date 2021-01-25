@@ -11,11 +11,11 @@ import java.time.Duration;
 
 /**
  * Test
- *
+ * https://blog.csdn.net/java_zjh/article/details/85119124 图解流程
  * @author Jie.Zhou
  * @date 2021/1/20 18:46
  */
-public class Test {
+public class CircuitBreakerTest {
     public static void main(String[] args) {
 //        normalCircuitBreaker();
         exceptionCircuitBreaker();
@@ -79,7 +79,7 @@ public class Test {
                 // 熔断器在关闭状态时环状缓冲区的大小
                 .ringBufferSizeInClosedState(4)
                 // 断路器保持打开的时间 在到达设置的时间之后 断路器会进入到half open状态
-                .waitDurationInOpenState(Duration.ofMillis(5000))
+                .waitDurationInOpenState(Duration.ofMillis(2000))
                 // 当断路器处于half open状态时(环形缓冲区大小)
                 .ringBufferSizeInHalfOpenState(5)
                 .build();
@@ -95,13 +95,18 @@ public class Test {
         doSomething(breaker);
         doSomething(breaker);
         doSomething(breaker,true);
-//        CheckedFunction0<String> supplier = CircuitBreaker.decorateCheckedSupplier(breaker, () -> doSomethingWithArgs("hello resilience4j"));
-//        Try<String> map = Try.of(supplier)
-//                .map(v -> v + " hello kitty");
-//        System.out.println("<========================================>");
-//
-//        System.out.println("是否成功：" + map.isSuccess());
-//        System.out.println("获取值：" + map.get());
+//        CheckedFunction0<String> supplier = CircuitBreaker.decorateCheckedSupplier(breaker, () -> doSomethingWithArgs("hello resilience4j",false));
+//        Try<String> map = Try.of(supplier).map(v -> v + " hello kitty"); // 此步执行方法
+//        if(map.isSuccess()){
+//            System.out.println("调用成功，返回值：" + map.get());
+//        }
+//        System.out.println(breaker.getState());
+
+//        supplier = CircuitBreaker.decorateCheckedSupplier(breaker, () -> doSomethingWithArgs("hello resilience4j",true));
+//        map = Try.of(supplier).map(v -> v + " hello kitty"); // 此步执行方法
+//        if(map.isSuccess()){
+//            System.out.println("调用成功，返回值：" + map.get());
+//        }
 //        System.out.println(breaker.getState());
         doSomething(breaker);
         doSomething(breaker);
@@ -109,16 +114,23 @@ public class Test {
         doSomething(breaker);
         doSomething(breaker,true);
         try {
-            Thread.sleep(5000);
+            Thread.sleep(2000);
+            System.out.println("休眠完成");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         doSomething(breaker);
-        doSomething(breaker,true);
         doSomething(breaker);
         doSomething(breaker);
+        doSomething(breaker);
+        doSomething(breaker);
+        doSomething(breaker);
         doSomething(breaker,true);
-        doSomething(breaker,false);
+        doSomething(breaker);
+        doSomething(breaker,true);
+        doSomething(breaker);
+        doSomething(breaker,true);
+        doSomething(breaker);
     }
 
     public static String doSomething(CircuitBreaker breaker){
