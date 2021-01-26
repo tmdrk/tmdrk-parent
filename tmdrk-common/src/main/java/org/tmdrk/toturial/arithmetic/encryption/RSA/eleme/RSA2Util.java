@@ -1,6 +1,6 @@
 package org.tmdrk.toturial.arithmetic.encryption.RSA.eleme;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.util.Base64Utils;
 
 import java.io.*;

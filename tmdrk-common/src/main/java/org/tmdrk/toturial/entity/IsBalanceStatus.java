@@ -17,7 +17,7 @@ public enum IsBalanceStatus{
         return this.value;
     }
 
-    public static IsBalanceStatus getValue(String key){
+    public static IsBalanceStatus getBalanceStatus(String key){
         for(IsBalanceStatus isBalanceStatus:IsBalanceStatus.values()){
             if(isBalanceStatus.getKey().equals(key)){
                 return isBalanceStatus;
@@ -30,6 +30,6 @@ public enum IsBalanceStatus{
 		System.out.println(IsBalanceStatus.IS_BALANCE_0);
 		System.out.println(IsBalanceStatus.IS_BALANCE_0.getKey());
 		System.out.println(IsBalanceStatus.IS_BALANCE_0.getValue());
-		System.out.println(IsBalanceStatus.getValue("1").getValue());
+		System.out.println(IsBalanceStatus.getBalanceStatus("1").getKey());
 	}
  }

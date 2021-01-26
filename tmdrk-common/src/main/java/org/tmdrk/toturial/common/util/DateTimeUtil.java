@@ -90,6 +90,14 @@ public class DateTimeUtil {
         //parse()
         TemporalAccessor parse = formatter.parse("2020-03-17T02:53:37.519");
         System.out.println(parse);
+        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        int year1 = 2020;
+        for(int i=1;i<13;i++){
+            LocalDate localDate = LocalDate.parse(String.format("%d-%02d-01", year1, i), formatter1);
+            Month month = localDate.getMonth();
+            int maxLength = month.maxLength(); //月最大天数值
+            System.out.println("month="+month+" maxLength="+maxLength);
+        }
 
         //反向format
         String bid = localDateTime.format(DateTimeFormatter.BASIC_ISO_DATE);
