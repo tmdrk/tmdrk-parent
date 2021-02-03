@@ -23,8 +23,8 @@ public class RateLimiterTest {
                 .limitRefreshPeriod(Duration.ofMillis(1000))
                 // 限制频次
                 .limitForPeriod(3)
-                // 冷却时间
-                .timeoutDuration(Duration.ofMillis(200))
+                // 超时时间
+                .timeoutDuration(Duration.ofMillis(600))
                 .build();
         RateLimiter limiter = RateLimiter.of("learning", config);
 

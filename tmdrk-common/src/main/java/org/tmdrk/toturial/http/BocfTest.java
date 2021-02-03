@@ -78,14 +78,13 @@ public class BocfTest {
         System.out.println(msg + " "+(System.currentTimeMillis()-start));
 
         List<String> mobiles = Arrays.asList(
-                "13485583726",
-                "13956725500",
-                "18025427890");
+                "13869299836"
+        );
 
         AtomicInteger realCnt = new AtomicInteger(0);
         System.out.println("cpuCores:" + Runtime.getRuntime().availableProcessors());
         start = System.currentTimeMillis();
-        ExecutorService executor = BusinessThreadPoolExecutorFactory.build(8,20);
+        ExecutorService executor = BusinessThreadPoolExecutorFactory.build(8,200);
         for(String mobile:mobiles){
             executor.execute(new BocfTest.CustomerUtil(url, mobile, realCnt));
         }

@@ -32,7 +32,7 @@ import java.util.stream.Stream;
  * @Date 2020/2/21 15:42
  * @Version 1.0
  **/
-public class Test {
+public class StreamTest {
     public static void main(String[] args) {
 //        filter();
 //        System.out.println("================");
