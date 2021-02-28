@@ -1,12 +1,12 @@
 package org.tmdrk.toturial.java8.function;
 
-import cn.hutool.core.lang.func.Func;
 import org.tmdrk.toturial.entity.User;
 
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.function.*;
+import java.util.stream.Collectors;
 
 /**
  * FunctionTest
@@ -37,6 +37,28 @@ public class FunctionTest {
         System.out.println(supplierTest(User::new));
         System.out.println(supplierTest(()->new User(1L,"ZhouJie","13909878767","vip")));
         System.out.println(supplierTest(FunctionTest::getDefaultUser));
+
+
+        //使用Number类的操作，里面只有double和int类型
+        List<Number> list = new ArrayList<>();
+        list.add(3);
+        list.add(4.0);
+        System.out.println(FunctionTest.map(t->{
+            if (t.getClass() == Double.class) {
+                return t.doubleValue()*t.doubleValue();
+            } else {
+                return t.intValue() * t.intValue();
+            }
+        }, list));
+
+        //https://blog.csdn.net/gao_grace/article/details/94583317?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-3.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-3.control
+        // BinaryOperator
+        BinaryOperator<Long> intOper = BinaryOperator.maxBy(Comparator.naturalOrder());
+        BinaryOperator<Long> op1 = (a, b) -> (a * b);
+        Long aLong = FunctionTest.numberOperTest(2L, 4L, intOper);
+        System.out.println(aLong);
+        Long aLong1 = FunctionTest.numberOperTest(2L, 4L, op1);
+        System.out.println(aLong1);
     }
 
     public static Integer functionTest(String age,Function<String,Integer> function) {
@@ -66,5 +88,13 @@ public class FunctionTest {
     }
     public static User getDefaultUser(){
         return new User(1L,"1","1","1");
+    }
+
+    public static<T extends Number> List<T> map(UnaryOperator<T> operator, List<T> list) {
+        return list.stream().map(t -> operator.apply(t)).collect(Collectors.toList());
+    }
+
+    public static Long numberOperTest(Long n1,Long n2,BinaryOperator<Long> operator) {
+        return operator.apply(n1,n2);
     }
 }

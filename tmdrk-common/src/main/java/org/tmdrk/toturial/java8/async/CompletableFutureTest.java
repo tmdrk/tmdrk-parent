@@ -27,7 +27,9 @@ public class CompletableFutureTest {
 
         exception();
 
+        long start = System.currentTimeMillis();
         allOf();
+        System.out.println("duration:"+(System.currentTimeMillis()-start));
     }
 
     /**
@@ -168,14 +170,29 @@ public class CompletableFutureTest {
      */
     private static void allOf() throws ExecutionException, InterruptedException {
         CompletableFuture<String> f1 = CompletableFuture.supplyAsync(() ->{
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             System.out.println(Thread.currentThread()+" "+new Date());
             return "hello";
         });
         CompletableFuture<String> f2 = CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             System.out.println(Thread.currentThread()+" "+new Date());
             return "world";
         });
         CompletableFuture<String> f3 = CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(4000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             System.out.println(Thread.currentThread()+" "+new Date());
             return "!";
         });

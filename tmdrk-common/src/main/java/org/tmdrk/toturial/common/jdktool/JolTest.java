@@ -1,12 +1,9 @@
 package org.tmdrk.toturial.common.jdktool;
 
-import org.apache.hadoop.yarn.webapp.hamlet.Hamlet;
 import org.openjdk.jol.info.ClassLayout;
-
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @ClassName JolTest

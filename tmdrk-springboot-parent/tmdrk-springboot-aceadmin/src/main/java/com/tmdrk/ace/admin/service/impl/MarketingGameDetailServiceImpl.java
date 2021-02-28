@@ -4,9 +4,12 @@ import com.tmdrk.ace.admin.entity.MarketingGameDetail;
 import com.tmdrk.ace.admin.mapper.MarketingGameDetailMapper;
 import com.tmdrk.ace.admin.service.MarketingGameDetailService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -143,6 +146,32 @@ public class MarketingGameDetailServiceImpl implements MarketingGameDetailServic
         });
         System.out.println("批量更新开始");
         return marketingGameDetailMapper.updateBatch(marketingGameDetails);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public int testSavePoint() {
+        MarketingGameDetail insert = new MarketingGameDetail();
+        insert.setGameId(1L);
+        insert.setAttrValue("100");
+        insert.setAttrName("101");
+        insert.setAttrDesc("test");
+        insert.setCreateTime(new Date());
+        insert.setIsDel(false);
+        MarketingGameDetail update = new MarketingGameDetail();
+        update.setId(54L);
+        update.setAttrValue("2020-09-11 12:22:55");
+        Object savePoint = null;
+        try {
+            insert(insert);
+            savePoint = TransactionAspectSupport.currentTransactionStatus().createSavepoint();
+            update(update);
+            int a = 10/0; //这里因为除数0会报异常,进入catch块
+        }catch (Exception e){
+            //手工回滚异常
+            TransactionAspectSupport.currentTransactionStatus().rollbackToSavepoint(savePoint);
+        }
+        return 0;
     }
 
 

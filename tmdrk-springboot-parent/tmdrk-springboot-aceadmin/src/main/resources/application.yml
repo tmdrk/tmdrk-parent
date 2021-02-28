@@ -41,6 +41,12 @@ spring:
       pool:
         max-active: 1000
         max-idle: 100
+  elasticsearch:
+    rest:
+      uris:
+        - http://es-cn-v0h1m0am700174ayf.public.elasticsearch.aliyuncs.com:9200
+      username: elastic
+      password: Gtown123$%^
 #  main:
 #    allow-bean-definition-overriding: true #后定义的bean会覆盖之前定义的相同名称的bean
 
@@ -67,3 +73,37 @@ logging:
   level:
     #这个指定你的dao层，也就是mapper文件的所在包
     com.tmdrk.ace.admin.mapper: DEBUG
+
+calendar-setting:
+  index: icbc_calendar_setting_test
+  mapping: |
+    {
+      "properties": {
+        "id": {
+          "type": "long"
+        },
+        "calendarId": {
+          "type": "long"
+        },
+        "calendarDate": {
+          "type": "keyword"
+        },
+        "createTime": {
+          "type": "date",
+          "format": "yyyy-MM-dd HH:mm:ss||epoch_millis"
+        },
+        "updateTime": {
+          "type": "date",
+          "format": "yyyy-MM-dd HH:mm:ss||epoch_millis"
+        },
+        "createBy": {
+          "type": "keyword"
+        },
+        "updateBy": {
+          "type": "keyword"
+        },
+        "del": {
+          "type": "boolean"
+        }
+      }
+    }

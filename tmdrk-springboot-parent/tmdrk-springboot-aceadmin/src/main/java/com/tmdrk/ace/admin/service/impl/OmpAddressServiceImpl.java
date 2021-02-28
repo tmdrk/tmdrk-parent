@@ -116,7 +116,8 @@ public class OmpAddressServiceImpl implements OmpAddressService {
             for (OmpAddress c : cursor) {
                 s.acquire();
                 CompletableFuture<Void> f = CompletableFuture.runAsync(new UpdateAwardRunnable(c));
-                f.whenComplete((v, e) -> {
+                f.whenComplete((res, err) -> {
+                    // res：返回值 err：异常信息
                     log.info("更新奖励");
                     s.release();
                 });

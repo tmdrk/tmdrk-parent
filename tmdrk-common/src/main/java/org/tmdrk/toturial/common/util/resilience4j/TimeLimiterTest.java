@@ -6,6 +6,7 @@ import io.vavr.control.Try;
 import org.tmdrk.toturial.entity.User;
 
 import java.time.Duration;
+import java.util.Date;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -20,6 +21,12 @@ import java.util.function.Supplier;
  */
 public class TimeLimiterTest {
     public static void main(String[] args) {
+        for(long i=0;i<10000000000L;i++){
+            if(i%100000000==0){
+                System.out.println("循环次数 i="+i+" date="+new Date());
+            }
+        }
+
         // 创建限时器配置，最大执行时间为1s，超时将取消Future
         TimeLimiterConfig config = TimeLimiterConfig.custom()
                 .timeoutDuration(Duration.ofSeconds(1))
@@ -39,7 +46,9 @@ public class TimeLimiterTest {
                 .decorateFutureSupplier(timeLimiter, futureSupplier);
         // 若任务执行超时，onFailure会被触发
         Try.of(restrictedCall::call)
-                .onFailure(throwable -> System.out.println("A timeout possibly occurred."));
+                .onFailure(throwable -> {
+                    System.out.println("A timeout possibly occurred.");
+                });
         executorService.shutdown();
     }
 

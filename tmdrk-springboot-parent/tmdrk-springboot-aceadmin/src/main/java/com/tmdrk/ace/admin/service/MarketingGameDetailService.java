@@ -84,4 +84,6 @@ public interface MarketingGameDetailService {
     int count();
 
     int updateBatch(MarketingGameDetail marketingGameDetail);
+
+    int testSavePoint();
 }

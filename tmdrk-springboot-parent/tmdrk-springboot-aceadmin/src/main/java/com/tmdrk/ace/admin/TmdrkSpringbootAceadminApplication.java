@@ -3,10 +3,8 @@ package com.tmdrk.ace.admin;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * @Author zhoujie
@@ -22,6 +20,7 @@ import org.springframework.cache.annotation.EnableCaching;
 @MapperScan(value={"com.tmdrk.ace.admin.mapper","com.tmdrk.ace.admin.annotationMapper"})
 @SpringBootApplication
 @EnableCaching
+@EnableTransactionManagement
 public class TmdrkSpringbootAceadminApplication {
 
 	public static void main(String[] args) {

@@ -53,7 +53,6 @@ public class LogAop {
         String methodName = joinPoint.getSignature().getName();
         //获取方法参数值数组
         Object[] args = joinPoint.getArgs();
-        Arrays.stream(args).forEach(a-> System.out.println(a.getClass()));
         List<Object> argsList= Arrays.stream(args).filter(a -> !((a instanceof HttpServletRequest) ||
                 (a instanceof HttpServletResponse))).collect(Collectors.toList());
         //得到其方法签名

@@ -149,7 +149,7 @@ public class javassistTest {
         body.append("{\nlong start = System.currentTimeMillis();\n");
         // 调用原有代码，类似于method();($$)表示所有的参数
         body.append(nname + "($$);\n");
-        body.append("System.color.println(\"Call to method " + mname
+        body.append("System.out.println(\"Call to method " + mname
                 + " took \" +\n (System.currentTimeMillis()-start) + " + "\" ms.\");\n");
         body.append("}");
         // 替换新方法
@@ -167,6 +167,7 @@ public class javassistTest {
     /**
      * @Author zhoujie
      * @Description //热替换 注意热替换只适合于修改，对于方法的新增和删除并不支持
+     * jvm启动参数：-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000
      * @Date 12:26 2019/7/3
      * @Param []
      * @return void
@@ -178,7 +179,7 @@ public class javassistTest {
         try {
             CtClass clazz = pool.get("org.tmdrk.toturial.classFrame.javassist.Standard");
             CtMethod cm = clazz.getDeclaredMethod("doSomething");
-            cm.insertAt(1,"{System.color.println(\"hello HotSwapper.\");}");  // clazz完全可以是全新的，这里只是为了测试方便而已
+            cm.insertAt(1,"{System.out.println(\"hello HotSwapper.\");}");  // clazz完全可以是全新的，这里只是为了测试方便而已
             HotSwapper swap = new HotSwapper(8000);
             swap.reload("org.tmdrk.toturial.classFrame.javassist.Standard", clazz.toBytecode());
             standard.doSomething();
