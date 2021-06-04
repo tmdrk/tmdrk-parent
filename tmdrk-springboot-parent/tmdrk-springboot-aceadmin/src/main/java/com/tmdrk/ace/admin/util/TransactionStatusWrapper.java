@@ -1,5 +1,6 @@
 package com.tmdrk.ace.admin.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
@@ -9,6 +10,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
  *
  * @author lee
  */
+@Slf4j
 public class TransactionStatusWrapper {
     private TransactionStatus          tx;
     private PlatformTransactionManager txManager;
@@ -25,9 +27,11 @@ public class TransactionStatusWrapper {
 
     public void commit() {
         txManager.commit(tx);
+        log.info("事务提交");
     }
 
     public void rollback() {
         txManager.rollback(tx);
+        log.info("事务回滚");
     }
 }

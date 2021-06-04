@@ -98,6 +98,7 @@ public class MarketingGameDetailServiceImpl implements MarketingGameDetailServic
     @Override
     public MarketingGameDetail update(MarketingGameDetail marketingGameDetail) {
         this.marketingGameDetailMapper.update(marketingGameDetail);
+//        int i = 1/0;
         return this.selectById(marketingGameDetail.getId());
     }
 

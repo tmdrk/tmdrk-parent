@@ -1,5 +1,6 @@
 package com.tmdrk.ace.admin.service;
 
+import com.tmdrk.ace.admin.entity.OmpAddress;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -16,4 +17,6 @@ public interface OmpAddressService {
     void download();
 
     void selectCursor();
+
+    int updateById(OmpAddress ompAddress);
 }
