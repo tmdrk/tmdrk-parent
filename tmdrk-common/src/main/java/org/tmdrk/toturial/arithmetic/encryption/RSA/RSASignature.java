@@ -3,6 +3,7 @@ package org.tmdrk.toturial.arithmetic.encryption.RSA;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.RandomUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Joiner;
 import com.google.inject.internal.util.$SourceProvider;
 import org.apache.commons.beanutils.BeanMap;
@@ -23,6 +24,7 @@ import java.security.Signature;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * RSASignature 简便的加解密签名验签工具
@@ -38,38 +40,26 @@ public class RSASignature {
 //    public static final String X509 = "X.509";
 
     //在线生成公钥和私钥
-    protected static String publicKey =   "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCeCKvGI4ZYMP3/up4nFWU4+vBV\n" +
-            "ZINk7k8lrT2+Wu/vpOSKBGKl937Dva/zcb2lNL4qA2pA1mbB7Cmk0Kw+TAnil93v\n" +
-            "+X7oB2ooBQwRPlIUUKkAfvpLCVwdbbPdnWVEQV1l0q51Ds/ex3YyjiAggJJHDKO1\n" +
-            "0HD+tWc1EhC35h5mMwIDAQAB";
-    protected static String privateKey =   "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAJ4Iq8Yjhlgw/f+6\n" +
-            "nicVZTj68FVkg2TuTyWtPb5a7++k5IoEYqX3fsO9r/NxvaU0vioDakDWZsHsKaTQ\n" +
-            "rD5MCeKX3e/5fugHaigFDBE+UhRQqQB++ksJXB1ts92dZURBXWXSrnUOz97HdjKO\n" +
-            "ICCAkkcMo7XQcP61ZzUSELfmHmYzAgMBAAECgYB2Ohxv9gG6lqRfHbjVmm8IqssD\n" +
-            "x1d5OcOidzGa6CNaUCzdiBxY94gxXgZ1BOGQ551ghv+FlCB58XjSIX7KeE5ntp7c\n" +
-            "XLW8rCkXHEm8YdknBlGQIgtbDagpT3RjSiUKNjIt2Yptnlg/eknAsFSm/uKBzLbH\n" +
-            "jLDwxtEo1ht7AP7yqQJBAMzfT1OlZWAilHw4sP7vWaB9BB6KW9d4atNd2yp93z3R\n" +
-            "KcaaSjLmOmffsB46A7B1esctwPawLWBF7y3QauvMwQ8CQQDFeP26DPx0HHI1o59t\n" +
-            "v7fDAJlQKjENZV23IjGYZaQU+DUoCbVHjse8MYccHVETi1N/y+OMtXlxJfldiZPF\n" +
-            "tACdAkEAjoXrka1GURK9aY2m1DN+jn9qFjT6n3NOHaz1gyH94+tWvKspYy93AjxD\n" +
-            "MUP6vQ99UoMp8nOtnYQJWD3dpBzVUQJAUJShvOUFs3/UHw1IxmkgXIOHDE5bO+Ms\n" +
-            "Tcm3QT/gp+ntDwx/G9corCPtxUw1RGtrRE/35/g5uTFMw52bXmaohQJAJczvWAp+\n" +
-            "jB8cP+38o17/90lSMRZ9yY/MFFm1IBdbIDkLo14/iTKs84Hoi8EJuEqPZfMRFrr+\n" +
-            "riEkJAS4XgZL5Q==";
+    protected static String publicKey  = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCSLmDA2cy57FJa4SYgGzLbky5YzXNY0ZXYsbYFeY79XGDdlCFGQxYAD0ekjX8EGVhUYgyMHubQz7fhwzOo78nBWHeefsVoiaujpnN1eK6eKvcga4Xa7TyfPsxcwdnBsDFrZ1Ug1mJLKUBe05G++EK8lhzCL4gKBHvLu7TBmCjMxQIDAQAB";
+    protected static String privateKey = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAJIuYMDZzLnsUlrhJiAbMtuTLljNc1jRldixtgV5jv1cYN2UIUZDFgAPR6SNfwQZWFRiDIwe5tDPt+HDM6jvycFYd55+xWiJq6Omc3V4rp4q9yBrhdrtPJ8+zFzB2cGwMWtnVSDWYkspQF7Tkb74QryWHMIviAoEe8u7tMGYKMzFAgMBAAECgYEAh2obCss4EUtQBwvmq3tGo402M+EuZyrPqwsE2RGAWkfHG7vrDxF6QdflwBOrg/qOjqy9ftfpbaneZ27SXj6zH9gREHlugnpK8jH17c0+1U+9e2K216ViiOG7mV96A8DhDn/kMFql2GsRlJWPxdtRG+Y86m520C3Y5tEhkek9+ckCQQDCS+GVC9h8gZzuqMAg06NMdg1eMvfLjo+RFNw78bj67XS4P7vyhFTf822+u7PpQbnqYpZbY7JtMRbGsr5PlFUfAkEAwJrFh6wjC2mUTgSUjpyWGCtcEZtn24u+ereZPLst5W0N7mH+sGEkJwj8WiqtGrsd2K7XlrTzBK29NHXNBvNdmwJAM5y2msIfyssfZeJbzxyJF2mQmYJOgrsm9fIloqLOcZGcXMlJYt22MhtW/sCbxQ2ZlmKD8Fjmb80HcNbQaRFNHwJAUMlaazLvrBzH4QWYzkytxEuDnbsCkBsIdW7HLqsQcDgS7Ndbvd2xDVJ+js9xtlGgDkAgG42glWjOgM+chPrVWwJBALUPZMGfOw9QR1nX+rI5kTagOf92d/gEjlP+UFkuJZxHqHLZYQ6gHdpkSlJ1NL1ZvpRv6pG1UIi90kNYTLMjeFo=";
 
 
     public static void main(String[] args) throws Exception {
-        Map<String, Object> genKeyPair = RSAUtils.genKeyPair();
-        String privateKey = RSAUtils.getPrivateKey(genKeyPair);
-        String publicKey = RSAUtils.getPublicKey(genKeyPair);
+//        Map<String, Object> genKeyPair = RSAUtils.genKeyPair();
+//        String privateKey = RSAUtils.getPrivateKey(genKeyPair);
+//        String publicKey = RSAUtils.getPublicKey(genKeyPair);
+//        System.out.println("privateKey="+privateKey);
+//        System.out.println("publicKey="+publicKey);
         User User = new User(1L,"张三","12343234566",null);
-        String content = getContent(User); //消息
-//        String content = getContentWithSha1(User); //消息摘要
+        String content = getPureContent(User); //消息
         System.out.println("cont:"+content);
-        String sign = signByPrivateKey(content, privateKey);
+        String digest = DigestUtils.sha256Hex(content); //消息摘要
+        String sign = signByPrivateKey(digest, privateKey);
         System.out.println("签名结果："+sign);
-        boolean res = verifySignByPublicKey(content, sign, publicKey);
+
+        boolean res = verifySignByPublicKey(DigestUtils.sha256Hex(content), sign, publicKey);
         System.out.println("验签结果："+res);
+        System.out.println("content:"+new String(Base64.decodeBase64(content)));
 
 
         /**************** com.town.icbc.commons:1.1.0  RSAUtils ****************/
@@ -216,5 +206,19 @@ public class RSASignature {
         TreeMap<String,Object> params = new TreeMap<>();
         BeanUtil.beanToMap(bean,params,false,true);
         return Joiner.on("&").withKeyValueSeparator("=").join(params);
+    }
+
+    /**
+     * @Description:按字典升序组装消息内容
+     * 例：name1=value1&name2=value2......
+     * @param bean:签名对象
+     * @return: java.lang.String
+     **/
+    public static String getPureContent(Object bean){
+        String json = JSONObject.toJSONString(bean);
+        TreeMap<String,Object> params = JSONObject.parseObject(json, TreeMap.class);
+        String content = params.entrySet().stream().filter(e -> e.getValue() != null).map(e -> e.getKey() + "=" + e.getValue()).collect(Collectors.joining("&"));
+        System.out.println("content:"+content);
+        return Base64.encodeBase64URLSafeString(content.getBytes());
     }
 }
