@@ -44,6 +44,10 @@ public class RSASignature {
     protected static String privateKey = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAJIuYMDZzLnsUlrhJiAbMtuTLljNc1jRldixtgV5jv1cYN2UIUZDFgAPR6SNfwQZWFRiDIwe5tDPt+HDM6jvycFYd55+xWiJq6Omc3V4rp4q9yBrhdrtPJ8+zFzB2cGwMWtnVSDWYkspQF7Tkb74QryWHMIviAoEe8u7tMGYKMzFAgMBAAECgYEAh2obCss4EUtQBwvmq3tGo402M+EuZyrPqwsE2RGAWkfHG7vrDxF6QdflwBOrg/qOjqy9ftfpbaneZ27SXj6zH9gREHlugnpK8jH17c0+1U+9e2K216ViiOG7mV96A8DhDn/kMFql2GsRlJWPxdtRG+Y86m520C3Y5tEhkek9+ckCQQDCS+GVC9h8gZzuqMAg06NMdg1eMvfLjo+RFNw78bj67XS4P7vyhFTf822+u7PpQbnqYpZbY7JtMRbGsr5PlFUfAkEAwJrFh6wjC2mUTgSUjpyWGCtcEZtn24u+ereZPLst5W0N7mH+sGEkJwj8WiqtGrsd2K7XlrTzBK29NHXNBvNdmwJAM5y2msIfyssfZeJbzxyJF2mQmYJOgrsm9fIloqLOcZGcXMlJYt22MhtW/sCbxQ2ZlmKD8Fjmb80HcNbQaRFNHwJAUMlaazLvrBzH4QWYzkytxEuDnbsCkBsIdW7HLqsQcDgS7Ndbvd2xDVJ+js9xtlGgDkAgG42glWjOgM+chPrVWwJBALUPZMGfOw9QR1nX+rI5kTagOf92d/gEjlP+UFkuJZxHqHLZYQ6gHdpkSlJ1NL1ZvpRv6pG1UIi90kNYTLMjeFo=";
 
 
+    /**
+     * 公钥加密私钥解密称之为——加解密
+     * 私钥加密公钥解密称之为——签名验签
+     **/
     public static void main(String[] args) throws Exception {
 //        Map<String, Object> genKeyPair = RSAUtils.genKeyPair();
 //        String privateKey = RSAUtils.getPrivateKey(genKeyPair);
@@ -51,10 +55,10 @@ public class RSASignature {
 //        System.out.println("privateKey="+privateKey);
 //        System.out.println("publicKey="+publicKey);
         User User = new User(1L,"张三","12343234566",null);
-        String content = getPureContent(User); //消息
+        String content = getPureContent(User);              //消息内容
         System.out.println("cont:"+content);
-        String digest = DigestUtils.sha256Hex(content); //消息摘要
-        String sign = signByPrivateKey(digest, privateKey);
+        String digest = DigestUtils.sha256Hex(content);     //消息摘要
+        String sign = signByPrivateKey(digest, privateKey); //数字签名
         System.out.println("签名结果："+sign);
 
         boolean res = verifySignByPublicKey(DigestUtils.sha256Hex(content), sign, publicKey);
